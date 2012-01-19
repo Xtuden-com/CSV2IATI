@@ -1,8 +1,8 @@
-# OpenSpending model editor
+# CSV-IATI Model Editor testing
 
-The contents of this repository are not well suited for public consumption,
-and are a staging repository only. The code herewith will hopefully soon be
-merged into the core OpenSpending ETL project.
+This repository shows the CSV-IATI Model Editor which is in very early devlopment.
+
+Forked from http://github.com/nickstenning/openspending.modeleditor with thanks :)
 
 To view a demo of the model editor, visit
-http://nickstenning.github.com/openspending.modeleditor 
+http://markbrough.github.com/CSV-IATI-Converter.modeleditor
