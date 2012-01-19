@@ -1,8 +1,9 @@
 DEFAULT_MODEL =
   organisation: {}
   mapping:
-    iati_identifier:
+    'iati-identifier':
       type: 'value'
+      'iati-field': 'iati-identifier'
       label: 'IATI Identifier'
     from:
       type: 'compound'
@@ -10,9 +11,20 @@ DEFAULT_MODEL =
       fields:
         'bodge-job':
           column: 'recipient'
+        'something-else':
+          column: 'dept_id'
     to:
       type: 'value'
       label: 'Recipient'
+
+DEFAULT_FIELD_SETUP =
+  'iati-identifier':
+    type: 'value'
+    label: 'IATI Identifier'
+  'sectors':
+    type: 'compound'
+    label: 'Sectors'
+    fields: ['code', 'vocab', 'text']
 
 DIMENSION_META =
   iati_identifier:
@@ -37,6 +49,13 @@ DIMENSION_META =
               The most important field in the dataset. Please choose which of
               the columns in your dataset represents the value of the spending,
               and how you'd like it to be displayed.
+              '''
+  sector:
+    fixedDataType: true
+    field_type: 'compound'
+    fields: '1,2,3,4'
+    helpText: '''
+              The sectors in your dataset
               '''
 
 FIELDS_META =
@@ -128,6 +147,7 @@ class DimensionWidget extends Widget
     '.field_switch_column click': 'onFieldSwitchColumnClick'
     '.field_rm click': 'onFieldRemoveClick'
     '.delete_dimension click': 'onDeleteDimensionClick'
+    '.iatifield change' : 'onIATIFieldChange'
 
   constructor: (name, container, options) ->
     @name = name
@@ -168,13 +188,23 @@ class DimensionWidget extends Widget
     name = prompt("Field name:").trim()
     row = this._makeFieldRow(name)
     row.appendTo(@element.find('tbody'))
-
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     return false
 
   onDeleteDimensionClick: (e) ->
     $(e.currentTarget).parents('fieldset').first().remove()
     @element.parents('form').first().change()
+    return false
+
+  onIATIFieldChange: (e) ->
+    @element.parents('form').first().change()
+    thisfield = $(e.currentTarget).val()
+    thisfieldsfields = (DEFAULT_FIELD_SETUP[thisfield]['fields'])
+    @element.find('tbody tr').remove()
+    for k, v of thisfieldsfields
+        row = this._makeFieldRow(v)
+        row.appendTo(@element.find('tbody'))
+        @element.trigger('fillColumnsRequest', [row.find('select.column')])
     return false
 
   onFieldRemoveClick: (e) ->
@@ -257,7 +287,7 @@ class DimensionsWidget extends Delegator
       this.addDimension(name).deserialize(data)
 
   promptAddDimension: (props) ->
-    name = prompt("Dimension name:")
+    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):")
     return false unless name
     data = {'mapping': {}}
     data['mapping'][name] = props

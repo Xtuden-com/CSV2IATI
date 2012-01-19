@@ -155,14 +155,7 @@
           <td>${fieldName}</td>
           <td><select class='column' name='${prefix(fieldName)}[column]'></select></td>
           <td>
-            <select name='${prefix(fieldName)}[datatype]'>
-              <option value=''></option>
-              <option value='float'>float</option>
-              <option value='string'>string</option>
-            </select>
-          </td>
-          <td>
-            <a href='#' class='field_switch_constant'>&rarr; const</a>
+            <a href='#' class='field_switch_constant'>&rarr; constant</a>
             {{if required(fieldName) != true}}
             <a href='#' class='field_rm'>&times;</a>
             {{/if}}
@@ -178,7 +171,6 @@
             <input type='hidden' name='${prefix(fieldName)}[datatype]' value='constant'>
           </td>
           <td><input type='text' name='${prefix(fieldName)}[constant]'></td>
-          <td>constant</td>
           <td>
             <a href='#' class='field_switch_column'>&rarr; column</a>
             {{if required(fieldName) != true}}
@@ -228,9 +220,8 @@
           <table class='fields'>
             <thead>
               <tr>
-                <td>Field name</td>
+                <td>Attribute</td>
                 <td>Column/Const</td>
-                <td>Type</td>
                 <td>&nbsp;</td>
               </tr>
             </thead>
