@@ -1,29 +1,35 @@
 DEFAULT_MODEL =
-  dataset: {}
+  organisation: {}
   mapping:
-    amount:
+    iati_identifier:
       type: 'value'
-      datatype: 'float'
-      label: 'Amount'
-    time:
-      type: 'value'
-      datatype: 'date'
-      label: 'Time'
+      label: 'IATI Identifier'
     from:
-      type: 'entity'
+      type: 'compound'
       label: 'Spender'
+      fields:
+        'bodge-job':
+          column: 'recipient'
     to:
-      type: 'entity'
+      type: 'value'
       label: 'Recipient'
-  views: []
 
 DIMENSION_META =
-  time:
+  iati_identifier:
     fixedDataType: true
     helpText: '''
-              The time dimension represents the time or period over which the
-              spending occurred. Please choose the column of your dataset which
-              contains an ISO8601 formatted date (YYYY, YYYY-MM, YYYY-MM-DD, etc.).
+              The unique IATI Identifier for your project.
+              '''
+  title:
+    fixedDataType: true
+    helpText: '''
+              The title of your project.
+              '''
+    label: 'Title'
+  description:
+    fixedDataType: true
+    helpText: '''
+              The description of your project.
               '''
   amount:
     fixedDataType: true
@@ -37,6 +43,8 @@ FIELDS_META =
   label:
     required: true
 
+String::dasherize = ->
+  this.replace /_/g, "-"
 
 util =
   # Turns a nested object into a flat mapping with PHP-like query string
@@ -98,6 +106,9 @@ class UniqueKeyWidget extends Widget
     @keys = ({'name': k, 'used': k in uniq} for k in availableKeys)
     this.render()
 
+  promptAddDimensionNamed: (props, thename) ->
+    return false
+
   render: ->
     @element.html($.tmpl('tpl_unique_keys', {'keys': @keys}))
 
@@ -116,6 +127,7 @@ class DimensionWidget extends Widget
     '.field_switch_constant click': 'onFieldSwitchConstantClick'
     '.field_switch_column click': 'onFieldSwitchColumnClick'
     '.field_rm click': 'onFieldRemoveClick'
+    '.delete_dimension click': 'onDeleteDimensionClick'
 
   constructor: (name, container, options) ->
     @name = name
@@ -138,6 +150,7 @@ class DimensionWidget extends Widget
 
     @element.html($.tmpl('tpl_dimension', this))
     @element.trigger('fillColumnsRequest', [@element.find('select.column')])
+    @element.trigger('fillIATIfieldsRequest', [@element.find('select.iatifield')])
 
     formObj = {'mapping': {}}
     formObj['mapping'][@name] = @data
@@ -159,6 +172,11 @@ class DimensionWidget extends Widget
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     return false
 
+  onDeleteDimensionClick: (e) ->
+    $(e.currentTarget).parents('fieldset').first().remove()
+    @element.parents('form').first().change()
+    return false
+
   onFieldRemoveClick: (e) ->
     $(e.currentTarget).parents('tr').first().remove()
     @element.parents('form').first().change()
@@ -178,6 +196,9 @@ class DimensionWidget extends Widget
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     @element.parents('form').first().change()
     return false
+    
+  promptAddDimensionNamed: (props, thename) ->
+    return false
 
   _makeFieldRow: (name, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
@@ -190,7 +211,7 @@ class DimensionWidget extends Widget
 class DimensionsWidget extends Delegator
   events:
     '.add_value_dimension click': 'onAddValueDimensionClick'
-    '.add_classifier_dimension click': 'onAddClassifierDimensionClick'
+    '.add_compound_dimension click': 'onAddCompoundDimensionClick'
 
   constructor: (element, options) ->
     super
@@ -242,12 +263,20 @@ class DimensionsWidget extends Delegator
     data['mapping'][name] = props
     this.addDimension(name.trim()).deserialize(data)
 
+  promptAddDimensionNamed: (thename, props) ->
+    alert("Column \"" + thename + "\" has been added.")
+    name = thename
+    return false unless name
+    data = {'mapping': {}}
+    data['mapping'][name] = props
+    this.addDimension(name.trim()).deserialize(data)
+
   onAddValueDimensionClick: (e) ->
     this.promptAddDimension({'type': 'value'})
     return false
 
-  onAddClassifierDimensionClick: (e) ->
-    this.promptAddDimension({'type': 'classifier'})
+  onAddCompoundDimensionClick: (e) ->
+    this.promptAddDimension({'type': 'compound'})
     return false
 
 class ModelEditor extends Delegator
@@ -258,10 +287,14 @@ class ModelEditor extends Delegator
   events:
     'modelChange': 'onModelChange'
     'fillColumnsRequest': 'onFillColumnsRequest'
+    'fillIATIfieldsRequest': 'onFillIATIfieldsRequest'
     '.steps > ul > li click': 'onStepClick'
     '.steps > ul > li > ul > li click': 'onStepDimensionClick'
     '.forms form submit': 'onFormSubmit'
     '.forms form change': 'onFormChange'
+    '#showdebug click': 'onShowDebugClick'
+    '.add_data_field click': 'onAddDataFieldClick'
+    'doFieldSelectors' : 'onDoFieldSelectors'
 
   constructor: (element, options) ->
     super
@@ -281,8 +314,13 @@ class ModelEditor extends Delegator
 
     # Initialize column select boxes
     @options.columns.unshift('')
-    @element.find('select.column').each ->
+    @element.find('select.iatifield').each ->
       $(this).trigger('fillColumnsRequest', [this])
+
+    # Initialize iati select boxes
+    @options.iatifields.unshift('')
+    @element.find('select.iatifield').each ->
+      $(this).trigger('fillIATIfieldsRequest', [this])
 
     # Initialize widgets
     for selector, ctor of @widgetTypes
@@ -304,17 +342,50 @@ class ModelEditor extends Delegator
     this.setStep idx
     return false
 
-  onStepDimensionClick: (e) ->
-    e.stopPropagation()
+  onAddDataFieldClick: (e) ->
+    thevar = $(e.currentTarget).text() 
+    for w in @widgets
+        w.promptAddDimensionNamed(thevar,{'type': 'value','column':thevar,'label':thevar})
+    @data = @form.serializeObject()
+    @element.trigger 'modelChange'
+    $(e.currentTarget).removeClass('add_data_field available').addClass('unavailable')
+
+  onShowDebugClick: (e) ->
+    if $('#debug').hasClass('debug-shown')
+      $('#debug').slideUp().removeClass('debug-shown')
+    else
+      $('#debug').slideDown().addClass('debug-shown')
+    return false
 
   onFormChange: (e) ->
     return if @ignoreFormChange
 
     @data = @form.serializeObject()
-
+    @form.find('.column').each -> 
+        columnname = ($(this).val())
+        $('#user_columns ul li a').each ->
+            if ($(this).text()) == columnname
+                $(this).removeClass('available').addClass('unavailable')
+    
+    @element.trigger('doFieldSelectors', 'iatifield')
+    @element.trigger('doFieldSelectors', 'column')
+        
     @ignoreFormChange = true
     @element.trigger 'modelChange'
     @ignoreFormChange = false
+
+    
+  onDoFieldSelectors: (e) ->
+    $('#' + e + 's ul li a').each ->
+        if ($(this).hasClass('unavailable'))
+            $(this).removeClass('unavailable')
+            $(this).addClass('available')
+    @form.find('.' + e).each -> 
+        iatiname = ($(this).val())
+        $('#' + e + 's ul li a').each ->
+            if ($(this).text() == iatiname)
+                $(this).removeClass('available')
+                $(this).addClass('unavailable')
 
   onFormSubmit: (e) ->
     return false
@@ -334,14 +405,19 @@ class ModelEditor extends Delegator
     # Update dimension list in sidebar
     dimNames = (k for k, v of @data['mapping'])
     @element.find('.steps ul.steps_dimensions').html(
-      ('<li><a href="#' + "#{@id}_dim_#{n}" + '">' + "#{n}</a>" for n in dimNames).join('\n')
+      ('<li><a href="#' + "m1_dim_#{n}" + '">' + "#{n.dasherize()}</a>" for n in dimNames).join('\n')
     )
 
-    $('#debug').text(JSON.stringify(@data, null, 2))
+    $('#debug').text(JSON.stringify(@data, null, 2).dasherize())
+
 
   onFillColumnsRequest: (elem) ->
     $(elem).html(
       ("<option name='#{x}'>#{x}</option>" for x in @options.columns).join('\n')
+    )
+  onFillIATIfieldsRequest: (elem) ->
+    $(elem).html(
+      ("<option name='#{x}'>#{x}</option>" for x in @options.iatifields).join('\n')
     )
 
 $.plugin 'modelEditor', ModelEditor

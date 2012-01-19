@@ -27,7 +27,25 @@ table td {
 table td:first-child {
   border: none;
 }
-
+#columns ul li, #iatifields ul li {
+  list-style-type:none;
+  margin:4px;
+}
+#columns ul li a, #iatifields ul li a {
+  text-decoration:none;
+  padding:1px 3px 1px 3px;
+}
+#columns .available, #iatifields .available {
+  background-color:green;
+  color:#ffffff;
+}
+#columns .unavailable, #iatifields .unavailable {
+  background-color:red;
+  color:#ffffff;
+}
+#iatifields {
+  margin-bottom:5px;
+}
 .modeleditor {
   *display: inline-block;
   width: 100%;
@@ -44,8 +62,12 @@ table td:first-child {
 }
 
 .modeleditor .steps {
-  position: fixed;
+  position:fixed;
   width: 15em;
+}
+.modeleditor .modeltoggle {
+  width: 14em;
+  font-style:italic;
 }
 
 .modeleditor .steps ul {
@@ -54,9 +76,8 @@ table td:first-child {
   padding: 0;
 }
 
-.modeleditor .steps ul li {
+.modeleditor .steps ul li, .modeltoggle a {
   cursor: pointer;
-  text-align: center;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -67,7 +88,7 @@ table td:first-child {
   font-weight: bold;
 }
 
-.modeleditor .steps ul li a {
+.modeleditor .steps ul li a, .modeltoggle a {
   display: inline-block;
   color: inherit;
   text-decoration: inherit;
@@ -90,7 +111,7 @@ table td:first-child {
 
 .modeleditor .steps ul li ul li a {
   text-align: left;
-  padding: 0.25em 0.25em 0.25em 4em;
+  padding: 0.25em 0.25em 0.25em 2em;
 }
 
 .modeleditor .forms {
@@ -115,4 +136,13 @@ table td:first-child {
 
 .modeleditor .forms .unique_keys_widget span:last-of-type.active {
   padding: 3px;
+}
+.forms {
+  min-height:400px;
+}
+#columns ul, #iatifields ul {
+  max-height:100px;
+  overflow:auto;
+  margin:0;
+  padding:0;
 }

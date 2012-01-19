@@ -2,108 +2,133 @@
 <head>
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=Edge;chrome=1' >
-  <title>OpenSpending model editor</title>
+  <title>IATI CSV Conversion tool: Map your dimensions</title>
   <link rel='stylesheet' href='css/forms.css'>
   <link rel='stylesheet' href='css/style.css'>
 </head>
 <body>
-  <textarea id="debug" style='float:right;width:28%'>
-  </textarea>
+<div id="model_page_view">
+  <div class="banner" style="width:100%;color:#365e93;">
+  <h1>IATI CSV Conversion tool: Map your dimensions</h1>
+  </div>
+  <div id="right_pane" style="float:right;width:28%;position:fixed;left:71%;">
+      <div id="columns">
+        <p>Available columns in your data:</p>
+        <ul>
+        </ul>
+      </div>
+      <div id="iatifields">
+        <p>Available IATI fields:</p>
+        <ul></ul>
+      </div>
+      <textarea id="debug" style='display:none;' readonly>
+      </textarea>
+  </div>
   <div class='content' style='width: 70%'>
     <div id='m1' class='modeleditor'>
       <div class='steps'>
         <ul>
+          <li><a href='#'><span>1</span> Organisation information</a></li>
           <li>
-            <a href='#'><span>1</span> Dimension mapping</a>
+            <a href='#'><span>2</span> Dimension mapping</a>
             <ul class='steps_dimensions'>
             </ul>
           </li>
-          <li><a href='#'><span>2</span> Dataset metadata</a></li>
-          <li><a href='#'><span>3</span> Views &amp; visualisation</a></li>
+          <li><a href='#'><span>3</span> Convert</a></li>
         </ul>
+      <div class="modeltoggle"><a href="#" id="showdebug">Show model</a></div>
       </div>
       <div class='forms'>
         <form action='#'>
+          <!-- Dataset metadata -->
+          <div class='formpart'>
+            <h2>Organisation information</h2>
+            <p>First, we need to collect some basic information about your organisation. You need to know:</p>
+            <ul>
+                <li>Your organisation name</li>
+                <li>Your organisation's charity or company registration number (or equivalent)</li>
+                <li>The currency of your data</li>
+                <li>The language of your data</li>
+            </ul>
+            <dl>
+              <fieldset id="reporting-org">
+                  <legend>Your Organisation</legend>
+                  <dt><label for='organisation[reporting-org][name]'>Name:</label></dt>
+                  <dd><input type='text' name='organisation[reporting-org][name]'></dd>
+                  <dd class='hints'>
+                    The name of the organisation reporting this data. Examples: <code>Department for International Development</code>,
+                    <code>Oxfam GB</code>, <code>United Nations Development Programme</code>.
+                  </dd>
+                  <dt><label for='organisation[reporting-org][ref]'>Ref:</label></dt>
+                  <dd><input type='text' name='organisation[reporting-org][ref]'></dd>
+                  <dd class='hints'>
+                    A unique reference for this organisation. If this organisation is a registered charity or company, use the jurisidiction, followed by the registration body, followed by the registration code. Examples: <code>CA-CRA-89980-1815-RR0001</code> (Engineers Without Borders Canada),
+                    <code>GB-CHC-202918</code> (Oxfam GB).
+                  </dd>
+                  <dt><label for='organisation[reporting-org][type]'>Type:</label></dt>
+                  <dd><input type='text' name='organisation[reporting-org][type]'></dd>
+                  <dd class='hints'>
+                    The type of organisation. Examples: <code>21</code> (INGO, e.g. Oxfam GB).
+                  </dd>
+              </fieldset>
+              <fieldset id="other-org">
+              <legend>Basic information</legend>
+                  <dt><label for='organisation[default-currency]'>Currency:</label></dt>
+                  <dd><input type='text' name='organisation[default-currency]' maxlength='3' class='short'></dd>
+                  <dd class='hints'>
+                    A 3-letter currency code. Examples: <code>USD</code>, <code>GBP</code>,
+                    etc. See <a href='http://en.wikipedia.org/wiki/ISO_4217'>ISO 4217</a>.
+                  </dd>
+                  
+                  <dt><label for='organisation[lang]'>Language:</label></dt>
+                  <dd><input type='text' name='organisation[lang]' maxlength='2' class='short'></dd>
+                  <dd class='hints'>
+                    The 2-letter language code. Examples: <code>en</code>, <code>fr</code>,
+                    etc. See <a href='http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes'>ISO 639-1</a>.
+                  </dd>
+                  
+                  <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
+                  <dd><input type='checkbox' name='organisation[data-structure]' value="multiple">Multiple rows per activity<br />
+                  <dd class='hints'>
+                    How is your data structured? You can have one row per activity, or multiple rows per activity. 
+                    If you select 'multiple rows', the converter will use the field you specify as the iati-identifier 
+                    (presumably your project ID) to group your projects together.
+                  </dd>
 
+                  <dt><label for='organisation[unique_keys]'>Unique keys:</label></dt>
+                  <dd class='unique_keys_widget'></dd>
+                  <dd class='hints'>
+                    Every dataset needs a set of columns from the data file which will
+                    <em>uniquely identify</em> any given spending entry in the data.
+                  </dd>
+              </fieldset>
+
+    
+            </dl>
+          </div>
           <!-- Dimension mapping -->
           <div class='formpart dimensions_widget'>
             <h2>Dimension mapping</h2>
             <p>
-              The first and most important step in the creation of a model is
-              the mapping of columns in the data file to "dimensions", the logical
-              divisions of the dataset. The four required dimensions, <code>amount</code>,
-              <code>time</code>, <code>from</code>, and <code>to</code> are laid
-              out below, and you can add your own dimensions using the links at
-              the bottom of the page.
+              To convert your data to the IATI format, you need to map your columns 
+              to the IATI fields to create "dimensions", the logical divisions of your dataset.
+              There are several required dimensions, shown below, and you can add your own dimensions
+              using the links at the bottom of the page.
             </p>
             <div class='dimensions'>
             </div>
             <p>
               <a class='add_value_dimension' href='#'>Add single-column dimension</a>
-              <a class='add_classifier_dimension' href='#'>Add multi-column dimension</a>
+              <a class='add_compound_dimension' href='#'>Add multi-column dimension</a>
             </p>
           </div>
 
-          <!-- Dataset metadata -->
+          <!-- Conversion screen -->
           <div class='formpart'>
-            <h2>Dataset metadata</h2>
-            <dl>
-              <dt><label for='dataset[name]'>Name:</label></dt>
-              <dd><input type='text' name='dataset[name]'></dd>
-              <dd class='hints'>
-                Choose a uniquely identifying name, comprising letters,
-                dashes and underscores only. Examples: <code>eu-budget</code>,
-                <code>epsrc-grants</code>, <code>country-regional-analysis</code>.
-              </dd>
-
-              <dt><label for='dataset[label]'>Label:</label></dt>
-              <dd><input type='text' name='dataset[label]'></dd>
-              <dd class='hints'>
-                A human-readable, short representation of the package name:
-                <code>European Union Budget</code>, <code>Country Regional Analysis</code>,
-                etc.
-              </dd>
-
-              <dt><label for='dataset[currency]'>Currency:</label></dt>
-              <dd><input type='text' name='dataset[currency]' maxlength='3' class='short'></dd>
-              <dd class='hints'>
-                A 3-letter currency code. Examples: <code>USD</code>, <code>GBP</code>,
-                etc. See <a href='http://en.wikipedia.org/wiki/ISO_4217'>ISO 4217</a>.
-              </dd>
-
-              <dt><label for='dataset[unique_keys]'>Unique keys:</label></dt>
-              <dd class='unique_keys_widget'></dd>
-              <dd class='hints'>
-                Every dataset needs a set of columns from the data file which will
-                <em>uniquely identify</em> any given spending entry in the data.
-              </dd>
-
-              <dt><label for='dataset[description]'>Description:</label></dt>
-              <dd><textarea name='dataset[description]' class='short'></textarea></dd>
-              <dd class='hints'>
-                A longer description of the dataset, including (for example)
-                information on its provenance, data quality. This will be
-                processed as <a href='http://daringfireball.net/projects/markdown'>
-                Markdown</a>.
-              </dd>
-
-              <dt><label for='dataset[entry_custom_html]'>Entry Custom HTML:</label></dt>
-              <dd><textarea name='dataset[entry_custom_html]' class='short'></textarea></dd>
-              <dd class='hints'>
-                An HTML template that will be displayed on the page for an entry,
-                which can incorporate properties of that entry. e.g.
-                <pre><code>&lt;a href="http://example.com/entry/${entry.id}"&gt;
-  ${entry.label}
-&lt;/a&gt;</code></pre>
-              </dd>
-            </dl>
+            <h2>Convert</h2>
+            <p>If you're ready to convert, hit "Convert" below.</p>
+            <input type="submit" value="Convert">
           </div>
-
-          <!-- Views & visualisation -->
-          <div class='formpart'>
-            <h2>Views and visualisation</h2>
-          </div>
-
         </form>
       </div> <!-- /.forms -->
 
@@ -169,9 +194,16 @@
         {{if meta.fixedDataType}}
         <input type='hidden' name='mapping[${name}][datatype]' value='${data.datatype}'>
         {{/if}}
-        <legend>${name}</legend>
+        <legend>${data.label}</legend>
         {{if meta.helpText}}<p>${meta.helpText}</p>{{/if}}
         <dl>
+            <dt><label>IATI field name:</label></dt>
+            {{if !meta.fixedDataType}}
+              <dd><select class='iatifield' name='mapping[${name}][iati-field]'></select></dd>
+            {{else}}
+              <dd>${name.dasherize()}</dd>
+              <input type='hidden' name='mapping[${name}][iati-field]' value='${name.dasherize()}' class="iatifield">
+            {{/if}}
           {{if data.type === 'value'}}
             <dt><label>Column:</label></dt>
             <dd>
@@ -191,12 +223,8 @@
           <dd>
             <input type='text' name='mapping[${name}][label]' value='${data.label}'>
           </dd>
-          <dt><label>Description:</label></dt>
-          <dd>
-            <textarea class='short' name='mapping[${name}][description]'>${data.description}</textarea>
-          </dd>
         </dl>
-        {{if data.type !== 'value' }}
+        {{if data.type == 'compound' }}
           <table class='fields'>
             <thead>
               <tr>
@@ -217,6 +245,7 @@
             </tbody>
           </table>
           <p><a class='add_field' href='#'>Add a field</a></p>
+          <p><a class='delete_dimension' href='#'>Delete this dimension</a></p>
         {{/if}}
       </script>
     </div> <!-- /.modeleditor -->
@@ -224,20 +253,41 @@
   <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
   <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>
 
-  <script src='lib/extensions.js'></script>
-  <script src='lib/delegator.js'></script>
-  <script src='lib/modeleditor.js'></script>
+  <script src='main.js'></script>
   <script>
     jQuery(function($) {
-      $('#m1').modelEditor({
-        'columns': ['date', 'value', 'dept_id', 'dept_name', 'dept_transaction_id', 'recipient', 'cofog_code_l1']
+      var column_data=['date', 'amount', 'dept_id', 'dept_stuff', 'dept_transaction_id', 'recipient', 'something', 'nothing1'];
+      var iati_data=['iati-identifier', 'title', 'description', 'sectors', 'participating-organisation'];
+    
+      $('#model_page_view').modelEditor({
+        'columns': column_data,
+        'iatifields': iati_data
       });
-      var me = $('#m1').data('modelEditor')
-      $('#debug').change(function () {
+      $('#iatifields ul').html(function() {
+        var iati_to_write = '';
+        $.each(iati_data, function(index, value) {
+            iati_to_write = iati_to_write + '<li><a class="available" href="#">' + value + '</a>';
+        });
+        return iati_to_write;
+      });
+      $('#columns ul').html(function() {
+        var columns_to_write = '';
+        $.each(column_data, function(index, value) {
+            columns_to_write = columns_to_write + '<li><a class="available" href="#">' + value + '</a>';
+        });
+        return columns_to_write;
+      });
+      var me = $('#m1').data('modelEditor');
+      /*$('#debug').change(function () {
         me.data = JSON.parse($(this).val())
         $('#m1').trigger('modelChange')
-      })
+      });
+      */
     })
   </script>
+  
+  <div class="credits" style="width:100%;color:#333333;">
+  <p>Thanks to Nick Stenning and OKFN for the original code this mapping utility is based on.</p>
+  </div>
 </body>
 </html>
