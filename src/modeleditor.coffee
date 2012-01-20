@@ -21,6 +21,12 @@ DEFAULT_FIELD_SETUP =
   'iati-identifier':
     type: 'value'
     label: 'IATI Identifier'
+  'title':
+    type: 'value'
+    label: 'Title'
+  'description':
+    type: 'value'
+    label: 'Description'
   'sectors':
     type: 'compound'
     label: 'Sectors'
@@ -50,7 +56,7 @@ DIMENSION_META =
               the columns in your dataset represents the value of the spending,
               and how you'd like it to be displayed.
               '''
-  sector:
+  sectors:
     fixedDataType: true
     field_type: 'compound'
     fields: '1,2,3,4'
@@ -199,12 +205,21 @@ class DimensionWidget extends Widget
   onIATIFieldChange: (e) ->
     @element.parents('form').first().change()
     thisfield = $(e.currentTarget).val()
-    thisfieldsfields = (DEFAULT_FIELD_SETUP[thisfield]['fields'])
     @element.find('tbody tr').remove()
-    for k, v of thisfieldsfields
-        row = this._makeFieldRow(v)
-        row.appendTo(@element.find('tbody'))
-        @element.trigger('fillColumnsRequest', [row.find('select.column')])
+    if (DEFAULT_FIELD_SETUP[thisfield]['type'] == 'compound')
+        thisfieldsfields = (DEFAULT_FIELD_SETUP[thisfield]['fields'])
+        for k, v of thisfieldsfields
+            row = this._makeFieldRow(v)
+            row.appendTo(@element.find('tbody'))
+            @element.trigger('fillColumnsRequest', [row.find('select.column')])
+    else
+        w = new DimensionWidget(thisfield, @dimsEl)
+        @widgets.push(w)
+        return w
+        @element.empty()
+        @element.html($.tmpl('tpl_dimension', this))
+        @element.trigger('fillColumnsRequest', [@element.find('select.column')])
+        @element.trigger('fillIATIfieldsRequest', [@element.find('select.iatifield')])
     return false
 
   onFieldRemoveClick: (e) ->

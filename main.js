@@ -173,6 +173,14 @@
       type: 'value',
       label: 'IATI Identifier'
     },
+    'title': {
+      type: 'value',
+      label: 'Title'
+    },
+    'description': {
+      type: 'value',
+      label: 'Description'
+    },
     'sectors': {
       type: 'compound',
       label: 'Sectors',
@@ -198,7 +206,7 @@
       fixedDataType: true,
       helpText: 'The most important field in the dataset. Please choose which of\nthe columns in your dataset represents the value of the spending,\nand how you\'d like it to be displayed.'
     },
-    sector: {
+    sectors: {
       fixedDataType: true,
       field_type: 'compound',
       fields: '1,2,3,4',
@@ -412,16 +420,22 @@
     };
 
     DimensionWidget.prototype.onIATIFieldChange = function(e) {
-      var k, row, thisfield, thisfieldsfields, v;
+      var k, row, thisfield, thisfieldsfields, v, w;
       this.element.parents('form').first().change();
       thisfield = $(e.currentTarget).val();
-      thisfieldsfields = DEFAULT_FIELD_SETUP[thisfield]['fields'];
       this.element.find('tbody tr').remove();
-      for (k in thisfieldsfields) {
-        v = thisfieldsfields[k];
-        row = this._makeFieldRow(v);
-        row.appendTo(this.element.find('tbody'));
-        this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
+      if (DEFAULT_FIELD_SETUP[thisfield]['type'] === 'compound') {
+        thisfieldsfields = DEFAULT_FIELD_SETUP[thisfield]['fields'];
+        for (k in thisfieldsfields) {
+          v = thisfieldsfields[k];
+          row = this._makeFieldRow(v);
+          row.appendTo(this.element.find('tbody'));
+          this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
+        }
+      } else {
+        w = new DimensionWidget(thisfield, this.dimsEl);
+        DimensionsWidget.push(w);
+        return w;
       }
       return false;
     };
