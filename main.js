@@ -145,25 +145,95 @@
     organisation: {},
     mapping: {
       'iati-identifier': {
-        type: 'value',
-        'iati-field': 'iati-identifier',
-        label: 'IATI Identifier'
-      },
-      from: {
         type: 'compound',
-        label: 'Spender',
+        'iati-field': 'iati-identifier',
+        label: 'IATI Identifier',
         fields: {
-          'bodge-job': {
-            column: 'recipient'
-          },
-          'something-else': {
-            column: 'dept_id'
-          }
+          'text': {}
         }
       },
-      to: {
-        type: 'value',
-        label: 'Recipient'
+      'title': {
+        type: 'compound',
+        'iati-field': 'title',
+        label: 'Title',
+        fields: {
+          'text': {}
+        }
+      },
+      'description': {
+        type: 'compound',
+        'iati-field': 'description',
+        label: 'Description',
+        fields: {
+          'text': {}
+        }
+      },
+      'recipient-country': {
+        type: 'compound',
+        'iati-field': 'recipient-country',
+        label: 'Recipient Country',
+        fields: {
+          'text': {},
+          'code': {}
+        }
+      },
+      'implementing-organisation': {
+        type: 'compound',
+        'iati-field': 'participating-organisation',
+        label: 'Implementing Organisation',
+        fields: {
+          'role': {
+            'constant': 'implementing',
+            'datatype': 'constant'
+          },
+          'text': {},
+          'ref': {},
+          'type': {}
+        }
+      },
+      'funding-organisation': {
+        type: 'compound',
+        'iati-field': 'participating-organisation',
+        label: 'Funding Organisation',
+        fields: {
+          'role': {
+            'constant': 'funding',
+            'datatype': 'constant'
+          },
+          'text': {},
+          'ref': {},
+          'type': {}
+        }
+      },
+      'extending-organisation': {
+        type: 'compound',
+        'iati-field': 'participating-organisation',
+        label: 'Extending Organisation',
+        fields: {
+          'role': {
+            'constant': 'extending',
+            'datatype': 'constant'
+          },
+          'text': {},
+          'ref': {},
+          'type': {}
+        }
+      },
+      sectors: {
+        type: 'compound',
+        label: 'Sectors',
+        'iati-field': 'sector',
+        fields: {
+          'text': {
+            'label': 'Name (text) of the sector'
+          },
+          'code': {
+            'label': 'Code for the sector'
+          },
+          'vocab': {
+            'label': 'Sector code vocabulary'
+          }
+        }
       }
     }
   };
@@ -171,7 +241,12 @@
   DEFAULT_FIELD_SETUP = {
     'iati-identifier': {
       type: 'value',
-      label: 'IATI Identifier'
+      label: 'IATI Identifier',
+      fields: {
+        'text': {
+          required: true
+        }
+      }
     },
     'title': {
       type: 'value',
@@ -181,35 +256,40 @@
       type: 'value',
       label: 'Description'
     },
-    'sectors': {
+    'sector': {
       type: 'compound',
       label: 'Sectors',
-      fields: ['code', 'vocab', 'text']
+      fields: {
+        'code': {
+          required: true
+        },
+        'vocab': {
+          required: false
+        },
+        'text': {
+          required: false
+        }
+      }
     }
   };
 
   DIMENSION_META = {
-    iati_identifier: {
+    'iati-identifier': {
       fixedDataType: true,
-      helpText: 'The unique IATI Identifier for your project.'
+      helpText: 'The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation\'s unique reference, followed by the organisation\'s internal project code. E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code> where \'P0001\' is the project code.'
     },
     title: {
       fixedDataType: true,
-      helpText: 'The title of your project.',
+      helpText: 'A short, human-readable title. May be repeated for different languages. ',
       label: 'Title'
     },
     description: {
       fixedDataType: true,
-      helpText: 'The description of your project.'
+      helpText: 'A longer, human-readable description. May be repeated for different languages. '
     },
-    amount: {
-      fixedDataType: true,
-      helpText: 'The most important field in the dataset. Please choose which of\nthe columns in your dataset represents the value of the spending,\nand how you\'d like it to be displayed.'
-    },
-    sectors: {
-      fixedDataType: true,
+    sector: {
       field_type: 'compound',
-      fields: '1,2,3,4',
+      fields: 'code,text,vocab',
       helpText: 'The sectors in your dataset'
     }
   };
@@ -358,6 +438,7 @@
     };
 
     function DimensionWidget(name, container, options) {
+      this.formFieldRequired2 = __bind(this.formFieldRequired2, this);
       this.formFieldRequired = __bind(this.formFieldRequired, this);
       this.formFieldPrefix = __bind(this.formFieldPrefix, this);
       var el;
@@ -399,9 +480,30 @@
       return "mapping[" + this.name + "][fields][" + fieldName + "]";
     };
 
-    DimensionWidget.prototype.formFieldRequired = function(fieldName) {
+    DimensionWidget.prototype.formFieldRequired = function(fieldName, fieldParent) {
       var _ref;
-      return ((_ref = FIELDS_META[fieldName]) != null ? _ref['required'] : void 0) || false;
+      if (fieldParent) {
+        return ((_ref = FIELDS_META[fieldName]) != null ? _ref['required'] : void 0) || false;
+      } else {
+        return false;
+      }
+    };
+
+    DimensionWidget.prototype.formFieldRequired2 = function(fieldName, fieldParent) {
+      var _ref, _ref2;
+      if (fieldParent) {
+        if (DEFAULT_FIELD_SETUP[fieldParent]) {
+          if (DEFAULT_FIELD_SETUP[fieldParent]['fields'] && DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) {
+            return ((_ref = DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) != null ? _ref['required'] : void 0) || false;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        return ((_ref2 = FIELDS_META[fieldName]) != null ? _ref2['required'] : void 0) || false;
+      }
     };
 
     DimensionWidget.prototype.onAddFieldClick = function(e) {
@@ -420,22 +522,16 @@
     };
 
     DimensionWidget.prototype.onIATIFieldChange = function(e) {
-      var k, row, thisfield, thisfieldsfields, v, w;
+      var k, row, thisfield, thisfieldsfields, v;
       this.element.parents('form').first().change();
       thisfield = $(e.currentTarget).val();
       this.element.find('tbody tr').remove();
-      if (DEFAULT_FIELD_SETUP[thisfield]['type'] === 'compound') {
-        thisfieldsfields = DEFAULT_FIELD_SETUP[thisfield]['fields'];
-        for (k in thisfieldsfields) {
-          v = thisfieldsfields[k];
-          row = this._makeFieldRow(v);
-          row.appendTo(this.element.find('tbody'));
-          this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
-        }
-      } else {
-        w = new DimensionWidget(thisfield, this.dimsEl);
-        DimensionsWidget.push(w);
-        return w;
+      thisfieldsfields = DEFAULT_FIELD_SETUP[thisfield]['fields'];
+      for (k in thisfieldsfields) {
+        v = thisfieldsfields[k];
+        row = this._makeFieldRowUpdate(k, thisfield, v['required']);
+        row.appendTo(this.element.find('tbody'));
+        this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
       }
       return false;
     };
@@ -470,13 +566,24 @@
     };
 
     DimensionWidget.prototype._makeFieldRow = function(name, constant) {
-      var required, tplName;
+      var tplName;
       if (constant == null) constant = false;
       tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
-      return required = $.tmpl(tplName, {
+      return $.tmpl(tplName, {
         'fieldName': name,
         'prefix': this.formFieldPrefix,
         'required': this.formFieldRequired
+      });
+    };
+
+    DimensionWidget.prototype._makeFieldRowUpdate = function(name, thisfield, requiredvar, constant) {
+      var tplName;
+      if (constant == null) constant = false;
+      tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
+      return $.tmpl(tplName, {
+        'fieldName': name,
+        'prefix': this.formFieldPrefix,
+        'required': this.formFieldRequired2
       });
     };
 
@@ -647,7 +754,8 @@
 
     ModelEditor.prototype.setStep = function(s) {
       $(this.element).find('.steps > ul > li').removeClass('active').eq(s).addClass('active');
-      return $(this.element).find('.forms div.formpart').hide().eq(s).show();
+      $(this.element).find('.forms div.formpart').hide().eq(s).show();
+      return $(this.element).find('.forms form').change();
     };
 
     ModelEditor.prototype.onStepClick = function(e) {

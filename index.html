@@ -156,9 +156,15 @@
           <td><select class='column' name='${prefix(fieldName)}[column]'></select></td>
           <td>
             <a href='#' class='field_switch_constant'>&rarr; constant</a>
-            {{if required(fieldName) != true}}
-            <a href='#' class='field_rm'>&times;</a>
-            {{/if}}
+            {{if fieldBelongsTo}}
+                {{if required(fieldName, fieldBelongsTo) != true}}
+                <a href='#' class='field_rm'>&times;</a>
+                {{/if}}
+            {{else}}
+                {{if required(fieldName) != true}}
+                <a href='#' class='field_rm'>&times;</a>
+                {{/if}}
+            {{/if}}    
           </td>
         </tr>
       </script>
@@ -187,7 +193,7 @@
         <input type='hidden' name='mapping[${name}][datatype]' value='${data.datatype}'>
         {{/if}}
         <legend>${data.label}</legend>
-        {{if meta.helpText}}<p>${meta.helpText}</p>{{/if}}
+        {{if meta.helpText}}<p>{{html meta.helpText}}</p>{{/if}}
         <dl>
             <dt><label>IATI field name:</label></dt>
             {{if !meta.fixedDataType}}
@@ -228,9 +234,9 @@
             <tbody>
             {{each(n, f) data.fields}}
               {{if f.datatype === 'constant'}}
-                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'required': formFieldRequired}) '#tpl_dimension_field_const'}}
+                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'required': formFieldRequired2, 'fieldBelongsTo': name}) '#tpl_dimension_field_const'}}
               {{else}}
-                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'required': formFieldRequired}) '#tpl_dimension_field'}}
+                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'required': formFieldRequired2, 'fieldBelongsTo': name}) '#tpl_dimension_field'}}
               {{/if}}
             {{/each}}
             </tbody>
@@ -248,7 +254,7 @@
   <script>
     jQuery(function($) {
       var column_data=['date', 'amount', 'dept_id', 'dept_stuff', 'dept_transaction_id', 'recipient', 'something', 'nothing1'];
-      var iati_data=['iati-identifier', 'title', 'description', 'sectors', 'participating-organisation'];
+      var iati_data=['iati-identifier', 'title', 'description', 'sector', 'participating-organisation', 'recipient-country'];
     
       $('#model_page_view').modelEditor({
         'columns': column_data,

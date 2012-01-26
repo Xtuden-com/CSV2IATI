@@ -2,64 +2,119 @@ DEFAULT_MODEL =
   organisation: {}
   mapping:
     'iati-identifier':
-      type: 'value'
+      type: 'compound'
       'iati-field': 'iati-identifier'
       label: 'IATI Identifier'
-    from:
+      fields: 
+        'text': {}
+    'title':
       type: 'compound'
-      label: 'Spender'
+      'iati-field': 'title'
+      label: 'Title'
       fields:
-        'bodge-job':
-          column: 'recipient'
-        'something-else':
-          column: 'dept_id'
-    to:
-      type: 'value'
-      label: 'Recipient'
+        'text': {}
+    'description':
+      type: 'compound'
+      'iati-field': 'description'
+      label: 'Description'
+      fields:
+        'text': {}
+    'recipient-country':
+      type: 'compound'
+      'iati-field': 'recipient-country'
+      label: 'Recipient Country'
+      fields:
+        'text': {}
+        'code': {}
+    'implementing-organisation':
+      type: 'compound'
+      'iati-field': 'participating-organisation'
+      label: 'Implementing Organisation'
+      fields:
+        'role':
+            'constant': 'implementing'
+            'datatype': 'constant'
+        'text': {}
+        'ref': {}
+        'type': {}
+    'funding-organisation':
+      type: 'compound'
+      'iati-field': 'participating-organisation'
+      label: 'Funding Organisation'
+      fields:
+        'role':
+            'constant': 'funding'
+            'datatype': 'constant'
+        'text': {}
+        'ref': {}
+        'type': {}
+    'extending-organisation':
+      type: 'compound'
+      'iati-field': 'participating-organisation'
+      label: 'Extending Organisation'
+      fields:
+        'role':
+            'constant': 'extending'
+            'datatype': 'constant'
+        'text': {}
+        'ref': {}
+        'type': {}
+    sectors:
+      type: 'compound'
+      label: 'Sectors'
+      'iati-field': 'sector'
+      fields: 
+        'text':
+            'label': 'Name (text) of the sector'
+        'code':
+            'label': 'Code for the sector'
+        'vocab':
+            'label': 'Sector code vocabulary'
 
 DEFAULT_FIELD_SETUP =
   'iati-identifier':
     type: 'value'
     label: 'IATI Identifier'
+    fields: 
+        'text':
+            required: true
   'title':
     type: 'value'
     label: 'Title'
   'description':
     type: 'value'
     label: 'Description'
-  'sectors':
+  'sector':
     type: 'compound'
     label: 'Sectors'
-    fields: ['code', 'vocab', 'text']
+    fields: 
+        'code':
+            required: true
+        'vocab':
+            required: false
+        'text':
+            required: false
 
 DIMENSION_META =
-  iati_identifier:
+  'iati-identifier':
     fixedDataType: true
     helpText: '''
-              The unique IATI Identifier for your project.
+              The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation's unique reference, followed by the organisation's internal project code. E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code>, where <code>P0001</code> is the project code.
               '''
   title:
     fixedDataType: true
     helpText: '''
-              The title of your project.
+              A short, human-readable title. May be repeated for different languages. 
               '''
     label: 'Title'
   description:
     fixedDataType: true
     helpText: '''
-              The description of your project.
+              A longer, human-readable description. May be repeated for different languages. 
               '''
-  amount:
-    fixedDataType: true
-    helpText: '''
-              The most important field in the dataset. Please choose which of
-              the columns in your dataset represents the value of the spending,
-              and how you'd like it to be displayed.
-              '''
-  sectors:
-    fixedDataType: true
+  sector:
     field_type: 'compound'
-    fields: '1,2,3,4'
+    fields: 'code,text,vocab'
     helpText: '''
               The sectors in your dataset
               '''
@@ -187,8 +242,23 @@ class DimensionWidget extends Widget
   formFieldPrefix: (fieldName) =>
     "mapping[#{@name}][fields][#{fieldName}]"
 
-  formFieldRequired: (fieldName) =>
-    FIELDS_META[fieldName]?['required'] or false
+  formFieldRequired: (fieldName,fieldParent) =>
+    if (fieldParent)
+        FIELDS_META[fieldName]?['required'] or false
+    else
+        false
+
+  formFieldRequired2: (fieldName, fieldParent) =>
+    if (fieldParent)
+      if (DEFAULT_FIELD_SETUP[fieldParent])
+        if ((DEFAULT_FIELD_SETUP[fieldParent]['fields']) and (DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]))
+          DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]?['required'] or false
+        else
+          false
+      else
+        false
+    else
+      FIELDS_META[fieldName]?['required'] or false
 
   onAddFieldClick: (e) ->
     name = prompt("Field name:").trim()
@@ -206,20 +276,11 @@ class DimensionWidget extends Widget
     @element.parents('form').first().change()
     thisfield = $(e.currentTarget).val()
     @element.find('tbody tr').remove()
-    if (DEFAULT_FIELD_SETUP[thisfield]['type'] == 'compound')
-        thisfieldsfields = (DEFAULT_FIELD_SETUP[thisfield]['fields'])
-        for k, v of thisfieldsfields
-            row = this._makeFieldRow(v)
-            row.appendTo(@element.find('tbody'))
-            @element.trigger('fillColumnsRequest', [row.find('select.column')])
-    else
-        w = new DimensionWidget(thisfield, @dimsEl)
-        @widgets.push(w)
-        return w
-        @element.empty()
-        @element.html($.tmpl('tpl_dimension', this))
-        @element.trigger('fillColumnsRequest', [@element.find('select.column')])
-        @element.trigger('fillIATIfieldsRequest', [@element.find('select.iatifield')])
+    thisfieldsfields = (DEFAULT_FIELD_SETUP[thisfield]['fields'])
+    for k, v of thisfieldsfields
+      row = this._makeFieldRowUpdate(k, thisfield, v['required'])
+      row.appendTo(@element.find('tbody'))
+      @element.trigger('fillColumnsRequest', [row.find('select.column')])
     return false
 
   onFieldRemoveClick: (e) ->
@@ -247,11 +308,17 @@ class DimensionWidget extends Widget
 
   _makeFieldRow: (name, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
-    required =
     $.tmpl tplName,
       'fieldName': name
       'prefix': this.formFieldPrefix
       'required': this.formFieldRequired
+      
+  _makeFieldRowUpdate: (name, thisfield, requiredvar, constant=false) ->
+    tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
+    $.tmpl tplName,
+      'fieldName': name
+      'prefix': this.formFieldPrefix
+      'required': this.formFieldRequired2
 
 class DimensionsWidget extends Delegator
   events:
@@ -372,7 +439,9 @@ class ModelEditor extends Delegator
       @widgets.push(new ctor(e)) for e in @element.find(selector).get()
 
     @element.trigger 'modelChange'
-
+    
+    @element.trigger('doFieldSelectors', 'iatifield')
+    @element.trigger('doFieldSelectors', 'column')
     this.setStep 0
 
   setStep: (s) ->
