@@ -276,7 +276,7 @@
   DIMENSION_META = {
     'iati-identifier': {
       fixedDataType: true,
-      helpText: 'The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation\'s unique reference, followed by the organisation\'s internal project code. E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code> where \'P0001\' is the project code.'
+      helpText: 'The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation\'s unique reference, followed by the organisation\'s internal project code. E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code>, where <code>P0001</code> is the project code.'
     },
     title: {
       fixedDataType: true,
@@ -714,7 +714,8 @@
       '.forms form change': 'onFormChange',
       '#showdebug click': 'onShowDebugClick',
       '.add_data_field click': 'onAddDataFieldClick',
-      'doFieldSelectors': 'onDoFieldSelectors'
+      'doFieldSelectors': 'onDoFieldSelectors',
+      '#columns .availablebtn click': 'onColumnsAvailableClick'
     };
 
     function ModelEditor(element, options) {
@@ -749,13 +750,14 @@
         }
       }
       this.element.trigger('modelChange');
+      this.element.trigger('doFieldSelectors', 'iatifield');
+      this.element.trigger('doFieldSelectors', 'column');
       this.setStep(0);
     }
 
     ModelEditor.prototype.setStep = function(s) {
       $(this.element).find('.steps > ul > li').removeClass('active').eq(s).addClass('active');
-      $(this.element).find('.forms div.formpart').hide().eq(s).show();
-      return $(this.element).find('.forms form').change();
+      return $(this.element).find('.forms div.formpart').hide().eq(s).show();
     };
 
     ModelEditor.prototype.onStepClick = function(e) {
@@ -808,6 +810,10 @@
       this.ignoreFormChange = true;
       this.element.trigger('modelChange');
       return this.ignoreFormChange = false;
+    };
+
+    ModelEditor.prototype.onColumnsAvailableClick = function(e) {
+      return $('#columns .unavailable').hide();
     };
 
     ModelEditor.prototype.onDoFieldSelectors = function(e) {

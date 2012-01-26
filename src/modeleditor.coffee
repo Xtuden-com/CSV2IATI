@@ -407,6 +407,7 @@ class ModelEditor extends Delegator
     '#showdebug click': 'onShowDebugClick'
     '.add_data_field click': 'onAddDataFieldClick'
     'doFieldSelectors' : 'onDoFieldSelectors'
+    '#columns .availablebtn click': 'onColumnsAvailableClick'
 
   constructor: (element, options) ->
     super
@@ -488,6 +489,8 @@ class ModelEditor extends Delegator
     @element.trigger 'modelChange'
     @ignoreFormChange = false
 
+  onColumnsAvailableClick: (e) ->
+    $('#columns .unavailable').hide()
     
   onDoFieldSelectors: (e) ->
     $('#' + e + 's ul li a').each ->

@@ -13,12 +13,12 @@
   </div>
   <div id="right_pane" style="float:right;width:28%;position:fixed;left:71%;">
       <div id="columns">
-        <p>Available columns in your data:</p>
+        <p>Columns in your data: <a class="allbtn" href="#">Show all</a> / <a class="availablebtn" href="#">Show available</a></p>
         <ul>
         </ul>
       </div>
       <div id="iatifields">
-        <p>Available IATI fields:</p>
+        <p>IATI fields: <a class="allbtn" href="#">Show all</a> / <a class="availablebtn" href="#">Show available</a></p>
         <ul></ul>
       </div>
       <textarea id="debug" style='display:none;' readonly>
@@ -253,7 +253,7 @@
   <script src='main.js'></script>
   <script>
     jQuery(function($) {
-      var column_data=['date', 'amount', 'dept_id', 'dept_stuff', 'dept_transaction_id', 'recipient', 'something', 'nothing1'];
+      var column_data=["Project ID","Title Project","Short Descr Project","Project Starts","Project Ends","Level of Impact","ISO CODE","Loc of Impact","Loc Info","% Aim 1: Right to Sustainable Livelihoods","% Aim 2: Right to Essential services","% Aim 3: Right to Life and Security","% Aim 4: Right to be heard","% Aim 5: Right to Equity"," Expenditure prior to 2010/11","Expenditure in 2010/11"," Revised Budget  in current and future years (£) ","Total Value all years (£)"];
       var iati_data=['iati-identifier', 'title', 'description', 'sector', 'participating-organisation', 'recipient-country'];
     
       $('#model_page_view').modelEditor({
