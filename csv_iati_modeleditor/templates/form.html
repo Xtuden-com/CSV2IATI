@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block body %}
+<div id="login_register_forms_introbox">
+<h2>CSV-IATI Converter</h2>
+<p>Upload a spreadsheet of aid data and convert it to IATI-XML.</p>
+<p>To get started, register or login below.</p>
+</div>
+<div id="login_register_forms_container">
+<fieldset name="login">
+<legend>Login</legend>
+<form method="post" action="/login">
+<dl>
+<dt><label for="login[username]">Username</label></dt>
+<dd><input type="text" name="username" id="login[username]" /></dd>
+<dt><label for="login[password]">Password</label></dt>
+<dd><input type="password" name="password" id="login[password]" /></dd>
+<dt> </dt>
+<dd><input type="submit" value="Login" /></dd>
+</dl>
+</form>
+</fieldset>
+<fieldset name="register">
+<legend>Register</legend>
+<form method="post" action="/register">
+<dl>
+<dt><label for="username">Username</label></dt>
+<dd><input type="text" name="username" id="username"/></dd>
+<dt><label for="password">Password</label></dt>
+<dd><input type="password" name="password" id="password" /></dd>
+<dt><label for="user_name">Your name</label></dt>
+<dd><input type="text" name="user_name" id="user_name" /></dd>
+<dt><label for="email">Your email address</label></dt>
+<dd><input type="text" name="email" id="email" /></dd>
+<dt> </dt>
+<dd><input type="submit" value="Register" /></dd>
+</dl>
+</form>
+</fieldset>
+</div>
+{% endblock %}

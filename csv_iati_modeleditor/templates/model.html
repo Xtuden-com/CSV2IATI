@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=Edge;chrome=1' >
-  <title>IATI CSV Conversion tool: Map your dimensions</title>
-  <link rel='stylesheet' href='css/forms.css'>
-  <link rel='stylesheet' href='css/style.css'>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block body %}
+<link href="{{ url_for('static', filename='modelstyle.css') }}" media="screen" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='forms.css') }}" media="screen" rel="stylesheet" type="text/css" />
+<p><a href="{{url_for('index')}}">&laquo; Dashboard</a> | <a href="{{url_for('logout')}}">Logout</a></p>
 <div id="model_page_view">
   <div class="banner" style="width:100%;color:#365e93;">
-  <h1>IATI CSV Conversion tool: Map your dimensions</h1>
+  <h1>{{model_name}}: Map your dimensions</h1>
+  <p><a href="#" id="save_model">Save model</a></p>
+{% raw %}
   </div>
   <div id="right_pane" style="float:right;width:28%;position:fixed;left:71%;">
       <div id="columns">
@@ -21,8 +19,9 @@
         <p><b>IATI fields</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
         <ul></ul>
       </div>
-      <textarea id="debug" style='display:none;' readonly>
-      </textarea>
+      <form action="" method="post" name="model_data" id="model_data">
+      <textarea id="debug" name="model" style='display:none;' readonly>{%endraw%}{{model_content}}{%raw%}</textarea>
+      </form>
   </div>
   <div class='content' style='width: 70%'>
     <div id='m1' class='modeleditor'>
@@ -320,20 +319,21 @@
   
   <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
   <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>
-  
-  <!--
-  <script src='jquery.min.js'></script>
-  <script src='jquery.tmpl.min.js'></script>
--->
-  <script src='main.js'></script>
+  {%endraw%}
+  <script src='{{ url_for('static', filename='main.js') }}'></script>
+  {%raw%}
   <script>
+    $('#save_model').click(function(){
+        $('#model_data').submit();
+    });
     jQuery(function($) {
       var column_data=["Project ID","Title Project","Short Descr Project","Project Starts","Project Ends","Level of Impact","ISO CODE","Loc of Impact","Loc Info","% Aim 1: Right to Sustainable Livelihoods","% Aim 2: Right to Essential services","% Aim 3: Right to Life and Security","% Aim 4: Right to be heard","% Aim 5: Right to Equity"," Expenditure prior to 2010/11","Expenditure in 2010/11"," Revised Budget  in current and future years (£) ","Total Value all years (£)"];
       var iati_data=['iati-identifier', 'title', 'description', 'sector', 'participating-organisation', 'recipient-country','transaction'];
-    
+      var model_data = $('#debug').text();
       $('#model_page_view').modelEditor({
         'columns': column_data,
-        'iatifields': iati_data
+        'iatifields': iati_data,
+        'model_data': model_data
       });
       $('#iatifields ul').html(function() {
         var iati_to_write = '';
@@ -361,5 +361,5 @@
   <div class="credits" style="width:100%;color:#333333;">
   <p>Thanks to Nick Stenning and OKFN for the original code this mapping utility is based on.</p>
   </div>
-</body>
-</html>
+{%endraw%}
+{% endblock %}

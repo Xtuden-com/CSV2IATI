@@ -595,11 +595,10 @@
     };
 
     DimensionWidget.prototype.onColumnChange = function(e) {
-      var construct_iatifield, curDimension, dimension_data, dimension_name, k, samplevalue, showdata, textdata, thedata, thiscolumn, v, _ref;
+      var construct_iatifield, curDimension, dimension_data, dimension_name, k, samplevalue, textdata, thedata, thiscolumn, v, _ref;
       curDimension = $(e.currentTarget).parents('fieldset').first();
       dimension_name = curDimension.data('dimension-name');
       dimension_data = curDimension.serializeObject()['mapping'];
-      showdata = JSON.stringify(dimension_data, null, 2).dasherize();
       construct_iatifield = '<' + dimension_data[dimension_name]['iati-field'];
       _ref = dimension_data[dimension_name]['fields'];
       for (k in _ref) {
@@ -865,9 +864,14 @@
     };
 
     function ModelEditor(element, options) {
-      var ctor, e, selector, _i, _len, _ref, _ref2;
+      var ctor, e, model_data, selector, _i, _len, _ref, _ref2;
       ModelEditor.__super__.constructor.apply(this, arguments);
-      this.data = $.extend(true, {}, DEFAULT_MODEL);
+      if (this.options.model_data) {
+        model_data = JSON.parse(this.options.model_data);
+      } else {
+        model_data = DEFAULT_MODEL;
+      }
+      this.data = $.extend(true, {}, model_data);
       this.widgets = [];
       this.form = $(element).find('.forms form').eq(0);
       this.id = this.element.attr('id');

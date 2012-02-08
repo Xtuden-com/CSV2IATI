@@ -1,3 +1,10 @@
-lib/*.js
+lib
 src/*~
 *~
+pyenv
+css
+img
+.gitignore*
+*.sqlite
+csv_iati_modeleditor/static/2*
+csv_iati_modeleditor/uploads

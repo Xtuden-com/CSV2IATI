@@ -1,3 +1,23 @@
+SAMPLE_DATA = 
+  "Project ID": "AGNA64"
+  "Title Project": "WE CAN end violence against women in Afghanistan"
+  "Short Descr Project": """The project is part of PIP P00115 which is the South Asia regional “We Can end violence against women campaign”. The objective is to challenge and change the patriarchal idea, beliefs, attitude, behaviour and practice that perpetuate violence against women. Project will take numbers of initiatives, which ultimately contribute to breaking the silence of domestic violence, which has huge prevalence all over the Afghan society. Under this project numbers of campaign initiatives will be taken to mobilise 2000 change makers and to make them aware about the issue and bring positive change in their personal attitudes, behaviours and practices."""
+  "Project Starts": "1-May-07"
+  "Project Ends": "31-Mar-11"
+  "Level of Impact": "Country"
+  "ISO CODE": "AF"
+  "Loc of Impact":"Afghanistan"
+  "Loc Info": " Kabul "
+  "% Aim 1: Right to Sustainable Livelihoods": "-0"
+  "% Aim 2: Right to Essential services": "-0"
+  "% Aim 3: Right to Life and Security": "-0"
+  "% Aim 4: Right to be heard": "10"
+  "% Aim 5: Right to Equity": "90"
+  " Expenditure prior to 2010/11": " 95,018 "
+  "Expenditure in 2010/11": " 40,415 "
+  " Revised Budget  in current and future years (£) ": "-0"
+  "Total Value all years (£)": " 135,433 "
+
 DEFAULT_MODEL =
   organisation: {}
   mapping:
@@ -123,7 +143,7 @@ DIMENSION_META =
   'iati-identifier':
     fixedDataType: true
     helpText: '''
-              The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation's unique reference, followed by the organisation's internal project code. E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code>, where <code>P0001</code> is the project code.
+              The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation's unique reference, followed by the organisation's internal project code.<br />E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code>, where <code>P0001</code> is the project code.
               '''
   title:
     fixedDataType: true
@@ -143,6 +163,9 @@ DIMENSION_META =
     helpText: '''
               The sectors in your dataset
               '''
+  'recipient-country':
+    fixedDataType:true
+    
   transaction:
     fixedDataType:true
     field_type:'transaction'
@@ -247,6 +270,7 @@ class DimensionWidget extends Widget
     '.field_rm click': 'onFieldRemoveClick'
     '.delete_dimension click': 'onDeleteDimensionClick'
     '.iatifield change' : 'onIATIFieldChange'
+    '.column change' : 'onColumnChange'
 
   constructor: (name, container, options) ->
     @name = name
@@ -312,6 +336,34 @@ class DimensionWidget extends Widget
     $(e.currentTarget).parents('fieldset').first().remove()
     @element.parents('form').first().change()
     return false
+    
+  onColumnChange: (e) ->
+    curDimension = $(e.currentTarget).parents('fieldset').first()
+    dimension_name = curDimension.data('dimension-name')
+    dimension_data = curDimension.serializeObject()['mapping']
+    construct_iatifield = '<' + dimension_data[dimension_name]['iati-field']
+    for k, v of dimension_data[dimension_name]['fields']
+        if (k == 'text')
+            if (v['datatype'] == 'constant')
+                textdata = dimension_data[dimension_name]['fields'][k]['constant']
+            else
+                textdata = this.dataSample(dimension_data[dimension_name]['fields'][k]['column'])            
+        else
+            if (v['datatype'] == 'constant')
+                samplevalue = dimension_data[dimension_name]['fields'][k]['constant']
+            else
+                samplevalue = this.dataSample(dimension_data[dimension_name]['fields'][k]['column'])
+            construct_iatifield = construct_iatifield + ' ' + k + '="' + samplevalue + '"'
+    if (textdata)
+        construct_iatifield=construct_iatifield + ">" + textdata + "</" + dimension_data[dimension_name]['iati-field'] + ">"
+    else
+        construct_iatifield=construct_iatifield + "/>"
+    #showdata = data['mapping']['iati-field']
+    thiscolumn = $(e.currentTarget).val()   
+    thedata = this.dataSample(thiscolumn)
+    curDimension.find('span').first().html('Sample data: <code></code>')
+    curDimension.find('span code').first().text(construct_iatifield)
+    return false
 
   onIATIFieldChange: (e) ->
     @element.parents('form').first().change()
@@ -360,6 +412,9 @@ class DimensionWidget extends Widget
     
   promptAddDimensionNamed: (props, thename) ->
     return false
+  
+  dataSample: (columnName) ->
+    (SAMPLE_DATA[columnName])
 
   _makeFieldRow: (name, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
@@ -478,7 +533,11 @@ class ModelEditor extends Delegator
 
   constructor: (element, options) ->
     super
-    @data = $.extend(true, {}, DEFAULT_MODEL)
+    if (@options.model_data)
+        model_data = JSON.parse(@options.model_data)
+    else
+        model_data = DEFAULT_MODEL
+    @data = $.extend(true, {}, model_data)
     @widgets = []
 
     @form = $(element).find('.forms form').eq(0)
@@ -557,15 +616,23 @@ class ModelEditor extends Delegator
 
   onColumnsAvailableClick: (e) ->
     $('#columns ul').addClass('hideunavailable')
+    $('#columns .allbtn').removeClass('fieldsbuttons-selected')
+    $('#columns .availablebtn').addClass('fieldsbuttons-selected')
 
   onColumnsAllClick: (e) ->
     $('#columns ul').removeClass('hideunavailable')
+    $('#columns .availablebtn').removeClass('fieldsbuttons-selected')
+    $('#columns .allbtn').addClass('fieldsbuttons-selected')
 
   onIATIFieldsAvailableClick: (e) ->
     $('#iatifields ul').addClass('hideunavailable')
+    $('#iatifields .allbtn').removeClass('fieldsbuttons-selected')
+    $('#iatifields .availablebtn').addClass('fieldsbuttons-selected')
 
   onIATIFieldsAllClick: (e) ->
     $('#iatifields ul').removeClass('hideunavailable')
+    $('#iatifields .availablebtn').removeClass('fieldsbuttons-selected')
+    $('#iatifields .allbtn').addClass('fieldsbuttons-selected')
     
   onDoFieldSelectors: (e) ->
     $('#' + e + 's ul li a').each ->
