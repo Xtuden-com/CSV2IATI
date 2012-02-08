@@ -35,6 +35,12 @@ table td:first-child {
   text-decoration:none;
   padding:1px 3px 1px 3px;
 }
+#columns ul.hideunavailable .unavailable {
+  display:none;
+}
+#iatifields ul.hideunavailable .unavailable {
+  display:none;
+}
 #columns .available, #iatifields .available {
   background-color:green;
   color:#ffffff;
@@ -75,6 +81,12 @@ table td:first-child {
   margin: 0;
   padding: 0;
 }
+.modeleditor .steps ul li ul {
+  display:none;
+}
+.modeleditor .steps ul li.active ul {
+  display:block;
+}
 
 .modeleditor .steps ul li, .modeltoggle a {
   cursor: pointer;
@@ -86,6 +98,8 @@ table td:first-child {
 
 .modeleditor .steps ul li.active {
   font-weight: bold;
+  background-color:#336699;
+  color:#ffffff;
 }
 
 .modeleditor .steps ul li a, .modeltoggle a {
@@ -96,7 +110,7 @@ table td:first-child {
 }
 
 .modeleditor .steps ul li span {
-  color: #aaa;
+/*  color: #aaa;*/
 }
 
 .modeleditor .steps ul li ul li {

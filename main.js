@@ -234,6 +234,37 @@
             'label': 'Sector code vocabulary'
           }
         }
+      },
+      transaction: {
+        type: 'transaction',
+        label: 'Transactions',
+        'iati-field': 'transaction',
+        'transaction_data_fields': {
+          transaction_type: {
+            "label": "Transaction type",
+            "iati_field": "transaction-type",
+            "type": "compound",
+            "fields": {
+              "text": {
+                "constant": "Expenditure",
+                "type": "constant"
+              },
+              "code": {
+                "constant": "E",
+                "type": "constant"
+              }
+            }
+          },
+          transaction_value: {
+            "label": "Transaction value",
+            "iati_field": "value",
+            "type": "compound",
+            "fields": {
+              "text": {},
+              "value-date": {}
+            }
+          }
+        }
       }
     }
   };
@@ -288,9 +319,19 @@
       helpText: 'A longer, human-readable description. May be repeated for different languages. '
     },
     sector: {
+      fixedDataType: true,
       field_type: 'compound',
       fields: 'code,text,vocab',
       helpText: 'The sectors in your dataset'
+    },
+    transaction: {
+      fixedDataType: true,
+      field_type: 'transaction',
+      helpText: 'Transactions in your dataset'
+    },
+    'implementing-organisation': {
+      fixedDatType: true,
+      helpText: 'The organisation implementing the project'
     }
   };
 
@@ -432,6 +473,8 @@
       '.add_field click': 'onAddFieldClick',
       '.field_switch_constant click': 'onFieldSwitchConstantClick',
       '.field_switch_column click': 'onFieldSwitchColumnClick',
+      '.field_switch_constant_transaction click': 'onFieldSwitchConstantClickTransaction',
+      '.field_switch_column_transaction click': 'onFieldSwitchColumnClickTransaction',
       '.field_rm click': 'onFieldRemoveClick',
       '.delete_dimension click': 'onDeleteDimensionClick',
       '.iatifield change': 'onIATIFieldChange'
@@ -440,6 +483,7 @@
     function DimensionWidget(name, container, options) {
       this.formFieldRequired2 = __bind(this.formFieldRequired2, this);
       this.formFieldRequired = __bind(this.formFieldRequired, this);
+      this.formFieldTransactionPrefix = __bind(this.formFieldTransactionPrefix, this);
       this.formFieldPrefix = __bind(this.formFieldPrefix, this);
       var el;
       this.name = name;
@@ -478,6 +522,10 @@
 
     DimensionWidget.prototype.formFieldPrefix = function(fieldName) {
       return "mapping[" + this.name + "][fields][" + fieldName + "]";
+    };
+
+    DimensionWidget.prototype.formFieldTransactionPrefix = function(fieldName, transaction_part) {
+      return "mapping[" + this.name + "][transaction_data_fields][" + transaction_part + "][fields][" + fieldName + "]";
     };
 
     DimensionWidget.prototype.formFieldRequired = function(fieldName, fieldParent) {
@@ -561,6 +609,22 @@
       return false;
     };
 
+    DimensionWidget.prototype.onFieldSwitchConstantClickTransaction = function(e) {
+      var curDimension, curRow, newrow;
+      curRow = $(e.currentTarget).parents('tr').first();
+      curDimension = $(e.currentTarget).parents('fieldset').first();
+      newrow = this._makeFieldRowTransaction(curRow.data('field-name'), curDimension.data('dimension-name'), true);
+      curRow.replaceWith(newrow);
+      this.element.trigger('fillColumnsRequest', [newrow.find('select.column')]);
+      this.element.parents('form').first().change();
+      return false;
+    };
+
+    DimensionWidget.prototype.onFieldSwitchColumnClickTransaction = function(e) {
+      alert('yo');
+      return false;
+    };
+
     DimensionWidget.prototype.promptAddDimensionNamed = function(props, thename) {
       return false;
     };
@@ -573,6 +637,19 @@
         'fieldName': name,
         'prefix': this.formFieldPrefix,
         'required': this.formFieldRequired
+      });
+    };
+
+    DimensionWidget.prototype._makeFieldRowTransaction = function(name, dimension_name, constant) {
+      var tplName;
+      if (constant == null) constant = false;
+      tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
+      return $.tmpl(tplName, {
+        'fieldName': name,
+        'transaction_part': dimension_name,
+        'prefix': this.formFieldTransactionPrefix,
+        'required': this.formFieldRequired,
+        'transaction': 'yes'
       });
     };
 
@@ -715,7 +792,10 @@
       '#showdebug click': 'onShowDebugClick',
       '.add_data_field click': 'onAddDataFieldClick',
       'doFieldSelectors': 'onDoFieldSelectors',
-      '#columns .availablebtn click': 'onColumnsAvailableClick'
+      '#columns .availablebtn click': 'onColumnsAvailableClick',
+      '#columns .allbtn click': 'onColumnsAllClick',
+      '#iatifields .availablebtn click': 'onIATIFieldsAvailableClick',
+      '#iatifields .allbtn click': 'onIATIFieldsAllClick'
     };
 
     function ModelEditor(element, options) {
@@ -813,7 +893,19 @@
     };
 
     ModelEditor.prototype.onColumnsAvailableClick = function(e) {
-      return $('#columns .unavailable').hide();
+      return $('#columns ul').addClass('hideunavailable');
+    };
+
+    ModelEditor.prototype.onColumnsAllClick = function(e) {
+      return $('#columns ul').removeClass('hideunavailable');
+    };
+
+    ModelEditor.prototype.onIATIFieldsAvailableClick = function(e) {
+      return $('#iatifields ul').addClass('hideunavailable');
+    };
+
+    ModelEditor.prototype.onIATIFieldsAllClick = function(e) {
+      return $('#iatifields ul').removeClass('hideunavailable');
     };
 
     ModelEditor.prototype.onDoFieldSelectors = function(e) {

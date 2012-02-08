@@ -70,6 +70,30 @@ DEFAULT_MODEL =
             'label': 'Code for the sector'
         'vocab':
             'label': 'Sector code vocabulary'
+    transaction:
+      type: 'transaction'
+      label: 'Transactions'
+      'iati-field':'transaction'
+      'transaction_data_fields':
+          transaction_type: {
+              "label":"Transaction type",
+              "iati_field":"transaction-type",
+              "type":"compound",
+	          "fields": {
+	              "text": {"constant":"Expenditure", "type":"constant"}
+	              "code": {"constant":"E", "type":"constant"}
+              }
+          },
+          transaction_value: {
+              "label":"Transaction value",
+              "iati_field":"value",
+              "type":"compound",
+	          "fields": {
+	              "text": {}
+	              "value-date": {}
+              }
+          }
+
 
 DEFAULT_FIELD_SETUP =
   'iati-identifier':
@@ -113,11 +137,23 @@ DIMENSION_META =
               A longer, human-readable description. May be repeated for different languages. 
               '''
   sector:
+    fixedDataType:true
     field_type: 'compound'
     fields: 'code,text,vocab'
     helpText: '''
               The sectors in your dataset
               '''
+  transaction:
+    fixedDataType:true
+    field_type:'transaction'
+    helpText: '''
+              Transactions in your dataset
+              '''
+  'implementing-organisation':
+    fixedDatType:true
+    helpText: '''
+              The organisation implementing the project
+	      '''
 
 FIELDS_META =
   label:
@@ -206,6 +242,8 @@ class DimensionWidget extends Widget
     '.add_field click': 'onAddFieldClick'
     '.field_switch_constant click': 'onFieldSwitchConstantClick'
     '.field_switch_column click': 'onFieldSwitchColumnClick'
+    '.field_switch_constant_transaction click': 'onFieldSwitchConstantClickTransaction'
+    '.field_switch_column_transaction click': 'onFieldSwitchColumnClickTransaction'
     '.field_rm click': 'onFieldRemoveClick'
     '.delete_dimension click': 'onDeleteDimensionClick'
     '.iatifield change' : 'onIATIFieldChange'
@@ -241,6 +279,9 @@ class DimensionWidget extends Widget
 
   formFieldPrefix: (fieldName) =>
     "mapping[#{@name}][fields][#{fieldName}]"
+    
+  formFieldTransactionPrefix: (fieldName, transaction_part) =>
+    "mapping[#{@name}][transaction_data_fields][#{transaction_part}][fields][#{fieldName}]"
 
   formFieldRequired: (fieldName,fieldParent) =>
     if (fieldParent)
@@ -302,6 +343,20 @@ class DimensionWidget extends Widget
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     @element.parents('form').first().change()
     return false
+
+  onFieldSwitchConstantClickTransaction: (e) ->
+    curRow = $(e.currentTarget).parents('tr').first()
+    # need current dimension part
+    curDimension = $(e.currentTarget).parents('fieldset').first()
+    newrow = this._makeFieldRowTransaction(curRow.data('field-name'),curDimension.data('dimension-name'),true)
+    curRow.replaceWith(newrow)
+    @element.trigger('fillColumnsRequest', [newrow.find('select.column')])
+    @element.parents('form').first().change()
+    return false
+
+  onFieldSwitchColumnClickTransaction: (e) ->
+    alert('yo')
+    return false
     
   promptAddDimensionNamed: (props, thename) ->
     return false
@@ -312,6 +367,15 @@ class DimensionWidget extends Widget
       'fieldName': name
       'prefix': this.formFieldPrefix
       'required': this.formFieldRequired
+
+  _makeFieldRowTransaction: (name, dimension_name, constant=false) ->
+    tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
+    $.tmpl tplName,
+      'fieldName': name
+      'transaction_part':dimension_name
+      'prefix': this.formFieldTransactionPrefix
+      'required': this.formFieldRequired
+      'transaction':'yes'
       
   _makeFieldRowUpdate: (name, thisfield, requiredvar, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
@@ -408,6 +472,9 @@ class ModelEditor extends Delegator
     '.add_data_field click': 'onAddDataFieldClick'
     'doFieldSelectors' : 'onDoFieldSelectors'
     '#columns .availablebtn click': 'onColumnsAvailableClick'
+    '#columns .allbtn click': 'onColumnsAllClick'
+    '#iatifields .availablebtn click': 'onIATIFieldsAvailableClick'
+    '#iatifields .allbtn click': 'onIATIFieldsAllClick'
 
   constructor: (element, options) ->
     super
@@ -449,7 +516,6 @@ class ModelEditor extends Delegator
     $(@element).find('.steps > ul > li')
       .removeClass('active')
       .eq(s).addClass('active')
-
     $(@element).find('.forms div.formpart').hide().eq(s).show()
 
   onStepClick: (e) ->
@@ -490,7 +556,16 @@ class ModelEditor extends Delegator
     @ignoreFormChange = false
 
   onColumnsAvailableClick: (e) ->
-    $('#columns .unavailable').hide()
+    $('#columns ul').addClass('hideunavailable')
+
+  onColumnsAllClick: (e) ->
+    $('#columns ul').removeClass('hideunavailable')
+
+  onIATIFieldsAvailableClick: (e) ->
+    $('#iatifields ul').addClass('hideunavailable')
+
+  onIATIFieldsAllClick: (e) ->
+    $('#iatifields ul').removeClass('hideunavailable')
     
   onDoFieldSelectors: (e) ->
     $('#' + e + 's ul li a').each ->
