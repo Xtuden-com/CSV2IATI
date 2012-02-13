@@ -10,5 +10,5 @@ css
 img
 .gitignore*
 *.sqlite
-csv_iati_modeleditor/static/2*
-csv_iati_modeleditor/uploads
+csviatimodeleditor/static/2*
+csviatimodeleditor/uploads
