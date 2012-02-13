@@ -163,4 +163,10 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == "__main__":
     db.create_all()
+    if not os.path.exists(UPLOAD_FOLDER):
+        try:
+            os.makedirs(UPLOAD_FOLDER)
+        except Exception, e:
+            print "Failed:", e
+            print "Couldn't create directory"        
     app.run(debug=True)

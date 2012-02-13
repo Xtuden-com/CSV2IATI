@@ -1,6 +1,10 @@
 lib
 src/*~
 *~
+*.py*
+*.gitignore~
+*.css~
+*.html~
 pyenv
 css
 img
