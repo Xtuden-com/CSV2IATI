@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Users</h2>
+<p><a href="{{url_for('index')}}">&laquo; Dashboard</a> | <a href="{{url_for('logout')}}">Logout</a></p>
+<p>&nbsp;</p>
+<div class="clearer"> </div>
+
+<div id="login_register_forms_container">
+<fieldset>
+<legend>Select a user</legend>
+<ul>
+{% for user in users %}
+<li><a href="{{url_for('user',id=user.id)}}">{{user.username}}</a> <i>({{user.user_name}})</i></li>
+{% endfor %}
+</ul>
+</fieldset>
+</div>
+{{ pages }}
+{% endblock %}

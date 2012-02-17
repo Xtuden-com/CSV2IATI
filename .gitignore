@@ -12,3 +12,4 @@ img
 *.sqlite
 csviatimodeleditor/static/2*
 csviatimodeleditor/uploads
+csviatimodeleditor/static/uploads

@@ -1,12 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
 <h2>CSV-IATI Converter</h2>
-<p>Hello, {{user_name}}</p>
-<p>Logged in as <a href="{{url_for('user', id=user_id)}}">{{username}}</a></p>
-<p><a href="{{url_for('logout')}}">Logout</a></p>
+<p>Hello, {{user_name}}. | <a href="{{url_for('user', id=user_id)}}">Edit your profile</a> | {% if admin %}<a href="{{url_for('user')}}">Edit other users</a> | {%endif%} <a href="{{url_for('logout')}}">Logout</a></p>
 <p>&nbsp;</p>
 <div class="clearer"> </div>
-
 <div id="login_register_forms_container">
 <fieldset>
 <legend>Your existing models</legend>
@@ -41,6 +38,24 @@
 </dl>
 </form>
 </fieldset>
+{% if admin %}
+<div class="clearer">&nbsp;</div>
+<fieldset>
+<legend>All models</legend>
+<ul>
+{% for model in models %}
+<li><a href="{{url_for('user', id=model.user_id)}}">{{model.username}}</a></li>
+<ul>
+{%for this_user_models in model.user_models%}
+    <li><a href="{{url_for('model', id=this_user_models.id)}}">{{this_user_models.model_name}}</a></li>
+{% else %}
+    <li>This user has not created any models yet.</li>
+{% endfor %}
+</ul>
+{%endfor%}
+</ul>
+</fieldset>
+{% endif %}
 </div>
 {{ pages }}
 {% endblock %}

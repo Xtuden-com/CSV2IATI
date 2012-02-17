@@ -36,9 +36,10 @@ table td:first-child {
   list-style-type:none;
   margin:1px;
 }
-#columns ul li a, #iatifields ul li a {
+#columns ul li code, #iatifields ul li code {
   text-decoration:none;
   padding:1px 3px 1px 3px;
+  cursor:default;
 }
 #columns ul.hideunavailable .unavailable {
   display:none;
@@ -103,7 +104,12 @@ table td:first-child {
 
 .modeleditor .steps ul li.active {
   font-weight: bold;
-  background-color:#336699;
+  background-color:#365e93;
+  color:#ffffff;
+}
+
+.modeleditor .steps ul li a:hover, .modeltoggle a:hover {
+  background-color:#365e93;
   color:#ffffff;
 }
 
@@ -182,4 +188,36 @@ a.fieldsbuttons:hover, a.fieldsbuttons-selected {
   height:200px;
   width:200px;
   background-color:#ff0000;
+}
+h1 #model_title a {
+  border:1px solid #ffffff;
+}
+h1 #model_title a:hover {
+  background-color:inherit;
+  color:inherit;
+  border:1px solid #dddddd;
+}
+h1 #model_title input {
+  color:#365e93;
+  font-size:28px;
+  font-weight:bold;
+  width:200px;
+  padding:4px;
+  margin:0px;
+}
+.save_model span {
+  width:15em;
+  display:block;
+}
+.save_model a {
+  background-color:#365e93;
+  font-weight:bold;
+  color:#ffffff;
+  width:100%;
+  display:inline-block;
+  padding:4px 4px 4px 8px;
+  cursor:pointer;
+}
+.save_model a:hover {
+  background-color:#000000;
 }

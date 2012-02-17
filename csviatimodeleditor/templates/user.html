@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Edit user details for {{user.username}}</h2>
+<p><a href="{{url_for('index')}}">&laquo; Dashboard</a> | <a href="{{url_for('logout')}}">Logout</a></p>
+<p>&nbsp;</p>
+<div class="clearer"> </div>
+
+<div id="login_register_forms_container">
+<fieldset>
+<legend>Update details</legend>
+<form action="" method="post">
+<input type="hidden" id="id" name="id" value="{{user.id}}" />
+<dl>
+<dt>
+<label for="username">Username:</label>
+</dt>
+<dd>
+<input type="text" id="username" name="username" value="{{user.username}}" />
+</dd>
+<dt>
+<label for="user_name">Your name:</label>
+</dt>
+<dd>
+<input type="text" id="user_name" name="user_name" value="{{user.user_name}}" />
+</dd>
+<dt>
+<label for="user_name">Your email address:</label>
+</dt>
+<dd>
+<input type="text" id="email_address" name="email_address" value="{{user.email_address}}" />
+</dd>
+{%if admin %}
+<dt>
+<label for="admin">Administrative privileges:</label>
+</dt>
+<dd>
+<input type="checkbox" id="admin" name="admin" value="1" {% if user.admin %}checked{%endif%} />
+</dd>
+{% endif%}
+<dt> </dt>
+<dd>
+<input type="submit" value="Update" name="submit"/>
+</dd>
+</dl>
+</form>
+</fieldset>
+</div>
+{{ pages }}
+{% endblock %}

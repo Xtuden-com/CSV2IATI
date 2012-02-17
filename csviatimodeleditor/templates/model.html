@@ -5,8 +5,8 @@
 <p><a href="{{url_for('index')}}">&laquo; Dashboard</a> | <a href="{{url_for('logout')}}">Logout</a></p>
 <div id="model_page_view">
   <div class="banner" style="width:100%;color:#365e93;">
-  <h1>{{model_name}}: Map your dimensions</h1>
-  <p><a href="#" id="save_model">Save model</a></p>
+  <h1><span id="model_title"><a>{{model_name}}</a></span>: Map your dimensions</h1>
+  <p><span id="save_model" class="save_model"><a>Save model</a></span></p>
 {% raw %}
   </div>
   <div id="right_pane" style="float:right;width:28%;position:fixed;left:71%;">
@@ -20,7 +20,7 @@
         <ul></ul>
       </div>
       <form action="" method="post" name="model_data" id="model_data">
-      <textarea id="debug" name="model" style='display:none;' readonly>{%endraw%}{{model_content}}{%raw%}</textarea>
+      <textarea id="debug" name="model" style='display:none;'>{%endraw%}{{model_content}}{%raw%}</textarea>
       </form>
   </div>
   <div class='content' style='width: 70%'>
@@ -52,8 +52,8 @@
             <dl>
               <fieldset id="reporting-org">
                   <legend>Your Organisation</legend>
-                  <dt><label for='organisation[reporting-org][name]'>Name:</label></dt>
-                  <dd><input type='text' name='organisation[reporting-org][name]'></dd>
+                  <dt><label for='organisation[reporting-org][text]'>Name:</label></dt>
+                  <dd><input type='text' name='organisation[reporting-org][text]'></dd>
                   <dd class='hints'>
                     The name of the organisation reporting this data. Examples: <code>Department for International Development</code>,
                     <code>Oxfam GB</code>, <code>United Nations Development Programme</code>.
@@ -85,14 +85,33 @@
                     The 2-letter language code. Examples: <code>en</code>, <code>fr</code>,
                     etc. See <a href='http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes'>ISO 639-1</a>.
                   </dd>
-                  
+              </fieldset>
+              <fieldset id="advanced-org">
+              <legend>Advanced controls</legend>
                   <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
-                  <dd><input type='checkbox' name='organisation[data-structure][type]' value="multiple">Multiple rows per activity<br />
-                  <dd><input type='checkbox' name='organisation[data-structure][order]' value="reverse">Work through CSV file in reverse<br />
+                  <dd>
+                  <select name="organisation[data-structure][multiple]">
+                  <option value="">Each activity has one row only</option>
+                  <option value="sector">Each activity has multiple rows per sector</sector>
+                  <option value="transaction">Each activity has multiple rows per transaction</sector>
+                  <option value="sector_transaction">Each activity has multiple rows per sector and per transaction</sector>
+                  </select>
                   <dd class='hints'>
                     <p>How is your data structured? You can have one row per activity, or multiple rows per activity. 
                     If you select 'multiple rows', the converter will use the field you specify as the iati-identifier 
                     (presumably your project ID) to group your projects together.</p>
+                    <p>The activity information will be taken from one row in your CSV file (the first row, unless you 
+                    select to work in reverse below). A new Sector and/or Transaction (depending on your choice above)
+                    will be created for each row in your data.</p>
+                    <p>If you choose multiple sectors and multiple transactions, the sectors will be taken from your first 
+                    transaction.</p>
+                  </dd>
+                  <dt><label>Processing order:</label></dt>
+                  <dd> <select name="organisation[data-structure][order]">
+                  <option value="">Forward</option>
+                  <option value="reverse">Reverse</option>
+                  </select></dd>
+                  <dd class='hints'>
                     <p>The converter will normally work through your file from the first row to the last row, and will 
                     take everything except <code>transaction</code> information for a project from the first instance 
                     of that project. If you would prefer it to use the last instance of the project instead, select the 
@@ -132,8 +151,9 @@
             <div class='dimensions'>
             </div>
             <p>
-              <a class='add_value_dimension' href='#'>Add single-column dimension</a>
-              <a class='add_compound_dimension' href='#'>Add multi-column dimension</a>
+            <!-- show all IATI fields -->
+              <select class="iati_field_add">
+              </select>
             </p>
           </div>
 
@@ -168,32 +188,20 @@
         <tr data-field-name='${fieldName}'>
           <td>${fieldName}</td>
           {{if transaction}}
-              <td><select class='column' name='${prefix(fieldName,transaction_part)}[column]'></select></td>
+              <td><select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column]'></select></td>
               <td>
                 <a href='#' class='field_switch_constant_transaction'>&rarr; constant</a>
-                {{if fieldBelongsTo}}
-                    {{if required(fieldName, fieldBelongsTo) != true}}
-                    <a href='#' class='field_rm'>&times;</a>
-                    {{/if}}
-                {{else}}
-                    {{if required(fieldName) != true}}
-                    <a href='#' class='field_rm'>&times;</a>
-                    {{/if}}
-                {{/if}}    
+                {{if required(fieldName, iatiField, transaction_field) != true}}
+                <a href='#' class='field_rm'>&times;</a>
+                {{/if}}
               </td>
           {{else}}
               <td><select class='column' name='${prefix(fieldName)}[column]'></select></td>
               <td>
                 <a href='#' class='field_switch_constant'>&rarr; constant</a>
-                {{if fieldBelongsTo}}
-                    {{if required(fieldName, fieldBelongsTo) != true}}
-                    <a href='#' class='field_rm'>&times;</a>
-                    {{/if}}
-                {{else}}
-                    {{if required(fieldName) != true}}
-                    <a href='#' class='field_rm'>&times;</a>
-                    {{/if}}
-                {{/if}}    
+                {{if required(fieldName, iatiField) != true}}
+                <a href='#' class='field_rm'>&times;</a>
+                {{/if}}
               </td>
           {{/if}}
         </tr>
@@ -205,12 +213,12 @@
           {{if transaction}}
               <td>
                 ${fieldName}
-                <input type='hidden' name='${prefix(fieldName,transaction_part)}[datatype]' value='constant'>
+                <input type='hidden' name='${prefix(fieldName,transaction_field,transaction_part)}[datatype]' value='constant'>
               </td>
-              <td><input type='text' name='${prefix(fieldName,transaction_part)}[constant]'></td>
+              <td><input type='text' name='${prefix(fieldName,transaction_field,transaction_part)}[constant]'></td>
               <td>
                 <a href='#' class='field_switch_column_transaction'>&rarr; column</a>
-                {{if required(fieldName) != true}}
+                {{if required(fieldName, iatiField, transaction_field) != true}}
                 <a href='#' class='field_rm'>&times;</a>
                 {{/if}}
               </td>
@@ -222,7 +230,7 @@
               <td><input type='text' name='${prefix(fieldName)}[constant]'></td>
               <td>
                 <a href='#' class='field_switch_column'>&rarr; column</a>
-                {{if required(fieldName) != true}}
+                {{if required(fieldName, iatiField) != true}}
                 <a href='#' class='field_rm'>&times;</a>
                 {{/if}}
               </td>
@@ -232,7 +240,7 @@
 
       <!-- Dimension template -->
       <script id='tpl_dimension' type='text/x-jquery-tmpl'>
-        <input type='hidden' name='mapping[${name}][type]' value='${data.type}'>
+        <input type='hidden' name='mapping[${name}][datatype]' value='${data.datatype}'>
         {{if meta.fixedDataType}}
         <input type='hidden' name='mapping[${name}][datatype]' value='${data.datatype}'>
         {{/if}}
@@ -244,10 +252,10 @@
             {{if !meta.fixedDataType}}
               <dd><select class='iatifield' name='mapping[${name}][iati-field]'></select></dd>
             {{else}}
-              <dd>${name.dasherize()}</dd>
-              <input type='hidden' name='mapping[${name}][iati-field]' value='${name.dasherize()}' class="iatifield">
+              <dd>${iati_field}</dd>
+              <input type='hidden' name='mapping[${name}][iati-field]' value='${iati_field}' class="iatifield">
             {{/if}}
-          {{if data.type === 'value'}}
+          {{if data.datatype === 'value'}}
             <dt><label>Column:</label></dt>
             <dd>
               <select class='column' name='mapping[${name}][column]'></select>
@@ -264,7 +272,7 @@
           {{/if}}
           <input type='hidden' name='mapping[${name}][label]' value='${data.label}'>
         </dl>
-        {{if data.type == 'compound' }}
+        {{if data.datatype == 'compound' }}
           <table class='fields'>
             <thead>
               <tr>
@@ -276,9 +284,9 @@
             <tbody>
             {{each(n, f) data.fields}}
               {{if f.datatype === 'constant'}}
-                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'required': formFieldRequired2, 'fieldBelongsTo': name}) '#tpl_dimension_field_const'}}
+                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
               {{else}}
-                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'required': formFieldRequired2, 'fieldBelongsTo': name}) '#tpl_dimension_field'}}
+                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field'}}
               {{/if}}
             {{/each}}
             </tbody>
@@ -286,11 +294,11 @@
           <p><a class='add_field' href='#'>Add a field</a></p>
           <p><a class='delete_dimension' href='#'>Delete this dimension</a></p>
         {{/if}}
-        {{if data.type == 'transaction' }}
-        {{each(n, f) data.transaction_data_fields}}
-            
-            <fieldset id="m1_dim_transaction_${n}" class="dimension" transaction-field-type="${n}">
+        {{if data.datatype == 'transaction' }}
+        {{each(n, f) data.tdatafields}}
+            <fieldset id="m1_dim_transaction_${n}" class="tdatafield" data-transaction-field-type="${n}">
             <legend>${f['label']}</legend>
+            <input type="hidden" name="mapping[${name}][tdatafields][${n}][label]" value="${f['label']}" />
             <table class='fields'>
                 <thead>
                   <tr>
@@ -302,10 +310,9 @@
                 <tbody>
                 {{each(x, y) f.fields}}
                   {{if y.datatype === 'constant'}}
-                    {{tmpl({'fieldName': x, 'prefix': formFieldTransactionPrefix, 'required': formFieldRequired2, 'fieldBelongsTo': name, 'transaction':'yes'}) '#tpl_dimension_field_const'}}
+                    {{tmpl({'fieldName': x, 'transaction_field': n, 'transaction_part': name, 'prefix': formFieldTransactionPrefix, 'required': formFieldRequired2, 'dimensionName': name, 'transaction':'yes', 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
                   {{else}}
-                    <input type="hidden" name="mapping[transaction][transaction_data_fields][${n}][label]" value="${f['label']}" />
-                    {{tmpl({'fieldName': x, 'transaction_part': n, 'prefix': formFieldTransactionPrefix, 'required': formFieldRequired2, 'fieldBelongsTo': name, 'transaction':'yes'}) '#tpl_dimension_field'}}
+                    {{tmpl({'fieldName': x, 'transaction_field': n, 'transaction_part': name, 'prefix': formFieldTransactionPrefix, 'required': formFieldRequired2, 'dimensionName': name, 'transaction':'yes', 'iatiField': iati_field}) '#tpl_dimension_field'}}
                   {{/if}}
                 {{/each}}
                 </tbody>
@@ -328,7 +335,7 @@
     });
     jQuery(function($) {
       var column_data=["Project ID","Title Project","Short Descr Project","Project Starts","Project Ends","Level of Impact","ISO CODE","Loc of Impact","Loc Info","% Aim 1: Right to Sustainable Livelihoods","% Aim 2: Right to Essential services","% Aim 3: Right to Life and Security","% Aim 4: Right to be heard","% Aim 5: Right to Equity"," Expenditure prior to 2010/11","Expenditure in 2010/11"," Revised Budget  in current and future years (£) ","Total Value all years (£)"];
-      var iati_data=['iati-identifier', 'title', 'description', 'sector', 'participating-organisation', 'recipient-country','transaction'];
+      var iati_data=['iati-identifier', 'title', 'description', 'sector', 'participating-org','activity-date','recipient-country','transaction'];
       var model_data = $('#debug').text();
       $('#model_page_view').modelEditor({
         'columns': column_data,
@@ -338,18 +345,34 @@
       $('#iatifields ul').html(function() {
         var iati_to_write = '';
         $.each(iati_data, function(index, value) {
-            iati_to_write = iati_to_write + '<li><code><a class="available" href="#">' + value + '</a></code></li>';
+            iati_to_write = iati_to_write + '<li><code class="available">' + value + '</code></li>';
+        });
+        return iati_to_write;
+      });
+      $('.iati_field_add').html(function() {
+        var iati_to_write = '<option>Add a new field</option>';
+        $.each(iati_data, function(index, value) {
+            iati_to_write = iati_to_write + '<option value="' + value + '">' + value + '</option>';
         });
         return iati_to_write;
       });
       $('#columns ul').html(function() {
         var columns_to_write = '';
         $.each(column_data, function(index, value) {
-            columns_to_write = columns_to_write + '<li><code><a class="available" href="#">' + value + '</a></code></li>';
+            columns_to_write = columns_to_write + '<li><code class="available">' + value + '</code></li>';
         });
         return columns_to_write;
       });
       var me = $('#m1').data('modelEditor');
+      /*
+      $('#model_title a').click(function() {
+        $('#model_title').html(function() {
+            var model_title;
+            model_title = $('#model_title').text();
+            return '<input type="text" name="model_title" value="' + model_title + '" />';
+        });
+      });
+      */
       /*$('#debug').change(function () {
         me.data = JSON.parse($(this).val())
         $('#m1').trigger('modelChange')

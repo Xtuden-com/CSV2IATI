@@ -22,32 +22,32 @@ DEFAULT_MODEL =
   organisation: {}
   mapping:
     'iati-identifier':
-      type: 'compound'
+      datatype: 'compound'
       'iati-field': 'iati-identifier'
       label: 'IATI Identifier'
       fields: 
         'text': {}
     'title':
-      type: 'compound'
+      datatype: 'compound'
       'iati-field': 'title'
       label: 'Title'
       fields:
         'text': {}
     'description':
-      type: 'compound'
+      datatype: 'compound'
       'iati-field': 'description'
       label: 'Description'
       fields:
         'text': {}
     'recipient-country':
-      type: 'compound'
+      datatype: 'compound'
       'iati-field': 'recipient-country'
       label: 'Recipient Country'
       fields:
         'text': {}
         'code': {}
     'implementing-organisation':
-      type: 'compound'
+      datatype: 'compound'
       'iati-field': 'participating-organisation'
       label: 'Implementing Organisation'
       fields:
@@ -56,9 +56,9 @@ DEFAULT_MODEL =
             'datatype': 'constant'
         'text': {}
         'ref': {}
-        'type': {}
+        'datatype': {}
     'funding-organisation':
-      type: 'compound'
+      datatype: 'compound'
       'iati-field': 'participating-organisation'
       label: 'Funding Organisation'
       fields:
@@ -67,9 +67,9 @@ DEFAULT_MODEL =
             'datatype': 'constant'
         'text': {}
         'ref': {}
-        'type': {}
+        'datatype': {}
     'extending-organisation':
-      type: 'compound'
+      datatype: 'compound'
       'iati-field': 'participating-organisation'
       label: 'Extending Organisation'
       fields:
@@ -78,9 +78,9 @@ DEFAULT_MODEL =
             'datatype': 'constant'
         'text': {}
         'ref': {}
-        'type': {}
+        'datatype': {}
     sectors:
-      type: 'compound'
+      datatype: 'compound'
       label: 'Sectors'
       'iati-field': 'sector'
       fields: 
@@ -91,23 +91,23 @@ DEFAULT_MODEL =
         'vocab':
             'label': 'Sector code vocabulary'
     transaction:
-      type: 'transaction'
+      datatype: 'transaction'
       label: 'Transactions'
       'iati-field':'transaction'
-      'transaction_data_fields':
+      'tdatafields':
           transaction_type: {
               "label":"Transaction type",
               "iati_field":"transaction-type",
-              "type":"compound",
+              "datatype":"compound",
 	          "fields": {
-	              "text": {"constant":"Expenditure", "type":"constant"}
-	              "code": {"constant":"E", "type":"constant"}
+	              "text": {"constant":"Expenditure", "datatype":"constant"}
+	              "code": {"constant":"E", "datatype":"constant"}
               }
           },
           transaction_value: {
               "label":"Transaction value",
               "iati_field":"value",
-              "type":"compound",
+              "datatype":"compound",
 	          "fields": {
 	              "text": {}
 	              "value-date": {}
@@ -117,19 +117,25 @@ DEFAULT_MODEL =
 
 DEFAULT_FIELD_SETUP =
   'iati-identifier':
-    type: 'value'
+    datatype: 'value'
     label: 'IATI Identifier'
     fields: 
         'text':
             required: true
   'title':
-    type: 'value'
+    datatype: 'value'
     label: 'Title'
+    fields: 
+        'text':
+            required: true
   'description':
-    type: 'value'
+    datatype: 'value'
     label: 'Description'
+    fields: 
+        'text':
+            required: true
   'sector':
-    type: 'compound'
+    datatype: 'compound'
     label: 'Sectors'
     fields: 
         'code':
@@ -138,6 +144,23 @@ DEFAULT_FIELD_SETUP =
             required: false
         'text':
             required: false
+  'transaction':
+    datatype: 'transaction'
+    label: 'Transaction'
+    'tdatafields':
+      'transaction-type': {
+          "fields": {
+              "text": {required: true}
+              "code": {required: true}
+          }
+      },
+      'transaction-value': {
+          "fields": {
+              "text": {required: true}
+              "value-date": {required: true}
+          }
+      }
+
 
 DIMENSION_META =
   'iati-identifier':
@@ -236,7 +259,7 @@ class UniqueKeyWidget extends Widget
 
     availableKeys = []
     for k, v of data['mapping']
-      if v['type'] isnt 'value'
+      if v['datatype'] isnt 'value'
         for fk, fv of v['fields']
           availableKeys.push("#{k}.#{fk}")
       else
@@ -281,14 +304,16 @@ class DimensionWidget extends Widget
 
     @id = "#{@element.parents('.modeleditor').attr('id')}_dim_#{@name}"
     @element.attr('id', @id)
-
-    @meta = DIMENSION_META[@name] or {}
-
+ 
   deserialize: (data) ->
     @data = data['mapping']?[@name] or {}
-
+    
+    # Meta needs to be for the relevant iati-field 
+    @iati_field = data['mapping']?[@name]['iati-field'] or ''
+    @meta = DIMENSION_META[@iati_field] or {}
+    
     # Prepopulate field-less non-value dimensions with a label field
-    if @data.type isnt 'value' and 'fields' not of @data
+    if @data.datatype isnt 'value' and 'fields' not of @data
       @data.fields = {'label': {'datatype': 'string'}}
 
     @element.html($.tmpl('tpl_dimension', this))
@@ -304,8 +329,11 @@ class DimensionWidget extends Widget
   formFieldPrefix: (fieldName) =>
     "mapping[#{@name}][fields][#{fieldName}]"
     
-  formFieldTransactionPrefix: (fieldName, transaction_part) =>
-    "mapping[#{@name}][transaction_data_fields][#{transaction_part}][fields][#{fieldName}]"
+  formFieldTransactionPrefix: (fieldName, transaction_field='', transaction_part='') =>
+    # transaction_part is dimension (e.g. 'transactions')
+    # transaction_field is the transactions sub-part (e.g. 'transaction-type')
+    # fieldName is the attribute (e.g. 'text')
+    "mapping[#{@name}][tdatafields][#{transaction_field}][fields][#{fieldName}]"
 
   formFieldRequired: (fieldName,fieldParent) =>
     if (fieldParent)
@@ -313,17 +341,31 @@ class DimensionWidget extends Widget
     else
         false
 
-  formFieldRequired2: (fieldName, fieldParent) =>
-    if (fieldParent)
-      if (DEFAULT_FIELD_SETUP[fieldParent])
-        if ((DEFAULT_FIELD_SETUP[fieldParent]['fields']) and (DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]))
-          DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]?['required'] or false
+  formFieldRequired2: (fieldName, fieldParent, transactionField) =>
+    #NB that fieldParent is the IATI field here
+    #If it's a transaction field, look at the constituent bits of the transaction
+    if (transactionField)
+      if (fieldParent)
+        if (DEFAULT_FIELD_SETUP[fieldParent])
+          if ((DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]) and (DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]))
+            DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]?['required'] or false
+          else
+            false
         else
           false
       else
-        false
+        FIELDS_META[fieldName]?['required'] or false
     else
-      FIELDS_META[fieldName]?['required'] or false
+      if (fieldParent)
+        if (DEFAULT_FIELD_SETUP[fieldParent])
+          if ((DEFAULT_FIELD_SETUP[fieldParent]['fields']) and (DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]))
+            DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]?['required'] or false
+          else
+            false
+        else
+          false
+      else
+        FIELDS_META[fieldName]?['required'] or false
 
   onAddFieldClick: (e) ->
     name = prompt("Field name:").trim()
@@ -331,7 +373,7 @@ class DimensionWidget extends Widget
     row.appendTo(@element.find('tbody'))
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     return false
-
+    
   onDeleteDimensionClick: (e) ->
     $(e.currentTarget).parents('fieldset').first().remove()
     @element.parents('form').first().change()
@@ -341,6 +383,13 @@ class DimensionWidget extends Widget
     curDimension = $(e.currentTarget).parents('fieldset').first()
     dimension_name = curDimension.data('dimension-name')
     dimension_data = curDimension.serializeObject()['mapping']
+    thiscolumn = $(e.currentTarget).val()   
+    construct_iatifield = this.doIATIFieldSample(dimension_name, dimension_data,thiscolumn)
+    curDimension.find('span').first().html('Sample data: <code></code>')
+    curDimension.find('span code').first().text(construct_iatifield)
+    return false
+  
+  doIATIFieldSample: (dimension_name,dimension_data,thiscolumn) ->
     construct_iatifield = '<' + dimension_data[dimension_name]['iati-field']
     for k, v of dimension_data[dimension_name]['fields']
         if (k == 'text')
@@ -358,13 +407,9 @@ class DimensionWidget extends Widget
         construct_iatifield=construct_iatifield + ">" + textdata + "</" + dimension_data[dimension_name]['iati-field'] + ">"
     else
         construct_iatifield=construct_iatifield + "/>"
-    #showdata = data['mapping']['iati-field']
-    thiscolumn = $(e.currentTarget).val()   
-    thedata = this.dataSample(thiscolumn)
-    curDimension.find('span').first().html('Sample data: <code></code>')
-    curDimension.find('span code').first().text(construct_iatifield)
-    return false
-
+    return construct_iatifield
+  
+  # This needs to be removed - do not permit IATI Field changes (must delete and add a new dimension)
   onIATIFieldChange: (e) ->
     @element.parents('form').first().change()
     thisfield = $(e.currentTarget).val()
@@ -383,14 +428,18 @@ class DimensionWidget extends Widget
 
   onFieldSwitchConstantClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
-    row = this._makeFieldRow(curRow.data('field-name'), true)
+    curDimension = $(e.currentTarget).parents('fieldset').first()
+    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val()
+    row = this._makeFieldRow(curRow.data('field-name'),curDimension.data('dimension-name'), iatiField, true)
     curRow.replaceWith(row)
     @element.parents('form').first().change()
     return false
 
   onFieldSwitchColumnClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
-    row = this._makeFieldRow(curRow.data('field-name'), false)
+    curDimension = $(e.currentTarget).parents('fieldset').first()
+    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val()
+    row = this._makeFieldRow(curRow.data('field-name'),curDimension.data('dimension-name'), iatiField, false)
     curRow.replaceWith(row)
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     @element.parents('form').first().change()
@@ -398,16 +447,24 @@ class DimensionWidget extends Widget
 
   onFieldSwitchConstantClickTransaction: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
-    # need current dimension part
+    curDimensionPart = $(e.currentTarget).parents('fieldset')
     curDimension = $(e.currentTarget).parents('fieldset').first()
-    newrow = this._makeFieldRowTransaction(curRow.data('field-name'),curDimension.data('dimension-name'),true)
+    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val()
+    newrow = this._makeFieldRowTransaction(curRow.data('field-name'),curDimensionPart.data('transaction-field-type'),curDimension.data('dimension-name'),iatiField,true)
     curRow.replaceWith(newrow)
     @element.trigger('fillColumnsRequest', [newrow.find('select.column')])
     @element.parents('form').first().change()
     return false
 
   onFieldSwitchColumnClickTransaction: (e) ->
-    alert('yo')
+    curRow = $(e.currentTarget).parents('tr').first()
+    curDimensionPart = $(e.currentTarget).parents('fieldset')
+    curDimension = $(e.currentTarget).parents('fieldset').first()
+    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val()
+    newrow = this._makeFieldRowTransaction(curRow.data('field-name'),curDimensionPart.data('transaction-field-type'),curDimension.data('dimension-name'),iatiField,false)
+    curRow.replaceWith(newrow)
+    @element.trigger('fillColumnsRequest', [newrow.find('select.column')])
+    @element.parents('form').first().change()
     return false
     
   promptAddDimensionNamed: (props, thename) ->
@@ -416,21 +473,25 @@ class DimensionWidget extends Widget
   dataSample: (columnName) ->
     (SAMPLE_DATA[columnName])
 
-  _makeFieldRow: (name, constant=false) ->
+  _makeFieldRow: (name, dimensionName, iatiField, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
     $.tmpl tplName,
       'fieldName': name
+      'dimensionName': dimensionName
+      'iatiField': iatiField
       'prefix': this.formFieldPrefix
       'required': this.formFieldRequired
 
-  _makeFieldRowTransaction: (name, dimension_name, constant=false) ->
+  _makeFieldRowTransaction: (fieldname, transaction_field, dimension_name, iatiField, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
     $.tmpl tplName,
-      'fieldName': name
+      'fieldName': fieldname
+      'transaction_field':transaction_field
       'transaction_part':dimension_name
       'prefix': this.formFieldTransactionPrefix
       'required': this.formFieldRequired
       'transaction':'yes'
+      'iatiField':iatiField
       
   _makeFieldRowUpdate: (name, thisfield, requiredvar, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
@@ -441,6 +502,7 @@ class DimensionWidget extends Widget
 
 class DimensionsWidget extends Delegator
   events:
+    '.iati_field_add change': 'onAddIATIFieldClick'
     '.add_value_dimension click': 'onAddValueDimensionClick'
     '.add_compound_dimension click': 'onAddCompoundDimensionClick'
 
@@ -450,6 +512,8 @@ class DimensionsWidget extends Delegator
     @widgets = []
     @dimsEl = @element.find('.dimensions').get(0)
 
+    @element.trigger('doFieldSelectors', 'iatifield')
+    @element.trigger('doFieldSelectors', 'column')
   addDimension: (name) ->
     w = new DimensionWidget(name, @dimsEl)
     @widgets.push(w)
@@ -492,6 +556,10 @@ class DimensionsWidget extends Delegator
     return false unless name
     data = {'mapping': {}}
     data['mapping'][name] = props
+    iati_field = data['mapping'][name]['iati-field']
+    data['mapping'][name] = DEFAULT_FIELD_SETUP[iati_field]
+    data['mapping'][name]['label'] = 'User field: ' + name
+    data['mapping'][name]['iati-field'] = iati_field
     this.addDimension(name.trim()).deserialize(data)
 
   promptAddDimensionNamed: (thename, props) ->
@@ -503,11 +571,17 @@ class DimensionsWidget extends Delegator
     this.addDimension(name.trim()).deserialize(data)
 
   onAddValueDimensionClick: (e) ->
-    this.promptAddDimension({'type': 'value'})
+    this.promptAddDimension({'datatype': 'value'})
     return false
 
   onAddCompoundDimensionClick: (e) ->
-    this.promptAddDimension({'type': 'compound'})
+    this.promptAddDimension({'datatype': 'compound'})
+    return false
+
+  onAddIATIFieldClick: (e) ->
+    thefield = $(e.currentTarget).val()
+    this.promptAddDimension({'datatype': 'compound','iati-field':thefield})
+    $(e.currentTarget).val('')
     return false
 
 class ModelEditor extends Delegator
@@ -566,9 +640,6 @@ class ModelEditor extends Delegator
       @widgets.push(new ctor(e)) for e in @element.find(selector).get()
 
     @element.trigger 'modelChange'
-    
-    @element.trigger('doFieldSelectors', 'iatifield')
-    @element.trigger('doFieldSelectors', 'column')
     this.setStep 0
 
   setStep: (s) ->
@@ -585,7 +656,7 @@ class ModelEditor extends Delegator
   onAddDataFieldClick: (e) ->
     thevar = $(e.currentTarget).text() 
     for w in @widgets
-        w.promptAddDimensionNamed(thevar,{'type': 'value','column':thevar,'label':thevar})
+        w.promptAddDimensionNamed(thevar,{'datatype': 'value','column':thevar,'label':thevar})
     @data = @form.serializeObject()
     @element.trigger 'modelChange'
     $(e.currentTarget).removeClass('add_data_field available').addClass('unavailable')
@@ -635,13 +706,13 @@ class ModelEditor extends Delegator
     $('#iatifields .allbtn').addClass('fieldsbuttons-selected')
     
   onDoFieldSelectors: (e) ->
-    $('#' + e + 's ul li a').each ->
+    $('#' + e + 's ul li code').each ->
         if ($(this).hasClass('unavailable'))
             $(this).removeClass('unavailable')
             $(this).addClass('available')
     @form.find('.' + e).each -> 
         iatiname = ($(this).val())
-        $('#' + e + 's ul li a').each ->
+        $('#' + e + 's ul li code').each ->
             if ($(this).text() == iatiname)
                 $(this).removeClass('available')
                 $(this).addClass('unavailable')

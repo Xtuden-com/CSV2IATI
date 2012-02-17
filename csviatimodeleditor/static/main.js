@@ -166,7 +166,7 @@
     organisation: {},
     mapping: {
       'iati-identifier': {
-        type: 'compound',
+        datatype: 'compound',
         'iati-field': 'iati-identifier',
         label: 'IATI Identifier',
         fields: {
@@ -174,7 +174,7 @@
         }
       },
       'title': {
-        type: 'compound',
+        datatype: 'compound',
         'iati-field': 'title',
         label: 'Title',
         fields: {
@@ -182,7 +182,7 @@
         }
       },
       'description': {
-        type: 'compound',
+        datatype: 'compound',
         'iati-field': 'description',
         label: 'Description',
         fields: {
@@ -190,7 +190,7 @@
         }
       },
       'recipient-country': {
-        type: 'compound',
+        datatype: 'compound',
         'iati-field': 'recipient-country',
         label: 'Recipient Country',
         fields: {
@@ -199,7 +199,7 @@
         }
       },
       'implementing-organisation': {
-        type: 'compound',
+        datatype: 'compound',
         'iati-field': 'participating-organisation',
         label: 'Implementing Organisation',
         fields: {
@@ -209,11 +209,11 @@
           },
           'text': {},
           'ref': {},
-          'type': {}
+          'datatype': {}
         }
       },
       'funding-organisation': {
-        type: 'compound',
+        datatype: 'compound',
         'iati-field': 'participating-organisation',
         label: 'Funding Organisation',
         fields: {
@@ -223,11 +223,11 @@
           },
           'text': {},
           'ref': {},
-          'type': {}
+          'datatype': {}
         }
       },
       'extending-organisation': {
-        type: 'compound',
+        datatype: 'compound',
         'iati-field': 'participating-organisation',
         label: 'Extending Organisation',
         fields: {
@@ -237,11 +237,11 @@
           },
           'text': {},
           'ref': {},
-          'type': {}
+          'datatype': {}
         }
       },
       sectors: {
-        type: 'compound',
+        datatype: 'compound',
         label: 'Sectors',
         'iati-field': 'sector',
         fields: {
@@ -257,29 +257,29 @@
         }
       },
       transaction: {
-        type: 'transaction',
+        datatype: 'transaction',
         label: 'Transactions',
         'iati-field': 'transaction',
-        'transaction_data_fields': {
+        'tdatafields': {
           transaction_type: {
             "label": "Transaction type",
             "iati_field": "transaction-type",
-            "type": "compound",
+            "datatype": "compound",
             "fields": {
               "text": {
                 "constant": "Expenditure",
-                "type": "constant"
+                "datatype": "constant"
               },
               "code": {
                 "constant": "E",
-                "type": "constant"
+                "datatype": "constant"
               }
             }
           },
           transaction_value: {
             "label": "Transaction value",
             "iati_field": "value",
-            "type": "compound",
+            "datatype": "compound",
             "fields": {
               "text": {},
               "value-date": {}
@@ -292,7 +292,7 @@
 
   DEFAULT_FIELD_SETUP = {
     'iati-identifier': {
-      type: 'value',
+      datatype: 'value',
       label: 'IATI Identifier',
       fields: {
         'text': {
@@ -301,15 +301,25 @@
       }
     },
     'title': {
-      type: 'value',
-      label: 'Title'
+      datatype: 'value',
+      label: 'Title',
+      fields: {
+        'text': {
+          required: true
+        }
+      }
     },
     'description': {
-      type: 'value',
-      label: 'Description'
+      datatype: 'value',
+      label: 'Description',
+      fields: {
+        'text': {
+          required: true
+        }
+      }
     },
     'sector': {
-      type: 'compound',
+      datatype: 'compound',
       label: 'Sectors',
       fields: {
         'code': {
@@ -320,6 +330,32 @@
         },
         'text': {
           required: false
+        }
+      }
+    },
+    'transaction': {
+      datatype: 'transaction',
+      label: 'Transaction',
+      'tdatafields': {
+        'transaction-type': {
+          "fields": {
+            "text": {
+              required: true
+            },
+            "code": {
+              required: true
+            }
+          }
+        },
+        'transaction-value': {
+          "fields": {
+            "text": {
+              required: true
+            },
+            "value-date": {
+              required: true
+            }
+          }
         }
       }
     }
@@ -442,7 +478,7 @@
       _ref2 = data['mapping'];
       for (k in _ref2) {
         v = _ref2[k];
-        if (v['type'] !== 'value') {
+        if (v['datatype'] !== 'value') {
           _ref3 = v['fields'];
           for (fk in _ref3) {
             fv = _ref3[fk];
@@ -516,13 +552,14 @@
       DimensionWidget.__super__.constructor.call(this, el, options);
       this.id = "" + (this.element.parents('.modeleditor').attr('id')) + "_dim_" + this.name;
       this.element.attr('id', this.id);
-      this.meta = DIMENSION_META[this.name] || {};
     }
 
     DimensionWidget.prototype.deserialize = function(data) {
-      var formObj, k, v, _ref, _ref2, _results;
+      var formObj, k, v, _ref, _ref2, _ref3, _results;
       this.data = ((_ref = data['mapping']) != null ? _ref[this.name] : void 0) || {};
-      if (this.data.type !== 'value' && !('fields' in this.data)) {
+      this.iati_field = ((_ref2 = data['mapping']) != null ? _ref2[this.name]['iati-field'] : void 0) || '';
+      this.meta = DIMENSION_META[this.iati_field] || {};
+      if (this.data.datatype !== 'value' && !('fields' in this.data)) {
         this.data.fields = {
           'label': {
             'datatype': 'string'
@@ -536,10 +573,10 @@
         'mapping': {}
       };
       formObj['mapping'][this.name] = this.data;
-      _ref2 = util.flattenObject(formObj);
+      _ref3 = util.flattenObject(formObj);
       _results = [];
-      for (k in _ref2) {
-        v = _ref2[k];
+      for (k in _ref3) {
+        v = _ref3[k];
         _results.push(this.element.find("[name=\"" + k + "\"]").val(v));
       }
       return _results;
@@ -549,8 +586,10 @@
       return "mapping[" + this.name + "][fields][" + fieldName + "]";
     };
 
-    DimensionWidget.prototype.formFieldTransactionPrefix = function(fieldName, transaction_part) {
-      return "mapping[" + this.name + "][transaction_data_fields][" + transaction_part + "][fields][" + fieldName + "]";
+    DimensionWidget.prototype.formFieldTransactionPrefix = function(fieldName, transaction_field, transaction_part) {
+      if (transaction_field == null) transaction_field = '';
+      if (transaction_part == null) transaction_part = '';
+      return "mapping[" + this.name + "][tdatafields][" + transaction_field + "][fields][" + fieldName + "]";
     };
 
     DimensionWidget.prototype.formFieldRequired = function(fieldName, fieldParent) {
@@ -562,20 +601,36 @@
       }
     };
 
-    DimensionWidget.prototype.formFieldRequired2 = function(fieldName, fieldParent) {
-      var _ref, _ref2;
-      if (fieldParent) {
-        if (DEFAULT_FIELD_SETUP[fieldParent]) {
-          if (DEFAULT_FIELD_SETUP[fieldParent]['fields'] && DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) {
-            return ((_ref = DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) != null ? _ref['required'] : void 0) || false;
+    DimensionWidget.prototype.formFieldRequired2 = function(fieldName, fieldParent, transactionField) {
+      var _ref, _ref2, _ref3, _ref4;
+      if (transactionField) {
+        if (fieldParent) {
+          if (DEFAULT_FIELD_SETUP[fieldParent]) {
+            if (DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField] && DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]) {
+              return ((_ref = DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]) != null ? _ref['required'] : void 0) || false;
+            } else {
+              return false;
+            }
           } else {
             return false;
           }
         } else {
-          return false;
+          return ((_ref2 = FIELDS_META[fieldName]) != null ? _ref2['required'] : void 0) || false;
         }
       } else {
-        return ((_ref2 = FIELDS_META[fieldName]) != null ? _ref2['required'] : void 0) || false;
+        if (fieldParent) {
+          if (DEFAULT_FIELD_SETUP[fieldParent]) {
+            if (DEFAULT_FIELD_SETUP[fieldParent]['fields'] && DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) {
+              return ((_ref3 = DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) != null ? _ref3['required'] : void 0) || false;
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          return ((_ref4 = FIELDS_META[fieldName]) != null ? _ref4['required'] : void 0) || false;
+        }
       }
     };
 
@@ -595,10 +650,19 @@
     };
 
     DimensionWidget.prototype.onColumnChange = function(e) {
-      var construct_iatifield, curDimension, dimension_data, dimension_name, k, samplevalue, textdata, thedata, thiscolumn, v, _ref;
+      var construct_iatifield, curDimension, dimension_data, dimension_name, thiscolumn;
       curDimension = $(e.currentTarget).parents('fieldset').first();
       dimension_name = curDimension.data('dimension-name');
       dimension_data = curDimension.serializeObject()['mapping'];
+      thiscolumn = $(e.currentTarget).val();
+      construct_iatifield = this.doIATIFieldSample(dimension_name, dimension_data, thiscolumn);
+      curDimension.find('span').first().html('Sample data: <code></code>');
+      curDimension.find('span code').first().text(construct_iatifield);
+      return false;
+    };
+
+    DimensionWidget.prototype.doIATIFieldSample = function(dimension_name, dimension_data, thiscolumn) {
+      var construct_iatifield, k, samplevalue, textdata, v, _ref;
       construct_iatifield = '<' + dimension_data[dimension_name]['iati-field'];
       _ref = dimension_data[dimension_name]['fields'];
       for (k in _ref) {
@@ -623,11 +687,7 @@
       } else {
         construct_iatifield = construct_iatifield + "/>";
       }
-      thiscolumn = $(e.currentTarget).val();
-      thedata = this.dataSample(thiscolumn);
-      curDimension.find('span').first().html('Sample data: <code></code>');
-      curDimension.find('span code').first().text(construct_iatifield);
-      return false;
+      return construct_iatifield;
     };
 
     DimensionWidget.prototype.onIATIFieldChange = function(e) {
@@ -652,18 +712,22 @@
     };
 
     DimensionWidget.prototype.onFieldSwitchConstantClick = function(e) {
-      var curRow, row;
+      var curDimension, curRow, iatiField, row;
       curRow = $(e.currentTarget).parents('tr').first();
-      row = this._makeFieldRow(curRow.data('field-name'), true);
+      curDimension = $(e.currentTarget).parents('fieldset').first();
+      iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
+      row = this._makeFieldRow(curRow.data('field-name'), curDimension.data('dimension-name'), iatiField, true);
       curRow.replaceWith(row);
       this.element.parents('form').first().change();
       return false;
     };
 
     DimensionWidget.prototype.onFieldSwitchColumnClick = function(e) {
-      var curRow, row;
+      var curDimension, curRow, iatiField, row;
       curRow = $(e.currentTarget).parents('tr').first();
-      row = this._makeFieldRow(curRow.data('field-name'), false);
+      curDimension = $(e.currentTarget).parents('fieldset').first();
+      iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
+      row = this._makeFieldRow(curRow.data('field-name'), curDimension.data('dimension-name'), iatiField, false);
       curRow.replaceWith(row);
       this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
       this.element.parents('form').first().change();
@@ -671,10 +735,12 @@
     };
 
     DimensionWidget.prototype.onFieldSwitchConstantClickTransaction = function(e) {
-      var curDimension, curRow, newrow;
+      var curDimension, curDimensionPart, curRow, iatiField, newrow;
       curRow = $(e.currentTarget).parents('tr').first();
+      curDimensionPart = $(e.currentTarget).parents('fieldset');
       curDimension = $(e.currentTarget).parents('fieldset').first();
-      newrow = this._makeFieldRowTransaction(curRow.data('field-name'), curDimension.data('dimension-name'), true);
+      iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
+      newrow = this._makeFieldRowTransaction(curRow.data('field-name'), curDimensionPart.data('transaction-field-type'), curDimension.data('dimension-name'), iatiField, true);
       curRow.replaceWith(newrow);
       this.element.trigger('fillColumnsRequest', [newrow.find('select.column')]);
       this.element.parents('form').first().change();
@@ -682,7 +748,15 @@
     };
 
     DimensionWidget.prototype.onFieldSwitchColumnClickTransaction = function(e) {
-      alert('yo');
+      var curDimension, curDimensionPart, curRow, iatiField, newrow;
+      curRow = $(e.currentTarget).parents('tr').first();
+      curDimensionPart = $(e.currentTarget).parents('fieldset');
+      curDimension = $(e.currentTarget).parents('fieldset').first();
+      iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
+      newrow = this._makeFieldRowTransaction(curRow.data('field-name'), curDimensionPart.data('transaction-field-type'), curDimension.data('dimension-name'), iatiField, false);
+      curRow.replaceWith(newrow);
+      this.element.trigger('fillColumnsRequest', [newrow.find('select.column')]);
+      this.element.parents('form').first().change();
       return false;
     };
 
@@ -694,27 +768,31 @@
       return SAMPLE_DATA[columnName];
     };
 
-    DimensionWidget.prototype._makeFieldRow = function(name, constant) {
+    DimensionWidget.prototype._makeFieldRow = function(name, dimensionName, iatiField, constant) {
       var tplName;
       if (constant == null) constant = false;
       tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
       return $.tmpl(tplName, {
         'fieldName': name,
+        'dimensionName': dimensionName,
+        'iatiField': iatiField,
         'prefix': this.formFieldPrefix,
         'required': this.formFieldRequired
       });
     };
 
-    DimensionWidget.prototype._makeFieldRowTransaction = function(name, dimension_name, constant) {
+    DimensionWidget.prototype._makeFieldRowTransaction = function(fieldname, transaction_field, dimension_name, iatiField, constant) {
       var tplName;
       if (constant == null) constant = false;
       tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
       return $.tmpl(tplName, {
-        'fieldName': name,
+        'fieldName': fieldname,
+        'transaction_field': transaction_field,
         'transaction_part': dimension_name,
         'prefix': this.formFieldTransactionPrefix,
         'required': this.formFieldRequired,
-        'transaction': 'yes'
+        'transaction': 'yes',
+        'iatiField': iatiField
       });
     };
 
@@ -738,6 +816,7 @@
     __extends(DimensionsWidget, _super);
 
     DimensionsWidget.prototype.events = {
+      '.iati_field_add change': 'onAddIATIFieldClick',
       '.add_value_dimension click': 'onAddValueDimensionClick',
       '.add_compound_dimension click': 'onAddCompoundDimensionClick'
     };
@@ -746,6 +825,8 @@
       DimensionsWidget.__super__.constructor.apply(this, arguments);
       this.widgets = [];
       this.dimsEl = this.element.find('.dimensions').get(0);
+      this.element.trigger('doFieldSelectors', 'iatifield');
+      this.element.trigger('doFieldSelectors', 'column');
     }
 
     DimensionsWidget.prototype.addDimension = function(name) {
@@ -797,13 +878,17 @@
     };
 
     DimensionsWidget.prototype.promptAddDimension = function(props) {
-      var data, name;
+      var data, iati_field, name;
       name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):");
       if (!name) return false;
       data = {
         'mapping': {}
       };
       data['mapping'][name] = props;
+      iati_field = data['mapping'][name]['iati-field'];
+      data['mapping'][name] = DEFAULT_FIELD_SETUP[iati_field];
+      data['mapping'][name]['label'] = 'User field: ' + name;
+      data['mapping'][name]['iati-field'] = iati_field;
       return this.addDimension(name.trim()).deserialize(data);
     };
 
@@ -821,15 +906,26 @@
 
     DimensionsWidget.prototype.onAddValueDimensionClick = function(e) {
       this.promptAddDimension({
-        'type': 'value'
+        'datatype': 'value'
       });
       return false;
     };
 
     DimensionsWidget.prototype.onAddCompoundDimensionClick = function(e) {
       this.promptAddDimension({
-        'type': 'compound'
+        'datatype': 'compound'
       });
+      return false;
+    };
+
+    DimensionsWidget.prototype.onAddIATIFieldClick = function(e) {
+      var thefield;
+      thefield = $(e.currentTarget).val();
+      this.promptAddDimension({
+        'datatype': 'compound',
+        'iati-field': thefield
+      });
+      $(e.currentTarget).val('');
       return false;
     };
 
@@ -900,8 +996,6 @@
         }
       }
       this.element.trigger('modelChange');
-      this.element.trigger('doFieldSelectors', 'iatifield');
-      this.element.trigger('doFieldSelectors', 'column');
       this.setStep(0);
     }
 
@@ -924,7 +1018,7 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         w = _ref[_i];
         w.promptAddDimensionNamed(thevar, {
-          'type': 'value',
+          'datatype': 'value',
           'column': thevar,
           'label': thevar
         });
@@ -987,7 +1081,7 @@
     };
 
     ModelEditor.prototype.onDoFieldSelectors = function(e) {
-      $('#' + e + 's ul li a').each(function() {
+      $('#' + e + 's ul li code').each(function() {
         if ($(this).hasClass('unavailable')) {
           $(this).removeClass('unavailable');
           return $(this).addClass('available');
@@ -996,7 +1090,7 @@
       return this.form.find('.' + e).each(function() {
         var iatiname;
         iatiname = $(this).val();
-        return $('#' + e + 's ul li a').each(function() {
+        return $('#' + e + 's ul li code').each(function() {
           if ($(this).text() === iatiname) {
             $(this).removeClass('available');
             return $(this).addClass('unavailable');
