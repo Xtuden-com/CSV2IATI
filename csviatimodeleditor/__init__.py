@@ -52,7 +52,7 @@ class User(db.Model):
     def __repr__(self):
         return self.username, self.id, self.password
 
-@app.route("/csviatimodel/")
+@app.route("/")
 def index():
     if 'username' in session:
         user_id = session['user_id']
@@ -73,7 +73,7 @@ def index():
         return render_template('dashboard.html', username=escape(session['username']), user_id=escape(session['user_id']), user_name=escape(session['user_name']), user_models=models, admin=session['admin'], models=all_models, users=all_users)
     return render_template('form.html')
 
-@app.route('/csviatimodel/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = escape(request.form['username'])
@@ -100,7 +100,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-@app.route('/csviatimodel/create_model', methods=['GET','POST'])
+@app.route('/create_model', methods=['GET','POST'])
 def create_model():
     if 'username' in session:
         if (request.method == 'POST'):
@@ -124,8 +124,8 @@ def create_model():
     flash("Please log in.", 'bad')
     return redirect(url_for('index'))
 
-@app.route('/csviatimodel/model/')
-@app.route('/csviatimodel/model/<id>', methods=['GET', 'POST'])
+@app.route('/model/')
+@app.route('/model/<id>', methods=['GET', 'POST'])
 def model(id=''):
     if ('username' in session):
         if (id):
@@ -158,8 +158,8 @@ def model(id=''):
         flash("Please log in.", 'bad')
         return redirect(url_for('index'))
 
-@app.route('/csviatimodel/user/')
-@app.route('/csviatimodel/user/<id>', methods=['GET', 'POST'])
+@app.route('/user/')
+@app.route('/user/<id>', methods=['GET', 'POST'])
 def user(id=''):
     if ('username' in session):
         if (id):
@@ -198,7 +198,7 @@ def user(id=''):
         flash('Please log in.', 'bad')
         return redirect(url_for('index'))
 
-@app.route('/csviatimodel/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET','POST'])
 def register():
     username = escape(request.form['username'])
     password = escape(request.form['password'])
@@ -220,7 +220,7 @@ def register():
         return redirect(url_for('index'))
 
 
-@app.route('/csviatimodel/logout')
+@app.route('/logout')
 def logout():
     # remove the login from the session if its there
     session.pop('username', None)
