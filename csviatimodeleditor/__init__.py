@@ -12,6 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///csviati_models.sqlite'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 
+db.create_all()
 class IATIModel(db.Model):
     id = db.Column(Integer, primary_key=True)
     model_owner = db.Column(UnicodeText)
@@ -57,7 +58,7 @@ def index():
     if 'username' in session:
         user_id = session['user_id']
         models = IATIModel.query.filter_by(model_owner=user_id)
-        if session['admin']:
+        if 'admin' in session:
             all_users = User.query.all()
             all_models = []
             for user in all_users:
@@ -204,7 +205,9 @@ def register():
     password = escape(request.form['password'])
     user_name = escape(request.form['user_name'])
     email_address = escape(request.form['email'])
-    user_check = User.query.filter_by(username=username).first()
+    admin = '1'
+    #user_check = User.query.filter_by(username=username).first()
+    user_check = False
     if user_check:
         flash("Sorry, that username has already been taken. Please choose another one.", 'bad')
         return redirect(url_for('index'))
@@ -216,6 +219,7 @@ def register():
         session['username'] = u.username
         session['user_id'] = u.id
         session['user_name'] = u.user_name
+        session['admin'] = u.admin
         flash("Your account has been created.", 'good')
         return redirect(url_for('index'))
 
