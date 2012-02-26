@@ -8,7 +8,7 @@
 <div id="login_register_forms_container">
 <fieldset name="login">
 <legend>Login</legend>
-<form method="post" action="/login">
+<form method="post" action="{{url_for('login')}}">
 <dl>
 <dt><label for="login[username]">Username</label></dt>
 <dd><input type="text" name="username" id="login[username]" /></dd>
@@ -21,7 +21,7 @@
 </fieldset>
 <fieldset name="register">
 <legend>Register</legend>
-<form method="post" action="/register">
+<form method="post" action="{{url_for('register')}}">
 <dl>
 <dt><label for="username">Username</label></dt>
 <dd><input type="text" name="username" id="username"/></dd>

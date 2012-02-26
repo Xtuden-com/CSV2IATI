@@ -8,7 +8,7 @@
 <div id="login_register_forms_container">
 <fieldset>
 <legend>Update details</legend>
-<form action="" method="post">
+<form action="{{url_for('user',id=user.id)}}" method="post">
 <input type="hidden" id="id" name="id" value="{{user.id}}" />
 <dl>
 <dt>

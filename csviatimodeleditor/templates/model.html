@@ -19,7 +19,7 @@
         <p><b>IATI fields</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
         <ul></ul>
       </div>
-      <form action="" method="post" name="model_data" id="model_data">
+      <form action="{{url_for('model',id=id)}}" method="post" name="model_data" id="model_data">
       <textarea id="debug" name="model" style='display:none;'>{%endraw%}{{model_content}}{%raw%}</textarea>
       </form>
   </div>
