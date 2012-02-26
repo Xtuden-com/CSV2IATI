@@ -52,7 +52,7 @@ class User(db.Model):
     def __repr__(self):
         return self.username, self.id, self.password
 
-@app.route("/")
+@app.route("/csviatimodel/")
 def index():
     if 'username' in session:
         user_id = session['user_id']
