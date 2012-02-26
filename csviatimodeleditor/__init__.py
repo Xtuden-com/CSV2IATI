@@ -76,18 +76,19 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = escape(request.form['username'])
+        password = escape(request.form['password'])
         u = User(username,password)
         getuser = User.query.filter_by(username=username).first()
         #u = User.query.filter_by(username=username, password=User.check_password(password)).first()
         
         ## found a user
         if ((getuser) and (getuser.check_password(password))):
-            session['username'] = request.form['username']
+            session['username'] = escape(request.form['username'])
             session['user_id'] = getuser.id
             session['user_name'] = getuser.user_name
             session['admin'] = getuser.admin
+            flash('Welcome back.', 'good')
             return redirect(url_for('index'))
         else:
             flash("Could not find that user. Please try again.", 'bad')
@@ -114,6 +115,9 @@ def create_model():
                 db.session.commit()
                 flash('Created your model', 'good')
                 return redirect(url_for('model', id=newmodel.id))
+            else:
+                flash('Please supply a file', 'bad')
+                return redirect(url_for('index'))                
         else:
             flash('Please supply a file', 'bad')
             return redirect(url_for('index'))
@@ -196,26 +200,39 @@ def user(id=''):
 
 @app.route('/register', methods=['GET','POST'])
 def register():
-    username = request.form['username']
-    password = request.form['password']
-    user_name = request.form['user_name']
-    email_address = request.form['email']
-    u = User(username,password,user_name,email_address)
-    db.session.add(u)
-    db.session.commit()
-    
-    session['username'] = u.username
-    session['user_id'] = u.id
-    session['user_name'] = u.user_name
-    flash("Your account has been created!", 'good')
-    return redirect(url_for('index'))
+    username = escape(request.form['username'])
+    password = escape(request.form['password'])
+    user_name = escape(request.form['user_name'])
+    email_address = escape(request.form['email'])
+    user_check = User.query.filter_by(username=username).first()
+    if user_check:
+        flash("Sorry, that username has already been taken. Please choose another one.", 'bad')
+        return redirect(url_for('index'))
+    else:
+        u = User(username,password,user_name,email_address)
+        db.session.add(u)
+        db.session.commit()
+        
+        session['username'] = u.username
+        session['user_id'] = u.id
+        session['user_name'] = u.user_name
+        flash("Your account has been created.", 'good')
+        return redirect(url_for('index'))
 
 
 @app.route('/logout')
 def logout():
-    # remove the username from the session if its there
+    # remove the login from the session if its there
     session.pop('username', None)
+    session.pop('user_id', None)
+    session.pop('user_name', None)
+    session.pop('admin', None)
+    flash('You have been logged out.', 'good')
     return redirect(url_for('index'))
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

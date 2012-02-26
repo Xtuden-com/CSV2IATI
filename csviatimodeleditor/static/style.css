@@ -1,8 +1,8 @@
 body { background-color: #fff; color: #333; }
 
 body, p, ol, ul, td {
-  font-family: "Trebuchet MS", helvetica, sans-serif;
-  font-size:   14px;
+/*  font-family: Helvetica, sans-serif;*/
+  font-family:Trebuchet MS;
   line-height: 20px;
   vertical-align:top;	
   margin: 0 0 0 0;
@@ -80,6 +80,9 @@ tr.hierarchy1 span.title {
 	font-weight:bold;
 }
 tr.hierarchy2 td {
+}
+h1 {
+    color:#365e93;
 }
 h1.title {
 	color:#365e93;
@@ -194,7 +197,7 @@ ul.flashes, .flashes ul li, .flashes li {
 }
 .flashes li {
     display:none;
-    padding:2px;
+    padding:6px;
     margin-bottom:2px;
 }
 .flashes .notice {
@@ -211,7 +214,7 @@ ul.flashes, .flashes ul li, .flashes li {
 
 fieldset {
     background-color: #eeeeee;
-    border: 1px solid #eeeeee;
+    border: 1px solid #cccccc;
 }
 
 #login_register_forms_container fieldset {
@@ -286,7 +289,9 @@ form dl {
     color:#000000;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    border:1px solid #cccccc;
 }
 #login_register_forms_introbox p {
     font-size:18px;
+    margin-bottom:15px;
 }

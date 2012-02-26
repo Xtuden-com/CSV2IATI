@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>Error 404</h2>
+<fieldset>
+<legend>File Not Found</legend>
+<p>Sorry, but the page you requested could not be found. If this problem persists, please let us know.</p>
+<p><a href="{{url_for('index')}}">Return to the Dashboard &raquo;</a></p>
+</fieldset>
+{{ pages }}
+{% endblock %}
