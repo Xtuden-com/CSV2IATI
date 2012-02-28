@@ -17,10 +17,7 @@ Config = ConfigParser.RawConfigParser()
 #    CONFIGURATION_FILE_DIR
 #except NameError:
 
-abspath = os.path.dirname(__file__)
-
-CONFIGURATION_FILE_DIR ='$HOME'
-Config.read(abspath + 'icconfig.ini')
+Config.read('/var/www/icconfig.ini')
 DATABASE_CONNECTION = Config.get('Environment','database_connection')
 UPLOAD_FOLDER = Config.get('Environment','uploads_location_path')
 CONVERSION_API_SERVER = Config.get('Environment','conversion_api_server')
