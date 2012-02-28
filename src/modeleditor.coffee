@@ -718,7 +718,20 @@ class ModelEditor extends Delegator
                 $(this).addClass('unavailable')
 
   onFormSubmit: (e) ->
-    return false
+    # Conversion...
+    # Need to know:
+    # 1) model file
+    # 2) csv file
+    ## these should be in hidden inputs, and then only submit those to the API
+    # 3) conversion API address should be stored by the system, and the request should be handled by the server.
+    e.preventDefault();
+    api_address = 'api_convert';
+    model_file = $('#convert_model_file_URL').val()
+    csv_file = $('#convert_csv_file_URL').val()
+    $.post(api_address, { csv_file: csv_file, model_file: model_file }, complete:(result) ->
+        alert(result.status);
+    , "json");
+    return false;
 
   onModelChange: () ->
     # Populate straightforward bits

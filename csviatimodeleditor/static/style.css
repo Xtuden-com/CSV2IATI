@@ -295,3 +295,9 @@ form dl {
     font-size:18px;
     margin-bottom:15px;
 }
+#create_model_form .patience_box {
+    display:none;
+    clear:both;
+    padding-bottom:5px;
+    color:#666666;
+}

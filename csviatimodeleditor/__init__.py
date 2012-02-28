@@ -1,31 +1,50 @@
-from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape
+from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response
 from flaskext.sqlalchemy import SQLAlchemy
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, UnicodeText, Date, DateTime, Float, Boolean
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import ConfigParser
+import csv
+import time
 import os
+import chardet
+import json
 from werkzeug import secure_filename
-UPLOAD_FOLDER = 'static/uploads/'
+
+# Get configuration details
+Config = ConfigParser.RawConfigParser()
+Config.read('icconfig.ini')
+DATABASE_CONNECTION = Config.get('Environment','database_connection')
+UPLOAD_FOLDER = Config.get('Environment','uploads_location_path')
+CONVERSION_API_SERVER = Config.get('Environment','conversion_api_server')
 ALLOWED_EXTENSIONS = set(['csv'])
+APP_SECRET_KEY = Config.get('Environment','app_secret_key')
+
+# Initialise the database
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///csviati_models.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
-
 db.create_all()
+
+
 class IATIModel(db.Model):
     id = db.Column(Integer, primary_key=True)
     model_owner = db.Column(UnicodeText)
     model_name = db.Column(UnicodeText)
     model_content = db.Column(UnicodeText)
+    csv_headers = db.Column(UnicodeText)
     csv_file = db.Column(UnicodeText)
+    csv_encoding = db.Column(UnicodeText)
     model_created = db.Column(Date)
     
-    def __init__(self, model_name, model_owner, filename):
+    def __init__(self, model_name, model_owner, filename,csv_headers,csv_encoding):
         self.model_name = model_name
         self.model_owner = model_owner
         self.model_created = datetime.utcnow()
         self.csv_file = filename
+        self.csv_headers = csv_headers
+        self.csv_encoding = csv_encoding
 
     def __repr__(self):
         return self.model_owner, self.id
@@ -40,12 +59,13 @@ class User(db.Model):
     user_created = db.Column(Date)
     pw_hash = db.Column(db.String())
     
-    def __init__(self, username, password, user_name='', email_address='', user_created=''):
+    def __init__(self, username, password, user_name='', email_address='', admin='',user_created=''):
         self.username = username
         self.pw_hash = generate_password_hash(password)
         self.user_name = user_name
         self.email_address = email_address
         self.user_created = datetime.utcnow()
+        self.admin = admin
 
     def check_password(self, password):
         return check_password_hash(self.pw_hash, password)
@@ -107,11 +127,30 @@ def create_model():
         if (request.method == 'POST'):
             model_name = request.form['model_name']
             csv_file = request.files['file']
+            something = request.files['file'].stream
+            filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
+            csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename)))
+            the_csv = csv.DictReader(reopen_for_headers)
+            columnnames = the_csv.fieldnames
+            reopen_for_headers.close()
+            reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename)))
+            
+            if not columnnames:
+                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad')
+                return redirect(url_for('index'))
+                    
+            result = chardet.detect(reopen_for_decoding.read())
+            csv_encoding = result['encoding']
+            
+            csv_headers = json.dumps(columnnames,encoding=csv_encoding)
+
+            #csv_headers = ', '.join('"%s"' % unicode(header,csv_encoding) for header in columnnames)
             if csv_file and allowed_file(csv_file.filename):
                 user_id = session['user_id']
-                filename = secure_filename(csv_file.filename) + str(datetime.utcnow())
-                csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                newmodel = IATIModel(model_name, user_id, filename)
+                #filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
+                #the_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                newmodel = IATIModel(model_name, user_id, filename,csv_headers,csv_encoding)
                 db.session.add(newmodel)
                 db.session.commit()
                 flash('Created your model', 'good')
@@ -125,20 +164,85 @@ def create_model():
     flash("Please log in.", 'bad')
     return redirect(url_for('index'))
 
+@app.route('/csv_file', methods=['GET'])
+@app.route('/csv_file/<id>', methods=['GET'])
+@app.route('/csv_file/<id>/<filename>', methods=['GET'])
+def csv_file(id='',filename=''):
+    if (id and filename):
+        getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+        if (filename==(getmodel.csv_file)):
+            thepath=os.path.join(app.config['UPLOAD_FOLDER'], getmodel.csv_file)
+            thefile = (open(thepath, 'r')).read()
+            return Response(thefile, mimetype='text/csv')
+        else:
+            flash('Sorry, could not find that CSV file.','bad')
+            return redirect(url_for('index'))
+    else:
+        flash('No CSV file selected.','bad')
+        return redirect(url_for('index'))
+
+@app.route('/model/convert/<id>')
+def model_convert(id=id):
+    if ('username' in session):
+        if (id):        
+            getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+            if getmodel is not None:
+                if getmodel.model_content is not None:
+                    import urllib
+                    import urllib2
+                    url = CONVERSION_API_SERVER
+                    values = {'csv_file' : url_for('csv_file',id=getmodel.id,filename=getmodel.csv_file,_external=True),
+                              'model_file' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
+
+                    data = urllib.urlencode(values)
+                    req = urllib2.Request(url, data)
+                    try:
+                        response = urllib2.urlopen(req)
+                        the_page = response.read()
+                        return the_page
+                    except urllib2.HTTPError, e:
+                        if (e.code == 400):
+                            flash("Error 400. Could not convert your data. There was a fundamental error in the application. Please report this error.", "bad persist")
+                            flash("The data file provided was: " + values["csv_file"], "notice persist")
+                            flash("The mapping file provided was: " + values["model_file"], "notice persist")
+                            return redirect(url_for('index'))
+                
+                else:
+                    flash("That model has not yet been defined.", 'bad')
+                    return redirect(url_for('index'))
+            else:
+                flash("Could not find that model.", 'bad')
+                return redirect(url_for('index'))
+        else:
+            flash("Please select a model to convert.", 'bad')
+            return redirect(url_for('index'))
+    else:
+        flash("Please log in.", 'bad')
+        return redirect(url_for('index'))
+
 @app.route('/model/')
 @app.route('/model/<id>', methods=['GET', 'POST'])
-def model(id=''):
+@app.route('/model/<id>.<responsetype>', methods=['GET'])
+def model(id='',responsetype=''):
     if ('username' in session):
+        if (responsetype and (responsetype=='json')):        
+            getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+            if getmodel is not None:
+                if getmodel.model_content is not None:
+                    return Response(getmodel.model_content, mimetype='application/json')
+                else:
+                    flash('That model has not been defined yet. Please map your dimensions using the browser.', 'bad')
         if (id):
             if request.method == 'GET':
                 # Get model details        
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
                 if ((session['admin']) or ((session['user_id'])==getmodel.model_owner)):
+                    sd = json.loads(getmodel.csv_headers)
                     if getmodel.model_content is not None:
                         model_content_real = getmodel.model_content
                     else:
                         model_content_real = ''
-                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real))
+                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=sd,csv_encoding=getmodel.csv_encoding,csv_file=getmodel.csv_file,model_created=str(getmodel.model_created))
                 else:
                     flash("You don't have permission to edit that model.", 'bad')
                     return redirect(url_for('index'))
@@ -212,7 +316,7 @@ def register():
         flash("Sorry, that username has already been taken. Please choose another one.", 'bad')
         return redirect(url_for('index'))
     else:
-        u = User(username,password,user_name,email_address)
+        u = User(username,password,user_name,email_address,admin)
         db.session.add(u)
         db.session.commit()
         
@@ -239,7 +343,7 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 # set the secret key.  keep this really secret:
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.secret_key = APP_SECRET_KEY
 
 if __name__ == "__main__":
     db.create_all()

@@ -1100,7 +1100,19 @@
     };
 
     ModelEditor.prototype.onFormSubmit = function(e) {
-      return false;
+      var api_address, csv_file, model_file;
+      e.preventDefault();
+      api_address = 'http://127.0.0.1/';
+      model_file = $('#convert_model_file_URL').val();
+      csv_file = $('#convert_csv_file_URL').val();
+      return $.post(api_address, {
+        csv_file: csv_file,
+        model_file: model_file
+      }, {
+        complete: function(result) {
+          return alert(result.status);
+        }
+      }, "json");
     };
 
     ModelEditor.prototype.onModelChange = function() {

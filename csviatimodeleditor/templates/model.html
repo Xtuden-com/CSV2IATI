@@ -6,6 +6,10 @@
 <div id="model_page_view">
   <div class="banner" style="width:100%;color:#365e93;">
   <h1><span id="model_title"><a>{{model_name}}</a></span>: Map your dimensions</h1>
+<span id="model_csv_info">
+<p><code><a href="{{url_for('csv_file',id=id,filename=csv_file)}}">CSV source data</a></code><br />
+<code title="Detected character encoding">Encoding: {{csv_encoding}}</code></sup><br />
+<code title="Model creation date">Created: {{model_created}}</code></p></span>
   <p><span id="save_model" class="save_model"><a>Save model</a></span></p>
 {% raw %}
   </div>
@@ -19,7 +23,7 @@
         <p><b>IATI fields</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
         <ul></ul>
       </div>
-      <form action="{{url_for('model',id=id)}}" method="post" name="model_data" id="model_data">
+      <form action="{%endraw%}{{url_for('model',id=id)}}{%raw%}" method="post" name="model_data" id="model_data">
       <textarea id="debug" name="model" style='display:none;'>{%endraw%}{{model_content}}{%raw%}</textarea>
       </form>
   </div>
@@ -88,6 +92,12 @@
               </fieldset>
               <fieldset id="advanced-org">
               <legend>Advanced controls</legend>
+                  <dt><label for='organisation[data-encoding]'>Data Encoding:</label></dt>
+                  <dd>
+                  <input type="text" name="organisation[data-encoding]" value="{%endraw%}{{csv_encoding}}{%raw%}" readonly>
+                  <dd class='hints'>
+                    <p>The encoding of your data. This was automatically detected on import and can not be modified.</p>
+                  </dd>
                   <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
                   <dd>
                   <select name="organisation[data-structure][multiple]">
@@ -161,7 +171,7 @@
           <div class='formpart'>
             <h2>Convert</h2>
             <p>If you're ready to convert, hit "Convert" below.</p>
-            <input type="submit" value="Convert">
+            <span class="model_convert_button"><p><a href="{%endraw%}{{url_for('model_convert',id=id)}}{%raw%}">Convert</a></p></span>
           </div>
         </form>
       </div> <!-- /.forms -->
@@ -334,7 +344,7 @@
         $('#model_data').submit();
     });
     jQuery(function($) {
-      var column_data=["Project ID","Title Project","Short Descr Project","Project Starts","Project Ends","Level of Impact","ISO CODE","Loc of Impact","Loc Info","% Aim 1: Right to Sustainable Livelihoods","% Aim 2: Right to Essential services","% Aim 3: Right to Life and Security","% Aim 4: Right to be heard","% Aim 5: Right to Equity"," Expenditure prior to 2010/11","Expenditure in 2010/11"," Revised Budget  in current and future years (£) ","Total Value all years (£)"];
+      var column_data=[{%endraw%}{% for header in csv_headers %}{% if not loop.first %}, {%endif%}"{{header}}"{% endfor %}{%raw%}];
       var iati_data=['iati-identifier', 'title', 'description', 'sector', 'participating-org','activity-date','recipient-country','transaction'];
       var model_data = $('#debug').text();
       $('#model_page_view').modelEditor({
