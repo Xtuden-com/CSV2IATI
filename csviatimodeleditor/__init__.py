@@ -195,8 +195,8 @@ def model_convert(id=id):
                     import urllib
                     import urllib2
                     url = CONVERSION_API_SERVER
-                    values = {'csv_file' : url_for('csv_file',id=getmodel.id,filename=getmodel.csv_file,_external=True),
-                              'model_file' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
+                    values = {'csv_url' : url_for('csv_file',id=getmodel.id,filename=getmodel.csv_file,_external=True),
+                              'model_url' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
 
                     data = urllib.urlencode(values)
                     req = urllib2.Request(url, data)
