@@ -1,8 +1,114 @@
 # CSV-IATI Model Editor testing
 
-This repository shows the CSV-IATI Model Editor which is in very early devlopment.
+This repository shows the CSV-IATI Model Editor, which will help you to create a model to map your spreadsheet of aid data to the IATI format.
+
+# Installation
+
+Clone the repository
+
+::
+
+    $ git clone git://github.com/markbrough/CSV-IATI-Converter.modeleditor.git
+
+Change into the directory and create a virtual environment (``virtualenv``)
+
+::
+
+    $ cd CSV-IATI-Converter.modeleditor
+    $ virtualenv --no-site-packages ./pyenv
+
+Now activate the environment:
+
+::
+
+    $ source ./pyenv/bin/activate
+
+Install dependencies:
+
+::
+
+    $ pip install -r requirements.txt
+
+Copy the configuration templates:
+
+::
+
+    $ cp icconfig.ini.tmpl icconfig.ini
+
+Edit the configuration files and make sure that you have set a valid database URL. In production mode, remember to set the absolute path to the database.
+
+Then run the application. In a local instance you can just do:
+
+::
+
+    $ cd csviatimodeleditor
+    $ python __init__.py
+
+# Deployment
+
+Install mod_wsgi
+
+::
+    
+    $ apt-get install libapache2-mod-wsgi
+
+Copy csviati.wsgi from the main directory to your web server default directory, e.g. /var/www
+
+::
+    
+    $ cp csviatimodel.wsgi /var/www
+
+Edit the file to make sure the paths are correct for your web server
+
+Set up your Apache configuration files. You can do this easily by copying the default file:
+
+::
+    
+    $ cd /etc/apache2/sites-available/
+    $ cp default csviati
+
+Then edit the configuration to something like:
+
+::
+    
+    <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot /var/www
+        ErrorLog /var/log/apache2/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel debug
+
+        CustomLog /var/log/apache2/access.log combined
+
+        WSGIDaemonProcess csviatimodel user=user1 group=group1 threads=5
+        WSGIScriptAlias /csviatimodel /var/www/csviatimodel/csviatimodel.wsgi
+
+        Alias /csviatimodel/static/ "/var/www/csviatimodel/static/"
+
+        <Directory /var/www/csviatimodel>
+            Options Indexes FollowSymLinks Multiviews
+            WSGIProcessGroup csviatimodel
+            WSGIApplicationGroup %{GLOBAL}
+            Order deny,allow
+            Allow from all
+        </Directory>
+
+    </VirtualHost>
+
+Disable the default site and enable your new site
+
+::
+    
+    $ a2dissite default && a2ensite csviati
+
+Reload Apache:
+
+::
+    
+    $ /etc/init.d/apache2 reload
+
 
 Forked from http://github.com/nickstenning/openspending.modeleditor with thanks :)
-
-To view a demo of the model editor, visit
-http://markbrough.github.com/CSV-IATI-Converter.modeleditor
