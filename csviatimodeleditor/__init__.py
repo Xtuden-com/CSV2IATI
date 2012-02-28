@@ -13,11 +13,11 @@ from werkzeug import secure_filename
 
 # Get configuration details
 Config = ConfigParser.RawConfigParser()
-try:
-    CONFIGURATION_FILE_DIR
-except NameError:
-    CONFIGURATION_FILE_DIR =''
-Config.read(CONFIGURATION_FILE_DIR + 'icconfig.ini')
+#try:
+#    CONFIGURATION_FILE_DIR
+#except NameError:
+CONFIGURATION_FILE_DIR =''
+Config.read(CONFIGURATION_FILE_DIR + './icconfig.ini')
 DATABASE_CONNECTION = Config.get('Environment','database_connection')
 UPLOAD_FOLDER = Config.get('Environment','uploads_location_path')
 CONVERSION_API_SERVER = Config.get('Environment','conversion_api_server')
