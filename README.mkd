@@ -33,7 +33,7 @@ Copy the configuration templates:
 
 ::
 
-    $ cp icconfig.ini.tmpl icconfig.ini
+    $ cp icconfig.ini.tmpl /var/www/icconfig.ini
 
 Edit the configuration files and make sure that you have set a valid database URL. In production mode, remember to set the absolute path to the database.
 
@@ -109,6 +109,10 @@ Reload Apache:
 ::
     
     $ /etc/init.d/apache2 reload
+    
+# Troubleshooting:
+
+* Make sure you have given permission to the upload folder to the server user.
 
 
 Forked from http://github.com/nickstenning/openspending.modeleditor with thanks :)

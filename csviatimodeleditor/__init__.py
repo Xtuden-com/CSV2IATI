@@ -227,15 +227,15 @@ def model_convert(id=id):
 @app.route('/model/')
 @app.route('/model/<id>', methods=['GET', 'POST'])
 @app.route('/model/<id>.<responsetype>', methods=['GET'])
-def model(id='',responsetype=''):
+def model(id='',responsetype=''):  
+    if (responsetype and (responsetype=='json')):        
+        getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+        if getmodel is not None:
+            if getmodel.model_content is not None:
+                return Response(getmodel.model_content, mimetype='application/json')
+            else:
+                flash('That model has not been defined yet. Please map your dimensions using the browser.', 'bad')
     if ('username' in session):
-        if (responsetype and (responsetype=='json')):        
-            getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-            if getmodel is not None:
-                if getmodel.model_content is not None:
-                    return Response(getmodel.model_content, mimetype='application/json')
-                else:
-                    flash('That model has not been defined yet. Please map your dimensions using the browser.', 'bad')
         if (id):
             if request.method == 'GET':
                 # Get model details        
