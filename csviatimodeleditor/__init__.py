@@ -309,6 +309,7 @@ def user(id=''):
 
 @app.route('/register', methods=['GET','POST'])
 def register():
+    db.create_all()
     username = escape(request.form['username'])
     password = escape(request.form['password'])
     user_name = escape(request.form['user_name'])
