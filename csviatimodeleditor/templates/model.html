@@ -196,8 +196,11 @@
       <!-- Dimension column field template -->
       <script id='tpl_dimension_field' type='text/x-jquery-tmpl'>
         <tr data-field-name='${fieldName}'>
-          <td>${fieldName}</td>
           {{if transaction}}
+                <td>${fieldName}
+                <input type='hidden' name='${prefix(fieldName,transaction_field,transaction_part)}[datatype]' value='column'>
+                </td>
+
               <td><select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column]'></select></td>
               <td>
                 <a href='#' class='field_switch_constant_transaction'>&rarr; constant</a>
@@ -206,6 +209,9 @@
                 {{/if}}
               </td>
           {{else}}
+              <td>${fieldName}
+                <input type='hidden' name='${prefix(fieldName)}[datatype]' value='constant'>
+                </td>
               <td><select class='column' name='${prefix(fieldName)}[column]'></select></td>
               <td>
                 <a href='#' class='field_switch_constant'>&rarr; constant</a>
