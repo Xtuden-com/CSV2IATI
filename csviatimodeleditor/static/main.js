@@ -200,7 +200,7 @@
       },
       'implementing-organisation': {
         datatype: 'compound',
-        'iati-field': 'participating-organisation',
+        'iati-field': 'participating-org',
         label: 'Implementing Organisation',
         fields: {
           'role': {
@@ -214,7 +214,7 @@
       },
       'funding-organisation': {
         datatype: 'compound',
-        'iati-field': 'participating-organisation',
+        'iati-field': 'participating-org',
         label: 'Funding Organisation',
         fields: {
           'role': {
@@ -228,7 +228,7 @@
       },
       'extending-organisation': {
         datatype: 'compound',
-        'iati-field': 'participating-organisation',
+        'iati-field': 'participating-org',
         label: 'Extending Organisation',
         fields: {
           'role': {
@@ -292,7 +292,7 @@
 
   DEFAULT_FIELD_SETUP = {
     'iati-identifier': {
-      datatype: 'value',
+      datatype: 'compound',
       label: 'IATI Identifier',
       fields: {
         'text': {
@@ -301,7 +301,7 @@
       }
     },
     'title': {
-      datatype: 'value',
+      datatype: 'compound',
       label: 'Title',
       fields: {
         'text': {
@@ -309,8 +309,17 @@
         }
       }
     },
+    'recipient-country': {
+      datatype: 'compound',
+      label: 'Recipient country',
+      fields: {
+        'text': {
+          required: true
+        }
+      }
+    },
     'description': {
-      datatype: 'value',
+      datatype: 'compound',
       label: 'Description',
       fields: {
         'text': {
@@ -338,6 +347,9 @@
       label: 'Transaction',
       'tdatafields': {
         'transaction-type': {
+          "datatype": "compound",
+          "label": "Transaction Type",
+          "iati-field": "transaction-type",
           "fields": {
             "text": {
               required: true
@@ -348,6 +360,9 @@
           }
         },
         'transaction-value': {
+          "datatype": "compound",
+          "label": "Transaction Value",
+          "iati-field": "transaction-value",
           "fields": {
             "text": {
               required: true
@@ -382,6 +397,7 @@
       helpText: 'The sectors in your dataset'
     },
     'recipient-country': {
+      fields: 'text',
       fixedDataType: true
     },
     transaction: {
@@ -389,9 +405,9 @@
       field_type: 'transaction',
       helpText: 'Transactions in your dataset'
     },
-    'implementing-organisation': {
-      fixedDatType: true,
-      helpText: 'The organisation implementing the project'
+    'participating-org': {
+      fixedDataType: true,
+      helpText: 'Organisations involved the project. Roles available for participating organisations are <code>funding</code>, <code>extending</code> and <code>implementing</code>.'
     }
   };
 
@@ -644,8 +660,10 @@
     };
 
     DimensionWidget.prototype.onDeleteDimensionClick = function(e) {
+      var theform;
+      theform = this.element.parents('form').first();
       $(e.currentTarget).parents('fieldset').first().remove();
-      this.element.parents('form').first().change();
+      theform.change();
       return false;
     };
 
@@ -658,6 +676,7 @@
       construct_iatifield = this.doIATIFieldSample(dimension_name, dimension_data, thiscolumn);
       curDimension.find('span').first().html('Sample data: <code></code>');
       curDimension.find('span code').first().text(construct_iatifield);
+      this.element.parents('form').first().change();
       return false;
     };
 
@@ -1102,10 +1121,10 @@
     ModelEditor.prototype.onFormSubmit = function(e) {
       var api_address, csv_file, model_file;
       e.preventDefault();
-      api_address = 'http://127.0.0.1/';
+      api_address = 'api_convert';
       model_file = $('#convert_model_file_URL').val();
       csv_file = $('#convert_csv_file_URL').val();
-      return $.post(api_address, {
+      $.post(api_address, {
         csv_file: csv_file,
         model_file: model_file
       }, {
@@ -1113,6 +1132,7 @@
           return alert(result.status);
         }
       }, "json");
+      return false;
     };
 
     ModelEditor.prototype.onModelChange = function() {

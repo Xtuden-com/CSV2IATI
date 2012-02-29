@@ -48,7 +48,7 @@ DEFAULT_MODEL =
         'code': {}
     'implementing-organisation':
       datatype: 'compound'
-      'iati-field': 'participating-organisation'
+      'iati-field': 'participating-org'
       label: 'Implementing Organisation'
       fields:
         'role':
@@ -59,7 +59,7 @@ DEFAULT_MODEL =
         'datatype': {}
     'funding-organisation':
       datatype: 'compound'
-      'iati-field': 'participating-organisation'
+      'iati-field': 'participating-org'
       label: 'Funding Organisation'
       fields:
         'role':
@@ -70,7 +70,7 @@ DEFAULT_MODEL =
         'datatype': {}
     'extending-organisation':
       datatype: 'compound'
-      'iati-field': 'participating-organisation'
+      'iati-field': 'participating-org'
       label: 'Extending Organisation'
       fields:
         'role':
@@ -117,19 +117,25 @@ DEFAULT_MODEL =
 
 DEFAULT_FIELD_SETUP =
   'iati-identifier':
-    datatype: 'value'
+    datatype: 'compound'
     label: 'IATI Identifier'
     fields: 
         'text':
             required: true
   'title':
-    datatype: 'value'
+    datatype: 'compound'
     label: 'Title'
     fields: 
         'text':
             required: true
+  'recipient-country':
+    datatype: 'compound'
+    label: 'Recipient country'
+    fields: 
+        'text':
+            required: true
   'description':
-    datatype: 'value'
+    datatype: 'compound'
     label: 'Description'
     fields: 
         'text':
@@ -148,13 +154,19 @@ DEFAULT_FIELD_SETUP =
     datatype: 'transaction'
     label: 'Transaction'
     'tdatafields':
-      'transaction-type': {
+      'transaction-type': { 
+          "datatype": "compound"
+          "label": "Transaction Type"
+          "iati-field": "transaction-type"
           "fields": {
               "text": {required: true}
               "code": {required: true}
           }
       },
       'transaction-value': {
+          "datatype": "compound"
+          "label": "Transaction Value"
+          "iati-field": "transaction-value"
           "fields": {
               "text": {required: true}
               "value-date": {required: true}
@@ -187,6 +199,7 @@ DIMENSION_META =
               The sectors in your dataset
               '''
   'recipient-country':
+    fields: 'text'
     fixedDataType:true
     
   transaction:
@@ -195,11 +208,11 @@ DIMENSION_META =
     helpText: '''
               Transactions in your dataset
               '''
-  'implementing-organisation':
-    fixedDatType:true
+  'participating-org':
+    fixedDataType:true
     helpText: '''
-              The organisation implementing the project
-	      '''
+              Organisations involved the project. Roles available for participating organisations are <code>funding</code>, <code>extending</code> and <code>implementing</code>.
+	          '''
 
 FIELDS_META =
   label:
@@ -375,8 +388,9 @@ class DimensionWidget extends Widget
     return false
     
   onDeleteDimensionClick: (e) ->
+    theform = @element.parents('form').first()
     $(e.currentTarget).parents('fieldset').first().remove()
-    @element.parents('form').first().change()
+    theform.change()
     return false
     
   onColumnChange: (e) ->
@@ -387,6 +401,7 @@ class DimensionWidget extends Widget
     construct_iatifield = this.doIATIFieldSample(dimension_name, dimension_data,thiscolumn)
     curDimension.find('span').first().html('Sample data: <code></code>')
     curDimension.find('span code').first().text(construct_iatifield)
+    @element.parents('form').first().change()
     return false
   
   doIATIFieldSample: (dimension_name,dimension_data,thiscolumn) ->
