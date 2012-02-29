@@ -1162,11 +1162,11 @@
         _results = [];
         for (_j = 0, _len2 = dimNames.length; _j < _len2; _j++) {
           n = dimNames[_j];
-          _results.push('<li><a href="#' + ("m1_dim_" + n) + '">' + ("" + (n.dasherize()) + "</a>"));
+          _results.push('<li><a href="#' + ("m1_dim_" + n) + '">' + ("" + n + "</a>"));
         }
         return _results;
       })()).join('\n'));
-      return $('#debug').text(JSON.stringify(this.data, null, 2).dasherize());
+      return $('#debug').text(JSON.stringify(this.data, null, 2));
     };
 
     ModelEditor.prototype.onFillColumnsRequest = function(elem) {

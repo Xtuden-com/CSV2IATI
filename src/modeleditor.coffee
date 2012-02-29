@@ -763,10 +763,10 @@ class ModelEditor extends Delegator
     # Update dimension list in sidebar
     dimNames = (k for k, v of @data['mapping'])
     @element.find('.steps ul.steps_dimensions').html(
-      ('<li><a href="#' + "m1_dim_#{n}" + '">' + "#{n.dasherize()}</a>" for n in dimNames).join('\n')
+      ('<li><a href="#' + "m1_dim_#{n}" + '">' + "#{n}</a>" for n in dimNames).join('\n')
     )
 
-    $('#debug').text(JSON.stringify(@data, null, 2).dasherize())
+    $('#debug').text(JSON.stringify(@data, null, 2))
 
 
   onFillColumnsRequest: (elem) ->
