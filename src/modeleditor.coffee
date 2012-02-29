@@ -97,7 +97,7 @@ DEFAULT_MODEL =
       'tdatafields':
           transaction_type: {
               "label":"Transaction type",
-              "iati_field":"transaction-type",
+              "iati-field":"transaction-type",
               "datatype":"compound",
 	          "fields": {
 	              "text": {"constant":"Expenditure", "datatype":"constant"}
@@ -106,7 +106,7 @@ DEFAULT_MODEL =
           },
           transaction_value: {
               "label":"Transaction value",
-              "iati_field":"value",
+              "iati-field":"value",
               "datatype":"compound",
 	          "fields": {
 	              "text": {}
