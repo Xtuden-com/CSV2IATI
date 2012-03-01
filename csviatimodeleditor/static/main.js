@@ -333,7 +333,7 @@
         }
       }
     },
-    'status': {
+    'activity-status': {
       datatype: 'compound',
       label: 'Activity Status',
       fields: {
@@ -545,31 +545,63 @@
     },
     title: {
       fixedDataType: true,
-      helpText: 'A short, human-readable title. May be repeated for different languages. ',
-      label: 'Title'
+      helpText: 'A short, human-readable title. May be repeated for different languages. '
     },
     description: {
       fixedDataType: true,
       helpText: 'A longer, human-readable description. May be repeated for different languages. '
     },
-    sector: {
+    'activity-status': {
       fixedDataType: true,
-      field_type: 'compound',
-      fields: 'code,text,vocab',
-      helpText: 'The sectors in your dataset'
+      helpText: 'The current stage of the aid activity at the time the IATI information is published/updated. The stages are based on an activity lifecycle.'
     },
-    'recipient-country': {
-      fields: 'text',
-      fixedDataType: true
-    },
-    transaction: {
+    'activity-date': {
       fixedDataType: true,
-      field_type: 'transaction',
-      helpText: 'Transactions in your dataset'
+      helpText: 'The expected and actual start and completion dates of the activity, where start is the date of first disbursement for the activity and completion is the date of last disbursement for the activity.'
     },
     'participating-org': {
       fixedDataType: true,
       helpText: 'Organisations involved the project. Roles available for participating organisations are <code>funding</code>, <code>extending</code> and <code>implementing</code>.'
+    },
+    'recipient-country': {
+      fixedDataType: true,
+      helpText: 'The country(ies) for whose benefit the aid flow is provided, if applicable. Repeat for each country where known.'
+    },
+    'recipient-region': {
+      fixedDataType: true,
+      helpText: 'Supra-national: The geographical or administrative region grouping various countries (e.g. Sub-Saharan Africa, Mekong Delta). Use ‘global’ for activities benefiting substantially all developing countries. If percentages are shown for each region they must add to 100% for the activity being reported.'
+    },
+    sector: {
+      fixedDataType: true,
+      helpText: 'The specific area(s) of the recipient\'s economic or social development that the transfer intends to foster. Also known as purpose codes.'
+    },
+    'policy-marker': {
+      fixedDataType: true,
+      helpText: 'Indicators tracking key policy issues. This can be also used for donor specific thematic classifications.'
+    },
+    'collaboration-type': {
+      fixedDataType: true,
+      helpText: 'Identifier to show the type of collaboration. For official donors, shows if the activity is bilateral; earmarked multilateral; core multilateral; core contributions to NGOs; core contributions to PPPs; or multilateral outflow. Allows for additional types that might apply to foundations and NGOs. '
+    },
+    'default-flow-type': {
+      fixedDataType: true,
+      helpText: 'Identifier to show the classification of the flow. For official donors if the activity is Official Development Assistance (ODA), or Other Official Flows (OOF) [non-concessional but developmental, i.e. excluding export credits]. Allows for any types that might apply to foundations and NGOs. Default flow type can be overridden by flow type on any specific transaction within the activity.'
+    },
+    'default-finance-type': {
+      fixedDataType: true,
+      helpText: 'Identifier to show the financing mechanism of the aid activity (e.g. grant, loan, capital subscription, export credit, debt relief, equity). Default finance type can be overridden by finance type on any specific transaction within the activity.'
+    },
+    'default-aid-type': {
+      fixedDataType: true,
+      helpText: 'Identifier to show the type of assistance provided. For official donors broad categories are budget support, pooled funds, project-type interventions, experts, scholarships, debt relief, administrative costs). Allows for any types that might apply to private donors. Default aid type can be overridden by aid type on any specific transaction within the activity.'
+    },
+    'default-tied-status': {
+      fixedDataType: true,
+      helpText: 'Amounts by degree of restriction on where procurement of goods or services can take place, classified as untied (open procurement), partially tied (donor and developing countries) and tied (donor or group not including most developing countries). Note that there is both a default for the entire activity, and an optional status for each transaction, for when different contributions to an activity have different tied statuses.'
+    },
+    transaction: {
+      fixedDataType: true,
+      helpText: 'Details of each financial transaction by the donor.'
     }
   };
 
