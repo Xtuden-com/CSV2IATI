@@ -124,7 +124,7 @@ def login():
             session['username'] = escape(request.form['username'])
             session['user_id'] = getuser.id
             session['user_name'] = getuser.user_name
-            if (getuser.admin == '1'):
+            if (getuser.admin == 1):
                 session['admin'] = getuser.admin
             flash('Welcome back.', 'good')
             return redirect(url_for('index'))
