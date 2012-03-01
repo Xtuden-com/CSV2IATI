@@ -348,7 +348,6 @@ def register():
         session['username'] = u.username
         session['user_id'] = u.id
         session['user_name'] = u.user_name
-        session['admin'] = u.admin
         flash("Your account has been created.", 'good')
         return redirect(url_for('index'))
 
