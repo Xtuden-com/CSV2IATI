@@ -300,18 +300,24 @@
         }
       }
     },
-    'title': {
+    'other-identifier': {
       datatype: 'compound',
-      label: 'Title',
+      label: 'Other Identifier',
       fields: {
         'text': {
           required: true
+        },
+        'owner-name': {
+          required: false
+        },
+        'owner-ref': {
+          required: false
         }
       }
     },
-    'recipient-country': {
+    'title': {
       datatype: 'compound',
-      label: 'Recipient country',
+      label: 'Title',
       fields: {
         'text': {
           required: true
@@ -327,18 +333,174 @@
         }
       }
     },
-    'sector': {
+    'status': {
       datatype: 'compound',
-      label: 'Sectors',
+      label: 'Activity Status',
       fields: {
         'code': {
           required: true
         },
-        'vocab': {
+        'text': {
+          required: true
+        }
+      }
+    },
+    'activity-date': {
+      datatype: 'compound',
+      label: 'Activity Dates',
+      fields: {
+        'type': {
+          required: true
+        },
+        'iso-date': {
+          required: true
+        },
+        'text': {
+          required: true
+        }
+      }
+    },
+    'participating-org': {
+      datatype: 'compound',
+      label: 'Participating Organisation',
+      fields: {
+        'role': {
+          required: true
+        },
+        'ref': {
+          required: false
+        },
+        'type': {
           required: false
         },
         'text': {
+          required: true
+        }
+      }
+    },
+    'recipient-country': {
+      datatype: 'compound',
+      label: 'Recipient country',
+      fields: {
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
+        },
+        'percentage': {
           required: false
+        }
+      }
+    },
+    'recipient-region': {
+      datatype: 'compound',
+      label: 'Recipient region',
+      fields: {
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
+        },
+        'percentage': {
+          required: false
+        }
+      }
+    },
+    'sector': {
+      datatype: 'compound',
+      label: 'Sectors',
+      fields: {
+        'vocabulary': {
+          required: true
+        },
+        'code': {
+          required: false
+        },
+        'text': {
+          required: true
+        },
+        'percentage': {
+          required: false
+        }
+      }
+    },
+    'policy-marker': {
+      datatype: 'compound',
+      label: 'Policy Marker',
+      fields: {
+        'significance': {
+          required: true
+        },
+        'vocabulary': {
+          required: true
+        },
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
+        }
+      }
+    },
+    'collaboration-type': {
+      datatype: 'compound',
+      label: 'Collaboration type',
+      fields: {
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
+        }
+      }
+    },
+    'default-flow-type': {
+      datatype: 'compound',
+      label: 'Flow type',
+      fields: {
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
+        }
+      }
+    },
+    'default-finance-type': {
+      datatype: 'compound',
+      label: 'Finance type',
+      fields: {
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
+        }
+      }
+    },
+    'default-aid-type': {
+      datatype: 'compound',
+      label: 'Aid type',
+      fields: {
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
+        }
+      }
+    },
+    'default-tied-status': {
+      datatype: 'compound',
+      label: 'Tied Aid Status',
+      fields: {
+        'code': {
+          required: true
+        },
+        'text': {
+          required: true
         }
       }
     },
@@ -553,6 +715,7 @@
       '.field_switch_column_transaction click': 'onFieldSwitchColumnClickTransaction',
       '.field_rm click': 'onFieldRemoveClick',
       '.delete_dimension click': 'onDeleteDimensionClick',
+      '.delete_tdatafield click': 'onDeleteTDataFieldClick',
       '.iatifield change': 'onIATIFieldChange',
       '.column change': 'onColumnChange'
     };
@@ -660,6 +823,14 @@
     };
 
     DimensionWidget.prototype.onDeleteDimensionClick = function(e) {
+      var theform;
+      theform = this.element.parents('form').first();
+      $(e.currentTarget).parents('fieldset').first().remove();
+      theform.change();
+      return false;
+    };
+
+    DimensionWidget.prototype.onDeleteTDataFieldClick = function(e) {
       var theform;
       theform = this.element.parents('form').first();
       $(e.currentTarget).parents('fieldset').first().remove();

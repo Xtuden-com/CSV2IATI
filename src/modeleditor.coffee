@@ -122,15 +122,19 @@ DEFAULT_FIELD_SETUP =
     fields: 
         'text':
             required: true
-  'title':
+  'other-identifier':
     datatype: 'compound'
-    label: 'Title'
+    label: 'Other Identifier'
     fields: 
         'text':
             required: true
-  'recipient-country':
+        'owner-name':
+            required: false
+        'owner-ref':
+            required: false
+  'title':
     datatype: 'compound'
-    label: 'Recipient country'
+    label: 'Title'
     fields: 
         'text':
             required: true
@@ -140,16 +144,120 @@ DEFAULT_FIELD_SETUP =
     fields: 
         'text':
             required: true
+  'status':
+    datatype: 'compound'
+    label: 'Activity Status'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
+  'activity-date':
+    datatype: 'compound'
+    label: 'Activity Dates'
+    fields: 
+        'type':
+            required: true
+        'iso-date':
+            required: true
+        'text':
+            required: true
+  'participating-org':
+    datatype: 'compound'
+    label: 'Participating Organisation'
+    fields: 
+        'role':
+            required: true
+        'ref':
+            required: false
+        'type':
+            required: false
+        'text':
+            required: true
+  'recipient-country':
+    datatype: 'compound'
+    label: 'Recipient country'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
+        'percentage':
+            required: false
+  'recipient-region':
+    datatype: 'compound'
+    label: 'Recipient region'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
+        'percentage':
+            required: false
   'sector':
     datatype: 'compound'
     label: 'Sectors'
     fields: 
-        'code':
+        'vocabulary':
             required: true
-        'vocab':
+        'code':
             required: false
         'text':
+            required: true
+        'percentage':
             required: false
+  'policy-marker':
+    datatype: 'compound'
+    label: 'Policy Marker'
+    fields: 
+        'significance':
+            required: true
+        'vocabulary':
+            required: true
+        'code':
+            required: true
+        'text':
+            required: true
+  'collaboration-type':
+    datatype: 'compound'
+    label: 'Collaboration type'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
+  'default-flow-type':
+    datatype: 'compound'
+    label: 'Flow type'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
+  'default-finance-type':
+    datatype: 'compound'
+    label: 'Finance type'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
+  'default-aid-type':
+    datatype: 'compound'
+    label: 'Aid type'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
+  'default-tied-status':
+    datatype: 'compound'
+    label: 'Tied Aid Status'
+    fields: 
+        'code':
+            required: true
+        'text':
+            required: true
   'transaction':
     datatype: 'transaction'
     label: 'Transaction'
@@ -305,6 +413,7 @@ class DimensionWidget extends Widget
     '.field_switch_column_transaction click': 'onFieldSwitchColumnClickTransaction'
     '.field_rm click': 'onFieldRemoveClick'
     '.delete_dimension click': 'onDeleteDimensionClick'
+    '.delete_tdatafield click': 'onDeleteTDataFieldClick'
     '.iatifield change' : 'onIATIFieldChange'
     '.column change' : 'onColumnChange'
 
@@ -388,6 +497,12 @@ class DimensionWidget extends Widget
     return false
     
   onDeleteDimensionClick: (e) ->
+    theform = @element.parents('form').first()
+    $(e.currentTarget).parents('fieldset').first().remove()
+    theform.change()
+    return false
+    
+  onDeleteTDataFieldClick: (e) ->
     theform = @element.parents('form').first()
     $(e.currentTarget).parents('fieldset').first().remove()
     theform.change()
