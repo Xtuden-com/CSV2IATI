@@ -46,17 +46,13 @@ DEFAULT_MODEL =
       fields:
         'text': {}
         'code': {}
-    'implementing-organisation':
+    'recipient-region':
       datatype: 'compound'
-      'iati-field': 'participating-org'
-      label: 'Implementing Organisation'
+      'iati-field': 'recipient-region'
+      label: 'Recipient Region'
       fields:
-        'role':
-            'constant': 'implementing'
-            'datatype': 'constant'
         'text': {}
-        'ref': {}
-        'datatype': {}
+        'code': {}
     'funding-organisation':
       datatype: 'compound'
       'iati-field': 'participating-org'
@@ -67,7 +63,7 @@ DEFAULT_MODEL =
             'datatype': 'constant'
         'text': {}
         'ref': {}
-        'datatype': {}
+        'type': {}
     'extending-organisation':
       datatype: 'compound'
       'iati-field': 'participating-org'
@@ -78,7 +74,18 @@ DEFAULT_MODEL =
             'datatype': 'constant'
         'text': {}
         'ref': {}
-        'datatype': {}
+        'type': {}
+    'implementing-organisation':
+      datatype: 'compound'
+      'iati-field': 'participating-org'
+      label: 'Implementing Organisation'
+      fields:
+        'role':
+            'constant': 'implementing'
+            'datatype': 'constant'
+        'text': {}
+        'ref': {}
+        'type': {}
     sectors:
       datatype: 'compound'
       label: 'Sectors'
@@ -100,17 +107,55 @@ DEFAULT_MODEL =
               "iati-field":"transaction-type",
               "datatype":"compound",
 	          "fields": {
-	              "text": {"constant":"Expenditure", "datatype":"constant"}
-	              "code": {"constant":"E", "datatype":"constant"}
+	              "text": {"constant":"Disbursement", "datatype":"constant"}
+	              "code": {"constant":"D", "datatype":"constant"}
               }
           },
-          transaction_value: {
+          value: {
               "label":"Transaction value",
               "iati-field":"value",
               "datatype":"compound",
 	          "fields": {
 	              "text": {}
 	              "value-date": {}
+              }
+          },
+          description: {
+              "label":"Transaction Description",
+              "iati-field":"description",
+              "datatype":"compound",
+	          "fields": {
+	              "iso-date": {}
+	              "text": {}
+              }
+          },
+          'transaction-date': {
+              "label":"Transaction Date",
+              "iati-field":"transaction-date",
+              "datatype":"compound",
+	          "fields": {
+	              "iso-date": {}
+	              "text": {}
+              }
+          },
+          'provider-org': {
+              "label":"Transaction Provider",
+              "iati-field":"provider-org",
+              "datatype":"compound",
+	          "fields": {
+	              "text": {}
+	              "ref": {}
+	              "provider-activity-id": {}
+              }
+          },
+          'receiver-org': {
+              "label":"Transaction Receiver",
+              "iati-field":"receiver-org",
+              "datatype":"compound",
+	          "fields": {
+	              "text": {}
+	              "ref": {}
+	              "receiver-activity-id": {}
               }
           }
 
@@ -271,13 +316,51 @@ DEFAULT_FIELD_SETUP =
               "code": {required: true}
           }
       },
-      'transaction-value': {
+      'value': {
           "datatype": "compound"
           "label": "Transaction Value"
-          "iati-field": "transaction-value"
+          "iati-field": "value"
           "fields": {
               "text": {required: true}
               "value-date": {required: true}
+              "currency": {required: false}
+          }
+      },
+      'description': {
+          "datatype": "compound"
+          "label": "Transaction Description"
+          "iati-field": "description"
+          "fields": {
+              "text": {required: true}
+          }
+      },
+      'transaction-date': {
+          "datatype": "compound"
+          "label": "Transaction Date"
+          "iati-field": "transaction-date"
+          "fields": {
+              "iso-date": {required: true}
+              "text": {required: false}
+          }
+      },
+      'provider-org': {
+          "datatype": "compound"
+          "label": "Transaction Provider"
+          "iati-field": "provider-org"
+          "fields": {
+              "text": {required: false}
+              "ref": {required: false}
+              "provider-activity-id": {required: false}
+          }
+      },
+      'receiver-org': {
+          "datatype": "compound"
+          "label": "Transaction Receiver"
+          "iati-field": "receiver-org"
+          "fields": {
+              "text": {required: false}
+              "ref": {required: false}
+              "receiver-activity-id": {required: false}
           }
       }
 
