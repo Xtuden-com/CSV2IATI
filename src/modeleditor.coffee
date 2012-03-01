@@ -288,6 +288,11 @@ DIMENSION_META =
     helpText: '''
               The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation's unique reference, followed by the organisation's internal project code.<br />E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code>, where <code>P0001</code> is the project code.
               '''
+  'other-identifier':
+    fixedDataType: true
+    helpText: '''
+              An activity can be defined and/or reported on by multiple organisations. All such identifiers can be reported here.
+              '''
   title:
     fixedDataType: true
     helpText: '''

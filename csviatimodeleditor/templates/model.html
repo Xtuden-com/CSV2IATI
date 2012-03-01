@@ -100,7 +100,7 @@
                   </dd>
                   <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
                   <dd>
-                  <select name="organisation[data-structure][multiple]">
+                  <select name="organisation[data-structure][multiple]" id="multiple_rows_selector">
                   <option value="">Each activity has one row only</option>
                   <option value="sector">Each activity has multiple rows per sector</sector>
                   <option value="transaction">Each activity has multiple rows per transaction</sector>
@@ -356,7 +356,7 @@
     });
     jQuery(function($) {
       var column_data=[{%endraw%}{% for header in csv_headers %}{% if not loop.first %}, {%endif%}"{{header}}"{% endfor %}{%raw%}];
-      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction'];
+      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction','other-identifier'];
       var model_data = $('#debug').text();
       $('#model_page_view').modelEditor({
         'columns': column_data,
@@ -383,6 +383,14 @@
             columns_to_write = columns_to_write + '<li><code class="available">' + value + '</code></li>';
         });
         return columns_to_write;
+      });
+      $('#multiple_rows_selector').html(function() {
+        var iati_to_write = '<option>Each activity has one row only</option>';
+        $.each(iati_data, function(index, value) {
+            iati_to_write = iati_to_write + '<option value="' + value + '">Each activity has multiple rows per ' + value + '</option>';
+        });
+        return iati_to_write;
+        
       });
       var me = $('#m1').data('modelEditor');
       /*
