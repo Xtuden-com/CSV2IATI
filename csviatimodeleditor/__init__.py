@@ -17,12 +17,14 @@ Config = ConfigParser.RawConfigParser()
 #    CONFIGURATION_FILE_DIR
 #except NameError:
 
-Config.read('/var/www/icconfig.ini')
+Config.read('/usr/sites/CSV-IATI-Converter/icconfig.ini')
 DATABASE_CONNECTION = Config.get('Environment','database_connection')
 UPLOAD_FOLDER = Config.get('Environment','uploads_location_path')
 CONVERSION_API_SERVER = Config.get('Environment','conversion_api_server')
 ALLOWED_EXTENSIONS = set(['csv'])
 APP_SECRET_KEY = Config.get('Environment','app_secret_key')
+APP_ADMIN_USERNAME = Config.get('Admin','username')
+APP_ADMIN_PASSWORD = Config.get('Admin','password')
 
 # Initialise the database
 app = Flask(__name__)
@@ -83,6 +85,7 @@ def index():
         user_id = session['user_id']
         models = IATIModel.query.filter_by(model_owner=user_id)
         if 'admin' in session:
+            admin = True
             all_users = User.query.all()
             all_models = []
             for user in all_users:
@@ -94,8 +97,8 @@ def index():
         else:
             all_models = ''
             all_users = ''
-            
-        return render_template('dashboard.html', username=escape(session['username']), user_id=escape(session['user_id']), user_name=escape(session['user_name']), user_models=models, admin=session['admin'], models=all_models, users=all_users)
+            admin = False
+        return render_template('dashboard.html', username=escape(session['username']), user_id=escape(session['user_id']), user_name=escape(session['user_name']), user_models=models, admin=admin, models=all_models, users=all_users)
     return render_template('form.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -103,6 +106,15 @@ def login():
     if request.method == 'POST':
         username = escape(request.form['username'])
         password = escape(request.form['password'])
+        
+        if ((username == APP_ADMIN_USERNAME) and (username != "YOUR_ADMIN_USERNAME_HERE (MAKE THIS REALLY SECRET)") and (password == APP_ADMIN_PASSWORD)):
+            session['username'] = escape(request.form['username'])
+            session['user_id'] = '0'
+            session['user_name'] = 'Master admin user'
+            session['admin'] = '1'
+            flash('Hello, admin user.', 'good')
+            return redirect(url_for('index'))     
+        
         u = User(username,password)
         getuser = User.query.filter_by(username=username).first()
         #u = User.query.filter_by(username=username, password=User.check_password(password)).first()
@@ -240,7 +252,7 @@ def model(id='',responsetype=''):
             if request.method == 'GET':
                 # Get model details        
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-                if ((session['admin']) or ((session['user_id'])==getmodel.model_owner)):
+                if (('admin' in session) or ((session['user_id'])==getmodel.model_owner)):
                     sd = json.loads(getmodel.csv_headers)
                     if getmodel.model_content is not None:
                         model_content_real = getmodel.model_content
@@ -252,7 +264,7 @@ def model(id='',responsetype=''):
                     return redirect(url_for('index'))
             elif request.method == 'POST':
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-                if ((session['admin']) or ((session['user_id'])==getmodel.model_owner)):
+                if (('admin' in session) or ((session['user_id'])==getmodel.model_owner)):
                     getmodel.model_content = request.form['model']
                     db.session.add(getmodel)
                     db.session.commit()
@@ -274,9 +286,13 @@ def user(id=''):
         if (id):
             if request.method == 'GET':
                 # if the user is an admin or is looking at their own profile
-                if ((session['admin']) or ((session['user_id'])==int(id))):
+                if (('admin' in session) or ((session['user_id'])==int(id))):
+                    if 'admin' in session:
+                        admin = True
+                    else:
+                        admin = False
                     user = User.query.filter_by(id=id).first_or_404()
-                    return render_template('user.html', user=user, admin=session['admin'])
+                    return render_template('user.html', user=user, admin=admin)
                 else:
                     flash("You do not have permission to edit that user's details.", 'bad')
                     return redirect(url_for('index'))
@@ -288,14 +304,18 @@ def user(id=''):
                     u.username = request.form['username']
                     u.user_name = request.form['user_name']
                     u.email_address = request.form['email_address']
-                    if (('admin' in request.form) and (session['admin'])):
+                    if (('admin' in request.form) and ('admin' in session)):
                         u.admin = '1'
                     else:
                         u.admin = '0'
+                    if 'admin' in session:
+                        admin = True
+                    else:
+                        admin = False
                     db.session.add(u)
                     db.session.commit()
                     flash('Updated user', 'good')
-                    return render_template('user.html', user=u, admin=session['admin'])
+                    return render_template('user.html', user=u, admin=admin)
                 else:
                     flash("You do not have permission to edit that user's details.", 'bad')
                     return redirect(url_for('index'))                
@@ -309,14 +329,14 @@ def user(id=''):
 
 @app.route('/register', methods=['GET','POST'])
 def register():
+    # Create database if it doesn't already exist
     db.create_all()
     username = escape(request.form['username'])
     password = escape(request.form['password'])
     user_name = escape(request.form['user_name'])
     email_address = escape(request.form['email'])
-    admin = '1'
-    #user_check = User.query.filter_by(username=username).first()
-    user_check = False
+    admin = '0'
+    user_check = User.query.filter_by(username=username).first()
     if user_check:
         flash("Sorry, that username has already been taken. Please choose another one.", 'bad')
         return redirect(url_for('index'))
