@@ -132,6 +132,7 @@ table td:first-child {
 
 .modeleditor .steps ul li.active ul li {
   font-weight: normal;
+  color:#ffffff;
 }
 
 .modeleditor .steps ul li ul li a {

@@ -2,14 +2,14 @@ body { background-color: #fff; color: #333; }
 
 body, p, ol, ul, td {
 color: #333333;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "Trebuchet MS",sans-serif;
     font-size: 14px;
-    line-height: 18px;
+    line-height: 19px;
   vertical-align:top;	
   margin: 0 0 0 0;
 }
 
-p {
+p, ul {
   margin-bottom:5px;
 }
 
