@@ -341,7 +341,7 @@ def register():
     if user_check:
         flash("Sorry, that username has already been taken. Please choose another one.", 'bad')
         return redirect(url_for('index'))
-    else:
+    elif (username and password):
         u = User(username,password,user_name,email_address,admin)
         db.session.add(u)
         db.session.commit()
@@ -350,6 +350,9 @@ def register():
         session['user_id'] = u.id
         session['user_name'] = u.user_name
         flash("Your account has been created.", 'good')
+        return redirect(url_for('index'))
+    else:
+        flash("Please supply a username and password to create your account.", 'bad')
         return redirect(url_for('index'))
 
 
