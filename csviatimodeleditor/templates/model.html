@@ -101,21 +101,18 @@
                   <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
                   <dd>
                   <select name="organisation[data-structure][multiple]" id="multiple_rows_selector">
-                  <option value="">Each activity has one row only</option>
-                  <option value="sector">Each activity has multiple rows per sector</sector>
-                  <option value="transaction">Each activity has multiple rows per transaction</sector>
-                  <option value="sector_transaction">Each activity has multiple rows per sector and per transaction</sector>
                   </select>
                   <dd class='hints'>
                     <p>How is your data structured? You can have one row per activity, or multiple rows per activity. 
-                    If you select 'multiple rows', the converter will use the field you specify as the iati-identifier 
+                    If you select 'multiple rows', the converter will use the field you specify as the <code>iati-identifier</code> 
                     (presumably your project ID) to group your projects together.</p>
-                    <p>The activity information will be taken from one row in your CSV file (the first row, unless you 
-                    select to work in reverse below). A new Sector and/or Transaction (depending on your choice above)
-                    will be created for each row in your data.</p>
-                    <p>If you choose multiple sectors and multiple transactions, the sectors will be taken from your first 
-                    transaction.</p>
+                    <p>Most of the activity information will be taken from one row in your CSV file. Additional rows will 
+                    be used to construct multiple instances of the field you select above.</p>
+                    <p>For example, if you select <code>Multiple rows per sector</code>, then each row with the same 
+                    <code>iati-identifier</code> will create a new <code>sector</code>, which will be defined by whatever 
+                    you state as the sector in your dimensions mapping.</p>
                   </dd>
+                  <!--
                   <dt><label>Processing order:</label></dt>
                   <dd> <select name="organisation[data-structure][order]">
                   <option value="">Forward</option>
@@ -127,6 +124,7 @@
                     of that project. If you would prefer it to use the last instance of the project instead, select the 
                     "Reverse" option above.</p>
                   </dd>
+                  -->
                     <!--
                   <dt><label for='organisation[unique_keys]'>Unique keys:</label></dt>
                   <dd class='unique_keys_widget'></dd>
@@ -387,7 +385,7 @@
       $('#multiple_rows_selector').html(function() {
         var iati_to_write = '<option>Each activity has one row only</option>';
         $.each(iati_data, function(index, value) {
-            iati_to_write = iati_to_write + '<option value="' + value + '">Each activity has multiple rows per ' + value + '</option>';
+            iati_to_write = iati_to_write + '<option value="' + value + '">Multiple rows per ' + value + '</option>';
         });
         return iati_to_write;
         
