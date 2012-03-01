@@ -17,7 +17,7 @@ Config = ConfigParser.RawConfigParser()
 #    CONFIGURATION_FILE_DIR
 #except NameError:
 
-Config.read('/usr/sites/CSV-IATI-Converter/icconfig.ini')
+Config.read('/usr/sites/icconfig.ini')
 DATABASE_CONNECTION = Config.get('Environment','database_connection')
 UPLOAD_FOLDER = Config.get('Environment','uploads_location_path')
 CONVERSION_API_SERVER = Config.get('Environment','conversion_api_server')
