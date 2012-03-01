@@ -11,7 +11,7 @@ code {
   background-color:#eeeeee;
   padding:0px 2px 0px 2px;
 }
-.fieldset code {
+fieldset code {
   background-color:#ffffff;
 }
 table {
