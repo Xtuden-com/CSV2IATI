@@ -1292,7 +1292,7 @@
     };
 
     function ModelEditor(element, options) {
-      var ctor, e, model_data, selector, _i, _len, _ref, _ref2;
+      var ctor, e, model_data, selector, x, _i, _len, _ref, _ref2;
       ModelEditor.__super__.constructor.apply(this, arguments);
       if (this.options.model_data) {
         model_data = JSON.parse(this.options.model_data);
@@ -1329,22 +1329,16 @@
       }
       this.element.trigger('modelChange');
       this.setStep(0);
-      ({
-        onMultipleSectorsSetup: function(e) {
-          var x;
-          return $('#multiple_rows_selector').html("<option value=''>One row per activity</option>" + ((function() {
-            var _j, _len2, _ref3, _results;
-            _ref3 = this.options.iatifields;
-            _results = [];
-            for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
-              x = _ref3[_j];
-              _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
-            }
-            return _results;
-          }).call(this)).join('\n'));
+      $('#multiple_rows_selector').html("<option value=''>One row per activity</option>" + ((function() {
+        var _j, _len2, _ref3, _results;
+        _ref3 = this.options.iatifields;
+        _results = [];
+        for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
+          x = _ref3[_j];
+          _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
         }
-      });
-      this.element.trigger('multipleSectorsRequest');
+        return _results;
+      }).call(this)).join('\n'));
     }
 
     ModelEditor.prototype.setStep = function(s) {
