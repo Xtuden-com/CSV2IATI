@@ -265,7 +265,7 @@ def model(id='',responsetype=''):
                     return redirect(url_for('index'))
             elif request.method == 'POST':
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-                if (('admin' in session) or ((session['user_id'])==getmodel.model_owner)):
+                if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
                     getmodel.model_content = request.form['model']
                     db.session.add(getmodel)
                     db.session.commit()
