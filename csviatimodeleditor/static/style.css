@@ -232,7 +232,7 @@ fieldset {
 #login_register_forms_container ul {
     padding-left:0px;
 }
-#login_register_forms_container ul li ul {
+#login_register_forms_container ul ul {
     padding-left:15px;
 }
 legend {
