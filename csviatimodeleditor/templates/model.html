@@ -236,12 +236,15 @@
               <td>
                 <a href='#' class='field_switch_constant_transaction'>&rarr; fixed value <span title="ui-icon-pencil" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span></a>
               </td>
-                {{if required(fieldName, iatiField, transaction_field) != true}}
+                {{if required(fieldName, iatiField) != true}}
               <td>
-                <a href='#' class='field_rm'><span title="ui-icon-trash" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span></a>
               </td>
+                {{else}}
+              <td>
+                <a href='#' class='field_rm'><span class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+              </td>                
                 {{/if}}
-              </td>
           {{else}}
               <td>${fieldName}
                 <input type='hidden' name='${prefix(fieldName)}[datatype]' value='column'>
@@ -252,8 +255,12 @@
               </td>
                 {{if required(fieldName, iatiField) != true}}
               <td>
-                <a href='#' class='field_rm'><span title="ui-icon-trash" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span></a>
               </td>
+                {{else}}
+              <td>
+                <a href='#' class='field_rm'><span class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+              </td>                
                 {{/if}}
           {{/if}}
         </tr>
