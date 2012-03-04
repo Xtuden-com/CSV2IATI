@@ -9,14 +9,14 @@
 <legend>Your existing models</legend>
 <ul>
 {% for model in user_models %}
-        <li><a href="{{url_for('model', id=model.id)}}">{{model.model_name}}</a></li>
+        <li><span class="ui-icon ui-icon-folder-open">&nbsp;</span><a href="{{url_for('model', id=model.id)}}">{{model.model_name}}</a></li>
 {% else %}
     <li>You don't have any models yet. Create one by uploading a CSV file on the right.</li>
 {% endfor %}
 </ul>
 </fieldset>
 <fieldset>
-<legend>Create new model</legend>
+<legend><span class="ui-icon ui-icon-document">&nbsp;</span>Create new model</legend>
 <form action="{{url_for('create_model')}}" enctype="multipart/form-data" method="post" id="create_model_form">
 <dl>
 <dt>
@@ -45,10 +45,10 @@
 <legend>All models</legend>
 <ul>
 {% for model in models %}
-<li><a href="{{url_for('user', id=model.user_id)}}">{{model.username}}</a></li>
+<li><a href="{{url_for('user', id=model.user_id)}}"><span class="ui-icon ui-icon-person iconfloat_left">&nbsp;</span>{{model.username}}</a></li>
 <ul>
 {%for this_user_models in model.user_models%}
-    <li><a href="{{url_for('model', id=this_user_models.id)}}">{{this_user_models.model_name}}</a></li>
+    <li><a href="{{url_for('model', id=this_user_models.id)}}"><span class="ui-icon ui-icon-folder-open">&nbsp;</span>{{this_user_models.model_name}}</a></li>
 {% else %}
     <li>This user has not created any models yet.</li>
 {% endfor %}
