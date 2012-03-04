@@ -1329,18 +1329,20 @@
       }
       this.element.trigger('modelChange');
       this.setStep(0);
-      onMultipleSectorsSetup(function() {
-        var x;
-        return $('#multiple_rows_selector').html("<option value=''>One row per activity</option>" + ((function() {
-          var _j, _len2, _ref3, _results;
-          _ref3 = this.options.iatifields;
-          _results = [];
-          for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
-            x = _ref3[_j];
-            _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
-          }
-          return _results;
-        }).call(this)).join('\n'));
+      ({
+        onMultipleSectorsSetup: function(e) {
+          var x;
+          return $('#multiple_rows_selector').html("<option value=''>One row per activity</option>" + ((function() {
+            var _j, _len2, _ref3, _results;
+            _ref3 = this.options.iatifields;
+            _results = [];
+            for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
+              x = _ref3[_j];
+              _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
+            }
+            return _results;
+          }).call(this)).join('\n'));
+        }
       });
       this.element.trigger('multipleSectorsRequest');
     }
