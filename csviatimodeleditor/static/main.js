@@ -1329,7 +1329,7 @@
       }
       this.element.trigger('modelChange');
       this.setStep(0);
-      $('#multiple_rows_selector').html("<option value=''>One row per activity</option>" + ((function() {
+      $('#multiple_rows_selector').html(((function() {
         var _j, _len2, _ref3, _results;
         _ref3 = this.options.iatifields;
         _results = [];
