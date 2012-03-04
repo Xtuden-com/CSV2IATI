@@ -904,7 +904,7 @@ class ModelEditor extends Delegator
     this.setStep 0
     
     $('#multiple_rows_selector').html(
-      ("<option value='#{x}'>Multiple rows per #{x}</option>" for x in @options.iatifields when x isnt '').join('\n')
+      "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple rows per #{x}</option>" for x in @options.iatifields when x isnt '').join('\n')
     )
 
   setStep: (s) ->
