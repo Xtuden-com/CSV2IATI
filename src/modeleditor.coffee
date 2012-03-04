@@ -850,6 +850,7 @@ class ModelEditor extends Delegator
     '.dimensions_widget': DimensionsWidget
 
   events:
+    'multipleSectorsRequest': 'onMultipleSectorsSetup'
     'modelChange': 'onModelChange'
     'fillColumnsRequest': 'onFillColumnsRequest'
     'fillIATIfieldsRequest': 'onFillIATIfieldsRequest'
@@ -906,7 +907,7 @@ class ModelEditor extends Delegator
       $('#multiple_rows_selector').html(
         "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple rows per #{x}</option>" for x in @options.iatifields).join('\n')
       )
-    onMultipleSectorsSetup()
+    @element.trigger 'multipleSectorsRequest'
 
   setStep: (s) ->
     $(@element).find('.steps > ul > li')

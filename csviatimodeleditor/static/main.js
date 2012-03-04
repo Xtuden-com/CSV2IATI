@@ -1274,6 +1274,7 @@
     };
 
     ModelEditor.prototype.events = {
+      'multipleSectorsRequest': 'onMultipleSectorsSetup',
       'modelChange': 'onModelChange',
       'fillColumnsRequest': 'onFillColumnsRequest',
       'fillIATIfieldsRequest': 'onFillIATIfieldsRequest',
@@ -1341,7 +1342,7 @@
           return _results;
         }).call(this)).join('\n'));
       });
-      onMultipleSectorsSetup();
+      this.element.trigger('multipleSectorsRequest');
     }
 
     ModelEditor.prototype.setStep = function(s) {
