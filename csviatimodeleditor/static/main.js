@@ -875,7 +875,7 @@
     }
 
     DimensionWidget.prototype.deserialize = function(data) {
-      var formObj, k, v, _ref, _ref2, _ref3, _results;
+      var formObj, formObjorg, k, v, _ref, _ref2, _ref3, _ref4, _ref5, _results;
       this.data = ((_ref = data['mapping']) != null ? _ref[this.name] : void 0) || {};
       this.iati_field = ((_ref2 = data['mapping']) != null ? _ref2[this.name]['iati-field'] : void 0) || '';
       this.meta = DIMENSION_META[this.iati_field] || {};
@@ -894,9 +894,19 @@
       };
       formObj['mapping'][this.name] = this.data;
       _ref3 = util.flattenObject(formObj);
-      _results = [];
       for (k in _ref3) {
         v = _ref3[k];
+        this.element.find("[name=\"" + k + "\"]").val(v);
+      }
+      this.orgdata = ((_ref4 = data['organisation']) != null ? _ref4[this.name] : void 0) || {};
+      formObjorg = {
+        'organisation': {}
+      };
+      formObjorg['organisation'][this.name] = this.data;
+      _ref5 = util.flattenObject(formObjorg);
+      _results = [];
+      for (k in _ref5) {
+        v = _ref5[k];
         _results.push(this.element.find("[name=\"" + k + "\"]").val(v));
       }
       return _results;

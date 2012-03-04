@@ -577,6 +577,13 @@ class DimensionWidget extends Widget
 
     for k, v of util.flattenObject(formObj)
       @element.find("[name=\"#{k}\"]").val(v)
+    
+    @orgdata = data['organisation']?[@name] or {}
+    formObjorg = {'organisation': {}}
+    formObjorg['organisation'][@name] = @data
+
+    for k, v of util.flattenObject(formObjorg)
+      @element.find("[name=\"#{k}\"]").val(v)    
 
   formFieldPrefix: (fieldName) =>
     "mapping[#{@name}][fields][#{fieldName}]"
