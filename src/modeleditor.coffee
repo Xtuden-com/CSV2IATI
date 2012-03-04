@@ -577,13 +577,6 @@ class DimensionWidget extends Widget
 
     for k, v of util.flattenObject(formObj)
       @element.find("[name=\"#{k}\"]").val(v)
-    
-    @orgdata = data['organisation']?[@name] or {}
-    formObjorg = {'organisation': {}}
-    formObjorg['organisation'][@name] = @data
-
-    for k, v of util.flattenObject(formObjorg)
-      @element.find("[name=\"#{k}\"]").val(v)    
 
   formFieldPrefix: (fieldName) =>
     "mapping[#{@name}][fields][#{fieldName}]"
@@ -909,10 +902,6 @@ class ModelEditor extends Delegator
 
     @element.trigger 'modelChange'
     this.setStep 0
-    
-    $('#multiple_rows_selector').html(
-      "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple rows per #{x}</option>" for x in @options.iatifields when x isnt '').join('\n')
-    )
 
   setStep: (s) ->
     $(@element).find('.steps > ul > li')
