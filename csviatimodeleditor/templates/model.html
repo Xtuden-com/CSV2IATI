@@ -236,9 +236,9 @@
               <td>
                 <a href='#' class='field_switch_constant_transaction'>&rarr; fixed value <span title="ui-icon-pencil" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span></a>
               </td>
-                {{if required(fieldName, iatiField) != true}}
+                {{if required(fieldName, iatiField) == true}}
               <td>
-                <a href='#' class='field_rm'><span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span></a>
+                <span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
               </td>
                 {{else}}
               <td>
@@ -253,9 +253,9 @@
               <td>
                 <a href='#' class='field_switch_constant'>&rarr; fixed value <span title="ui-icon-pencil" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span></a>
               </td>
-                {{if required(fieldName, iatiField) != true}}
+                {{if required(fieldName, iatiField) == true}}
               <td>
-                <a href='#' class='field_rm'><span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span></a>
+                <span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
               </td>
                 {{else}}
               <td>
