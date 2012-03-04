@@ -1335,7 +1335,9 @@
         _results = [];
         for (_j = 0, _len2 = _ref3.length; _j < _len2; _j++) {
           x = _ref3[_j];
-          _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
+          if (x !== '') {
+            _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
+          }
         }
         return _results;
       }).call(this)).join('\n'));
