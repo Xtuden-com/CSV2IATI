@@ -229,6 +229,12 @@ fieldset {
 #login_register_forms_container ul li {
     list-style-type:none;
 }
+#login_register_forms_container ul {
+    padding-left:0px;
+}
+#login_register_forms_container ul li ul {
+    padding-left:15px;
+}
 legend {
     font-size:16px;
     font-weight:bold;
