@@ -410,14 +410,6 @@
         });
         return columns_to_write;
       });
-      $('#multiple_rows_selector').html(function() {
-        var iati_to_write = '<option value="">Each activity has one row only</option>';
-        $.each(iati_data, function(index, value) {
-            iati_to_write = iati_to_write + '<option value="' + value + '">Multiple rows per ' + value + '</option>';
-        });
-        return iati_to_write;
-        
-      });
       var me = $('#m1').data('modelEditor');
       /*
       $('#model_title a').click(function() {

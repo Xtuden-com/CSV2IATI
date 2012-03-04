@@ -901,6 +901,12 @@ class ModelEditor extends Delegator
 
     @element.trigger 'modelChange'
     this.setStep 0
+    
+    onMultipleSectorsSetup ->
+      $('#multiple_rows_selector').html(
+        "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple rows per #{x}</option>" for x in @options.iatifields).join('\n')
+      )
+    onMultipleSectorsSetup()
 
   setStep: (s) ->
     $(@element).find('.steps > ul > li')
@@ -1016,11 +1022,11 @@ class ModelEditor extends Delegator
 
   onFillColumnsRequest: (elem) ->
     $(elem).html(
-      ("<option name='#{x}'>#{x}</option>" for x in @options.columns).join('\n')
+      ("<option value='#{x}'>#{x}</option>" for x in @options.columns).join('\n')
     )
   onFillIATIfieldsRequest: (elem) ->
     $(elem).html(
-      ("<option name='#{x}'>#{x}</option>" for x in @options.iatifields).join('\n')
+      ("<option value='#{x}'>#{x}</option>" for x in @options.iatifields).join('\n')
     )
 
 $.plugin 'modelEditor', ModelEditor
