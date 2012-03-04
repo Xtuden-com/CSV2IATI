@@ -456,4 +456,9 @@ li {
     display: block;
 }
 */
-
+.iconfloat_right {
+    float:right;
+}
+.iconfloat_left {
+    float:left;
+}
