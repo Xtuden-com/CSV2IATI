@@ -234,7 +234,7 @@
 
               <td><select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column]'></select></td>
               <td>
-                <a href='#' class='field_switch_constant_transaction'>&rarr; constant</a>
+                <a href='#' class='field_switch_constant_transaction'>&rarr; fixed value</a>
                 {{if required(fieldName, iatiField, transaction_field) != true}}
                 <a href='#' class='field_rm'><span title="ui-icon-trash" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
                 {{/if}}
@@ -245,7 +245,7 @@
                 </td>
               <td><select class='column' name='${prefix(fieldName)}[column]'></select></td>
               <td>
-                <a href='#' class='field_switch_constant'>&rarr; constant</a>
+                <a href='#' class='field_switch_constant'><span title="ui-icon-pencil" class="ui-icon ui-icon-pencil iconfloat_left">&rarr; &nbsp;</span> fixed value</a>
                 {{if required(fieldName, iatiField) != true}}
                 <a href='#' class='field_rm'><span title="ui-icon-trash" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
                 {{/if}}
