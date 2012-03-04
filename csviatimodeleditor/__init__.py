@@ -147,11 +147,11 @@ def create_model():
             something = request.files['file'].stream
             filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
             csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename)), 'rU')
+            reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
             the_csv = csv.DictReader(reopen_for_headers)
             columnnames = the_csv.fieldnames
             reopen_for_headers.close()
-            reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename)), 'rU')
+            reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
             
             if not columnnames:
                 flash('Could not detect column names from your data. Maybe your file is empty?', 'bad')
