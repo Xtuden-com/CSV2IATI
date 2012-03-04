@@ -234,7 +234,7 @@
 
               <td><select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column]'></select></td>
               <td>
-                <a href='#' class='field_switch_constant_transaction'><span title="Switch this field's data type to a fixed value (the same value for all rows in your data)" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
+                <a title="Switch this field's data type to a fixed value (the same value for all rows in your data)" href='#' class='field_switch_constant_transaction'><span class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
               </td>
                 {{if required(fieldName, iatiField, transaction_field) == true}}
               <td>
@@ -251,7 +251,7 @@
                 </td>
               <td><select class='column' name='${prefix(fieldName)}[column]'></select></td>
               <td>
-                <a href='#' class='field_switch_constant'><span title="Switch this field's data type to a fixed value (the same value for all rows in your data)" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
+                <a title="Switch this field's data type to a fixed value (the same value for all rows in your data)" href='#' class='field_switch_constant'><span class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
               </td>
                 {{if required(fieldName, iatiField) == true}}
               <td>
@@ -276,7 +276,7 @@
               </td>
               <td><input type='text' name='${prefix(fieldName,transaction_field,transaction_part)}[constant]'></td>
               <td>
-                <a href='#' class='field_switch_column_transaction'><span title="Switch this field's data type to a column in your data" class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
+                <a title="Switch this field's data type to a column in your data" href='#' class='field_switch_column_transaction'><span class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
               </td>
                 {{if required(fieldName, iatiField, transaction_field) == true}}
               <td>
@@ -294,7 +294,7 @@
               </td>
               <td><input type='text' name='${prefix(fieldName)}[constant]'></td>
               <td>
-                <a href='#' class='field_switch_column'><span title="Switch this field's data type to a column in your data" class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
+                <a title="Switch this field's data type to a column in your data" href='#' class='field_switch_column'><span class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
               </td>
                 {{if required(fieldName, iatiField) == true}}
               <td>
