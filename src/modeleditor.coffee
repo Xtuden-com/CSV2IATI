@@ -868,6 +868,12 @@ class ModelEditor extends Delegator
 
   constructor: (element, options) ->
     super
+    
+    
+    $('#multiple_rows_selector').html(
+      "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple rows per #{x}</option>" for x in @options.iatifields when x isnt '').join('\n')
+    )
+    
     if (@options.model_data)
         model_data = JSON.parse(@options.model_data)
     else

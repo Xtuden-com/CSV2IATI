@@ -1292,8 +1292,20 @@
     };
 
     function ModelEditor(element, options) {
-      var ctor, e, model_data, selector, _i, _len, _ref, _ref2;
+      var ctor, e, model_data, selector, x, _i, _len, _ref, _ref2;
       ModelEditor.__super__.constructor.apply(this, arguments);
+      $('#multiple_rows_selector').html("<option value=''>One row per activity</option>" + ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.options.iatifields;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          x = _ref[_i];
+          if (x !== '') {
+            _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
+          }
+        }
+        return _results;
+      }).call(this)).join('\n'));
       if (this.options.model_data) {
         model_data = JSON.parse(this.options.model_data);
       } else {
