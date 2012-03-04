@@ -253,7 +253,7 @@ def model(id='',responsetype=''):
             if request.method == 'GET':
                 # Get model details        
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-                if (('admin' in session) or ((session['user_id'])==getmodel.model_owner)):
+                if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
                     sd = json.loads(getmodel.csv_headers)
                     if getmodel.model_content is not None:
                         model_content_real = getmodel.model_content
