@@ -234,15 +234,15 @@
 
               <td><select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column]'></select></td>
               <td>
-                <a href='#' class='field_switch_constant_transaction'>to fixed value <span title="ui-icon-pencil" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span></a>
+                <a href='#' class='field_switch_constant_transaction'><span title="Switch this field's data type to a fixed value (the same value for all rows in your data)" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
               </td>
                 {{if required(fieldName, iatiField, transaction_field) == true}}
               <td>
-                <span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
+                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
               </td>
                 {{else}}
               <td>
-                <a href='#' class='field_rm'><span class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
               </td>                
                 {{/if}}
           {{else}}
@@ -251,15 +251,15 @@
                 </td>
               <td><select class='column' name='${prefix(fieldName)}[column]'></select></td>
               <td>
-                <a href='#' class='field_switch_constant'>to fixed value <span title="ui-icon-pencil" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span></a>
+                <a href='#' class='field_switch_constant'><span title="Switch this field's data type to a fixed value (the same value for all rows in your data)" class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
               </td>
                 {{if required(fieldName, iatiField) == true}}
               <td>
-                <span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
+                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
               </td>
                 {{else}}
               <td>
-                <a href='#' class='field_rm'><span class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
               </td>                
                 {{/if}}
           {{/if}}
@@ -276,15 +276,15 @@
               </td>
               <td><input type='text' name='${prefix(fieldName,transaction_field,transaction_part)}[constant]'></td>
               <td>
-                <a href='#' class='field_switch_column_transaction'><span title="ui-icon-carat-2-e-w" class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
+                <a href='#' class='field_switch_column_transaction'><span title="Switch this field's data type to a column in your data" class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
               </td>
                 {{if required(fieldName, iatiField, transaction_field) == true}}
               <td>
-                <span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
+                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
               </td>
                 {{else}}
               <td>
-                <a href='#' class='field_rm'><span class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
               </td>                
                 {{/if}}
           {{else}}
@@ -294,15 +294,15 @@
               </td>
               <td><input type='text' name='${prefix(fieldName)}[constant]'></td>
               <td>
-                <a href='#' class='field_switch_column'><span title="ui-icon-carat-2-e-w" class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
+                <a href='#' class='field_switch_column'><span title="Switch this field's data type to a column in your data" class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
               </td>
                 {{if required(fieldName, iatiField) == true}}
               <td>
-                <span class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
+                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
               </td>
                 {{else}}
               <td>
-                <a href='#' class='field_rm'><span class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
               </td>                
                 {{/if}}
               </td>
