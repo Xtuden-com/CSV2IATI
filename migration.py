@@ -40,6 +40,9 @@ class IATIModel(db.Model):
     model_name = db.Column(UnicodeText)
     model_content = db.Column(UnicodeText)
     csv_id = db.Column(UnicodeText)
+    csv_headers = db.Column(UnicodeText)
+    csv_file = db.Column(UnicodeText)
+    csv_encoding = db.Column(UnicodeText)
     model_created = db.Column(Date)
     
     def __init__(self, model_name, model_owner, csv_id): 
