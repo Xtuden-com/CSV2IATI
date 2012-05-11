@@ -103,7 +103,8 @@ def run_the_migration():
 	user_id = model.model_owner
 	newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
 	db.session.add(newcsvfile)
-        model.csv_id = newcsvfile.id
+        db.session.commit()
+        model.csv_id = str(newcsvfile.id)
         db.session.add(model)
 	db.session.commit()
 
