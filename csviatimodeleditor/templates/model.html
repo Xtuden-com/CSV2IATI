@@ -5,41 +5,62 @@
 <p><a href="{{url_for('index')}}">&laquo; Dashboard</a> | <a href="{{url_for('logout')}}">Logout</a></p>
 <div id="model_page_view">
   <div class="banner" style="width:100%;color:#365e93;">
-  <h1><span id="model_title"><a>{{model_name}}</a></span>: Map your dimensions</h1>
+  <h1>Model: <span id="model_title"><a>{{model_name}}</a></span> &raquo; Tell us about your data</h1>
 <span id="model_csv_info">
-<p><code><a href="{{url_for('csv_file',id=id,filename=csv_file)}}">CSV source data</a></code><br />
+<p><code>Source data: <a href="{{url_for('csv_file',id=id,filename=csv_file)}}">Download</a> <a id="csvdata_edit" href="#" class="csvdata_closed">Change...</a></code><br />
+<div id="csvdata_options"><ul>{% for csvfile in all_csv_files %}
+{% if (csvfile.id == csv_id) %}
+<li class="csvfile_opt csvfile_current">{{ csvfile.csv_file }} <i>(selected)</i></li>
+{% else %}
+<li class="csvfile_opt"><a href="{{url_for('model_change_csv',id=id,csv_id=csvfile.id)}}">{{ csvfile.csv_file }}</a></li>
+{% endif %}
+{% endfor %}
+<li class="csvfile_opt"><a href="#" id="csvdata_newfile">Upload new file</a></li>
+<span id="csvdata_newfile_upload_form">
+<form id="csvdata_newfile_upload" method="post" enctype="multipart/form-data" action="{{url_for('model_change_csv',id=id)}}">
+<input type="file" name="newcsvfile"/>
+<input type="submit" value="Upload"/>
+</form>
+</span>
+</ul></div>
 <code title="Detected character encoding">Encoding: {{csv_encoding}}</code></sup><br />
 <code title="Model creation date">Created: {{model_created}}</code></p></span>
-  <p><span id="save_model" class="save_model"><a>Save model</a></span></p>
+  <p><span id="save_model" class="save_model save_model_spacer">&nbsp;</span></p>
 {% raw %}
   </div>
-  <div id="right_pane" style="float:right;width:28%;position:fixed;left:70%;">
-      <div id="columns">
-        <p><b>Columns in your data</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
-        <ul>
-        </ul>
+  <div id="right_pane" style="float:right;width:20%;position:fixed;left:78%;">
+  <p><span id="save_model" class="save_model"><a>Save model</a></span></p>
+      <div id="editor_mode">
+        <p><b>Editor mode:</b><a class="basic fieldsbuttons fieldsbuttons-selected" href="#">Basic</a> <a class="advanced fieldsbuttons" href="#">Advanced</a></p>
       </div>
-      <div id="iatifields">
-        <p><b>IATI fields</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
-        <ul></ul>
+      <div id="right_pane_container">
+        <div id="columns">
+          <p><b>Columns in your data</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
+          <ul>
+          </ul>
+        </div>
+        <div id="iatifields">
+          <p><b>IATI fields</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
+          <ul></ul>
+        </div>
+        <a href="#" id="showdebug" class="fieldsbuttons">Show model</a>
+        <form action="{%endraw%}{{url_for('model',id=id)}}{%raw%}" method="post" name="model_data" id="model_data">
+        <textarea id="debug" name="model" style='display:none;'>{%endraw%}{{model_content}}{%raw%}</textarea>
+        </form>
       </div>
-      <form action="{%endraw%}{{url_for('model',id=id)}}{%raw%}" method="post" name="model_data" id="model_data">
-      <textarea id="debug" name="model" style='display:none;'>{%endraw%}{{model_content}}{%raw%}</textarea>
-      </form>
   </div>
-  <div class='content' style='width: 70%'>
+  <div class='content' style='width: 78%'>
     <div id='m1' class='modeleditor'>
       <div class='steps'>
         <ul>
           <li><a href='#'><span>1</span> Organisation information</a></li>
           <li>
-            <a href='#'><span>2</span> Dimension mapping</a>
+            <a href='#'><span>2</span> Mapping</a>
             <ul class='steps_dimensions'>
             </ul>
           </li>
           <li><a href='#'><span>3</span> Convert</a></li>
         </ul>
-      <div class="modeltoggle"><a href="#" id="showdebug">Show model</a></div>
       </div>
       <div class='forms'>
         <form action='#'>
@@ -71,7 +92,7 @@
                   <dt><label for='organisation[reporting-org][type]'>Type:</label></dt>
                   <dd><input type='text' name='organisation[reporting-org][type]'></dd>
                   <dd class='hints'>
-                    The type of organisation. Examples: <code>21</code> (INGO, e.g. Oxfam GB).
+                    The type of organisation. Examples: <code>21</code> (INGO, e.g. Oxfam GB). See <a href="http://iatistandard.org/codelists/organisation_type">Organisation Types</a>.
                   </dd>
               </fieldset>
               <fieldset id="other-org">
@@ -169,7 +190,7 @@
           </div>
           <!-- Dimension mapping -->
           <div class='formpart dimensions_widget'>
-            <h2>Dimension mapping</h2>
+            <h2>Mapping</h2>
             <p>To convert your data to the IATI format, you need to map the columns in your data 
               to the IATI fields.</p>
               <ul>
@@ -202,6 +223,7 @@
             <h2>Convert</h2>
             <p>If you're ready to convert, hit "Convert" below.</p>
             <p>Please remember to ensure you've saved your model first. Any changes made to the model since saving will not be retained.</p>
+            <span class="save_model_spacer">&nbsp;</span>
             <span class="model_convert_button"><p><a href="{%endraw%}{{url_for('model_convert',id=id)}}{%raw%}">Convert</a></p></span>
           </div>
         </form>
@@ -400,14 +422,14 @@
       </script>
     </div> <!-- /.modeleditor -->
   </div> <!-- /.content -->
-  
+  <!--
   <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
-  <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>
+  <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>-->
   {%endraw%}
   <script src='{{ url_for('static', filename='main.js') }}'></script>
   {%raw%}
   <script>
-    $('#save_model').click(function(){
+    $('#save_model a').click(function(){
         $('#model_data').submit();
     });
     jQuery(function($) {
@@ -456,6 +478,57 @@
       });
       */
       $('.modeleditor form').first().change();
+
+
+    $('#editor_mode a.basic').click(function() {
+        $('#right_pane_container').slideUp();
+        $('#editor_mode a.basic').addClass('fieldsbuttons-selected');
+        $('#editor_mode a.advanced').removeClass('fieldsbuttons-selected');
+        $('#right_pane').animate({
+          width: '20%',
+          left:'78%'
+        }, 500, function() {
+          // Animation complete.
+        });
+
+        $('.content').animate({
+          width: '78%'
+        }, 500, function() {
+          // Animation complete.
+        });
+    });
+
+    $('#editor_mode a.advanced').click(function() {
+        $('#right_pane_container').slideDown();
+        $('#editor_mode a.basic').removeClass('fieldsbuttons-selected');
+        $('#editor_mode a.advanced').addClass('fieldsbuttons-selected');  
+        $('#right_pane').animate({
+          width: '28%',
+          left:'70%'
+        }, 500, function() {
+          // Animation complete.
+        });    
+
+        $('.content').animate({
+          width: '70%'
+        }, 500, function() {
+          // Animation complete.
+        });
+    });
+    $('#csvdata_edit').click(function() {
+	$('#csvdata_options').animate({
+          height: 'toggle'
+        }, 500, function() {
+          // Animation complete.
+        });
+    });
+    $('#csvdata_newfile').click(function() {
+	$('#csvdata_newfile_upload_form').animate({
+	  height: 'toggle'
+	}, 500, function () {
+	  // Animation complete.
+	});
+    });
     })
   </script>
   

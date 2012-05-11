@@ -34,6 +34,9 @@ table td {
 table td:first-child {
   border: none;
 }
+#right_pane_container {
+  display:none;
+}
 #columns ul li, #iatifields ul li {
   list-style-type:none;
   margin:1px;
@@ -78,9 +81,11 @@ table td:first-child {
 .modeleditor .steps {
   position:fixed;
   width: 15em;
+  max-height:50%;
+  overflow:auto;
 }
 .modeleditor .modeltoggle {
-  width: 14em;
+  width: 13em;
   font-style:italic;
 }
 
@@ -214,6 +219,11 @@ h1 #model_title input {
   padding:4px;
   margin:0px;
 }
+.save_model_spacer {
+  width:100%;
+  display:inline-block;
+  line-height:2px;
+}
 .save_model span {
   width:15em;
   display:block;
@@ -224,8 +234,9 @@ h1 #model_title input {
   color:#ffffff;
   width:100%;
   display:inline-block;
-  padding:4px 4px 4px 8px;
+  padding:4px 0px 4px 0px;
   cursor:pointer;
+  text-align:center;
 }
 .save_model a:hover {
   background-color:#000000;

@@ -1,9 +1,30 @@
 {% extends "layout.html" %}
 {% block body %}
+
+
+<div id="frontpage_left">
 <div id="login_register_forms_introbox">
-<h2>CSV-IATI Converter</h2>
 <p>Upload a spreadsheet of aid data and convert it to <a href="http://iatistandard.org">IATI-XML</a>.</p>
 <p>To get started, login or register below. (It's free.)</p>
+</div>
+<div id="frontpage_right">
+<div class="box_white">
+	<div class="frontpage_icon">
+		<span class="frontpage_icon_img"><img src="{{ url_for('static', filename='images/doc_csv.png') }}"></span><span class="frontpage_icon_text">Take your CSV file.</span>
+	</div>
+<!--
+	<div class="frontpage_icon">
+		<span class="frontpage_icon_img"><img src="{{ url_for('static', filename='images/upload.png') }}"></span><span class="frontpage_icon_text">Upload it</span>
+	</div>
+-->
+	<div class="frontpage_icon">
+		<span class="frontpage_icon_img"><img src="{{ url_for('static', filename='images/convert.png') }}"></span><span class="frontpage_icon_text">Convert it.</span>
+	</div>
+
+	<div class="frontpage_icon">
+		<span class="frontpage_icon_img"><img src="{{ url_for('static', filename='images/doc_iati.png') }}"></span><span class="frontpage_icon_text">Get IATI XML data.</span>
+	</div>
+</div>
 </div>
 <div id="login_register_forms_container">
 <fieldset name="login">
@@ -36,5 +57,6 @@
 </dl>
 </form>
 </fieldset>
+</div>
 </div>
 {% endblock %}

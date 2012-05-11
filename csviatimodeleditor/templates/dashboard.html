@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
-<p>Hello, {{user_name}}. | <a href="{{url_for('user', id=user_id)}}">Edit your profile</a> | {% if admin %}<a href="{{url_for('user')}}">Edit other users</a> | {%endif%} <a href="{{url_for('logout')}}">Logout</a></p>
 <h1>Dashboard</h1>
 <p>&nbsp;</p>
 <div class="clearer"> </div>

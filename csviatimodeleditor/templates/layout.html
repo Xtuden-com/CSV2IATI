@@ -4,18 +4,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
-  <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>
+  <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='jquery.tmpl.min.js') }}"></script>
   <title>IATI Spreadsheet Converter</title>
   </head>
 <link href="{{ url_for('static', filename='style.css') }}" media="screen" rel="stylesheet" type="text/css" />
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/smoothness/jquery-ui.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='jquery-ui.css') }}" media="screen" rel="stylesheet" type="text/css" />
 <body>
 <div id="page-wrapper">
-<div id="beta">Still in very early development. Please report bugs.</div>
+<!--<div id="beta">Still in very early development. Please report bugs.</div>-->
 <div id="content">
-<h1 class="title">IATI Spreadsheet Converter</h1>
-<hr class="title" />	
+<h1 class="title"><span>IATI Spreadsheet Converter</span></h1>
+<hr class="title" />
+{% if logged_in %}
+<div class="nav">
+<ul>
+	<li>Hello, {{user_name}}.</li>
+	{% if not_home %}<li><a href="{{url_for('index')}}">Dashboard</a></li>{%endif%}
+	<li><a href="{{url_for('user', id=user_id)}}">Edit your profile</a></li>
+	{% if admin %}<li><a href="{{url_for('user')}}">Edit other users</a></li>{%endif%}
+	<li><a href="{{url_for('logout')}}">Logout</a></li>
+</ul>
+</div>
+<div class="clearer">&nbsp;</div>
+{% endif %}
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     <ul class=flashes>

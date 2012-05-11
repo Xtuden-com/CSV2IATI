@@ -1,26 +1,28 @@
 (function() {
-  var DEFAULT_FIELD_SETUP, DEFAULT_MODEL, DIMENSION_META, Delegator, DimensionWidget, DimensionsWidget, FIELDS_META, ModelEditor, SAMPLE_DATA, UniqueKeyWidget, Widget, util,
-    __slice = Array.prototype.slice,
-    __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
-    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
+  var DEFAULT_FIELD_SETUP, DEFAULT_MODEL, DIMENSION_META, Delegator, DimensionWidget, DimensionsWidget, FIELDS_META, ModelEditor, SAMPLE_DATA, UniqueKeyWidget, Widget, util;
+  var __slice = Array.prototype.slice, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  }, __indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  };
   Delegator = (function() {
-
     Delegator.prototype.events = {};
-
     Delegator.prototype.options = {};
-
     Delegator.prototype.element = null;
-
     function Delegator(element, options) {
       this.options = $.extend(true, {}, this.options, options);
       this.element = $(element);
       this.on = this.subscribe;
       this.addEvents();
     }
-
     Delegator.prototype.addEvents = function() {
       var event, functionName, sel, selector, _i, _ref, _ref2, _results;
       _ref = this.events;
@@ -32,15 +34,15 @@
       }
       return _results;
     };
-
     Delegator.prototype.addEvent = function(bindTo, event, functionName) {
-      var closure, isBlankSelector,
-        _this = this;
-      closure = function() {
-        return _this[functionName].apply(_this, arguments);
-      };
+      var closure, isBlankSelector;
+      closure = __bind(function() {
+        return this[functionName].apply(this, arguments);
+      }, this);
       isBlankSelector = typeof bindTo === 'string' && bindTo.replace(/\s+/g, '') === '';
-      if (isBlankSelector) bindTo = this.element;
+      if (isBlankSelector) {
+        bindTo = this.element;
+      }
       if (typeof bindTo === 'string') {
         this.element.delegate(bindTo, event, closure);
       } else {
@@ -52,19 +54,16 @@
       }
       return this;
     };
-
     Delegator.prototype.isCustomEvent = function(event) {
       var natives;
       natives = "blur focus focusin focusout load resize scroll unload click dblclick\nmousedown mouseup mousemove mouseover mouseout mouseenter mouseleave\nchange select submit keydown keypress keyup error".split(/[^a-z]+/);
       event = event.split('.')[0];
       return $.inArray(event, natives) === -1;
     };
-
     Delegator.prototype.publish = function() {
       this.element.triggerHandler.apply(this.element, arguments);
       return this;
     };
-
     Delegator.prototype.subscribe = function(event, callback) {
       var closure;
       closure = function() {
@@ -74,16 +73,12 @@
       this.element.bind(event, closure);
       return this;
     };
-
     Delegator.prototype.unsubscribe = function() {
       this.element.unbind.apply(this.element, arguments);
       return this;
     };
-
     return Delegator;
-
   })();
-
   $.plugin = function(name, object) {
     return jQuery.fn[name] = function(options) {
       var args;
@@ -100,7 +95,6 @@
       });
     };
   };
-
   $.a2o = function(ary) {
     var obj, walk;
     obj = {};
@@ -108,12 +102,16 @@
       var key;
       key = path[0];
       if (path.length === 2 && path[1] === '') {
-        if ($.type(o[key]) !== 'array') o[key] = [];
+        if ($.type(o[key]) !== 'array') {
+          o[key] = [];
+        }
         return o[key].push(value);
       } else if (path.length === 1) {
         return o[key] = value;
       } else {
-        if ($.type(o[key]) !== 'object') o[key] = {};
+        if ($.type(o[key]) !== 'object') {
+          o[key] = {};
+        }
         return walk(o[key], path.slice(1), value);
       }
     };
@@ -134,13 +132,11 @@
     });
     return obj;
   };
-
   $.fn.serializeObject = function() {
     var ary;
     ary = this.serializeArray();
     return $.a2o(ary);
   };
-
   SAMPLE_DATA = {
     "Project ID": "AGNA64",
     "Title Project": "WE CAN end violence against women in Afghanistan",
@@ -161,7 +157,6 @@
     " Revised Budget  in current and future years (£) ": "-0",
     "Total Value all years (£)": " 135,433 "
   };
-
   DEFAULT_MODEL = {
     organisation: {},
     mapping: {
@@ -186,6 +181,35 @@
         'iati-field': 'description',
         label: 'Description',
         fields: {
+          'text': {}
+        }
+      },
+      'activity-status': {
+        datatype: 'compound',
+        'iati-field': 'activity-status',
+        label: 'Activity Status',
+        fields: {
+          'code': {},
+          'text': {}
+        }
+      },
+      'activity-date-start': {
+        datatype: 'compound',
+        label: 'Activity Start Date',
+        'iati-field': 'activity-date',
+        fields: {
+          'type': {},
+          'iso-date': {},
+          'text': {}
+        }
+      },
+      'activity-date-end': {
+        datatype: 'compound',
+        label: 'Activity End Date',
+        'iati-field': 'activity-date',
+        fields: {
+          'type': {},
+          'iso-date': {},
           'text': {}
         }
       },
@@ -336,7 +360,6 @@
       }
     }
   };
-
   DEFAULT_FIELD_SETUP = {
     'iati-identifier': {
       datatype: 'compound',
@@ -642,7 +665,6 @@
       }
     }
   };
-
   DIMENSION_META = {
     'iati-identifier': {
       fixedDataType: true,
@@ -713,17 +735,14 @@
       helpText: 'Details of each financial transaction by the donor.'
     }
   };
-
   FIELDS_META = {
     label: {
       required: true
     }
   };
-
   String.prototype.dasherize = function() {
     return this.replace(/_/g, "-");
   };
-
   util = {
     flattenObject: function(obj) {
       var flat, pathStr, walk;
@@ -750,12 +769,7 @@
           value = o[key];
           newpath = $.extend([], path);
           newpath.push(key);
-          if ($.type(value) === 'object') {
-            _results.push(walk(newpath, value));
-          } else {
-            if ($.type(value) === 'array') newpath.push('');
-            _results.push(flat[pathStr(newpath)] = value);
-          }
+          _results.push($.type(value) === 'object' ? walk(newpath, value) : ($.type(value) === 'array' ? newpath.push('') : void 0, flat[pathStr(newpath)] = value));
         }
         return _results;
       };
@@ -763,33 +777,22 @@
       return flat;
     }
   };
-
-  Widget = (function(_super) {
-
-    __extends(Widget, _super);
-
+  Widget = (function() {
+    __extends(Widget, Delegator);
     function Widget() {
       Widget.__super__.constructor.apply(this, arguments);
     }
-
     Widget.prototype.deserialize = function(data) {};
-
     return Widget;
-
-  })(Delegator);
-
-  UniqueKeyWidget = (function(_super) {
-
-    __extends(UniqueKeyWidget, _super);
-
+  })();
+  UniqueKeyWidget = (function() {
+    __extends(UniqueKeyWidget, Widget);
     function UniqueKeyWidget() {
       UniqueKeyWidget.__super__.constructor.apply(this, arguments);
     }
-
     UniqueKeyWidget.prototype.events = {
       'span click': 'onKeyClick'
     };
-
     UniqueKeyWidget.prototype.deserialize = function(data) {
       var availableKeys, fk, fv, k, uniq, v, _ref, _ref2, _ref3;
       uniq = ((_ref = data['dataset']) != null ? _ref['unique_keys'] : void 0) || [];
@@ -821,17 +824,14 @@
       })();
       return this.render();
     };
-
     UniqueKeyWidget.prototype.promptAddDimensionNamed = function(props, thename) {
       return false;
     };
-
     UniqueKeyWidget.prototype.render = function() {
       return this.element.html($.tmpl('tpl_unique_keys', {
         'keys': this.keys
       }));
     };
-
     UniqueKeyWidget.prototype.onKeyClick = function(e) {
       var idx;
       idx = this.element.find('span').index(e.currentTarget);
@@ -839,15 +839,10 @@
       this.render();
       return this.element.parents('form').first().change();
     };
-
     return UniqueKeyWidget;
-
-  })(Widget);
-
-  DimensionWidget = (function(_super) {
-
-    __extends(DimensionWidget, _super);
-
+  })();
+  DimensionWidget = (function() {
+    __extends(DimensionWidget, Widget);
     DimensionWidget.prototype.events = {
       '.add_field click': 'onAddFieldClick',
       '.field_switch_constant click': 'onFieldSwitchConstantClick',
@@ -860,20 +855,17 @@
       '.iatifield change': 'onIATIFieldChange',
       '.column change': 'onColumnChange'
     };
-
     function DimensionWidget(name, container, options) {
       this.formFieldRequired2 = __bind(this.formFieldRequired2, this);
       this.formFieldRequired = __bind(this.formFieldRequired, this);
       this.formFieldTransactionPrefix = __bind(this.formFieldTransactionPrefix, this);
-      this.formFieldPrefix = __bind(this.formFieldPrefix, this);
-      var el;
+      this.formFieldPrefix = __bind(this.formFieldPrefix, this);      var el;
       this.name = name;
       el = $("<fieldset class='dimension' data-dimension-name='" + this.name + "'>            </fieldset>").appendTo(container);
       DimensionWidget.__super__.constructor.call(this, el, options);
       this.id = "" + (this.element.parents('.modeleditor').attr('id')) + "_dim_" + this.name;
       this.element.attr('id', this.id);
     }
-
     DimensionWidget.prototype.deserialize = function(data) {
       var formObj, k, v, _ref, _ref2, _ref3, _results;
       this.data = ((_ref = data['mapping']) != null ? _ref[this.name] : void 0) || {};
@@ -901,17 +893,18 @@
       }
       return _results;
     };
-
     DimensionWidget.prototype.formFieldPrefix = function(fieldName) {
       return "mapping[" + this.name + "][fields][" + fieldName + "]";
     };
-
     DimensionWidget.prototype.formFieldTransactionPrefix = function(fieldName, transaction_field, transaction_part) {
-      if (transaction_field == null) transaction_field = '';
-      if (transaction_part == null) transaction_part = '';
+      if (transaction_field == null) {
+        transaction_field = '';
+      }
+      if (transaction_part == null) {
+        transaction_part = '';
+      }
       return "mapping[" + this.name + "][tdatafields][" + transaction_field + "][fields][" + fieldName + "]";
     };
-
     DimensionWidget.prototype.formFieldRequired = function(fieldName, fieldParent) {
       var _ref;
       if (fieldParent) {
@@ -920,7 +913,6 @@
         return false;
       }
     };
-
     DimensionWidget.prototype.formFieldRequired2 = function(fieldName, fieldParent, transactionField) {
       var _ref, _ref2, _ref3, _ref4;
       if (transactionField) {
@@ -953,7 +945,6 @@
         }
       }
     };
-
     DimensionWidget.prototype.onAddFieldClick = function(e) {
       var name, row;
       name = prompt("Field name:").trim();
@@ -962,7 +953,6 @@
       this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
       return false;
     };
-
     DimensionWidget.prototype.onDeleteDimensionClick = function(e) {
       var theform;
       theform = this.element.parents('form').first();
@@ -970,7 +960,6 @@
       theform.change();
       return false;
     };
-
     DimensionWidget.prototype.onDeleteTDataFieldClick = function(e) {
       var theform;
       theform = this.element.parents('form').first();
@@ -978,7 +967,6 @@
       theform.change();
       return false;
     };
-
     DimensionWidget.prototype.onColumnChange = function(e) {
       var construct_iatifield, curDimension, dimension_data, dimension_name, thiscolumn;
       curDimension = $(e.currentTarget).parents('fieldset').first();
@@ -991,7 +979,6 @@
       this.element.parents('form').first().change();
       return false;
     };
-
     DimensionWidget.prototype.doIATIFieldSample = function(dimension_name, dimension_data, thiscolumn) {
       var construct_iatifield, k, samplevalue, textdata, v, _ref;
       construct_iatifield = '<' + dimension_data[dimension_name]['iati-field'];
@@ -1020,7 +1007,6 @@
       }
       return construct_iatifield;
     };
-
     DimensionWidget.prototype.onIATIFieldChange = function(e) {
       var k, row, thisfield, thisfieldsfields, v;
       this.element.parents('form').first().change();
@@ -1035,13 +1021,11 @@
       }
       return false;
     };
-
     DimensionWidget.prototype.onFieldRemoveClick = function(e) {
       $(e.currentTarget).parents('tr').first().remove();
       this.element.parents('form').first().change();
       return false;
     };
-
     DimensionWidget.prototype.onFieldSwitchConstantClick = function(e) {
       var curDimension, curRow, iatiField, row;
       curRow = $(e.currentTarget).parents('tr').first();
@@ -1052,7 +1036,6 @@
       this.element.parents('form').first().change();
       return false;
     };
-
     DimensionWidget.prototype.onFieldSwitchColumnClick = function(e) {
       var curDimension, curRow, iatiField, row;
       curRow = $(e.currentTarget).parents('tr').first();
@@ -1064,7 +1047,6 @@
       this.element.parents('form').first().change();
       return false;
     };
-
     DimensionWidget.prototype.onFieldSwitchConstantClickTransaction = function(e) {
       var curDimension, curDimensionPart, curRow, iatiField, newrow;
       curRow = $(e.currentTarget).parents('tr').first();
@@ -1077,7 +1059,6 @@
       this.element.parents('form').first().change();
       return false;
     };
-
     DimensionWidget.prototype.onFieldSwitchColumnClickTransaction = function(e) {
       var curDimension, curDimensionPart, curRow, iatiField, newrow;
       curRow = $(e.currentTarget).parents('tr').first();
@@ -1090,18 +1071,17 @@
       this.element.parents('form').first().change();
       return false;
     };
-
     DimensionWidget.prototype.promptAddDimensionNamed = function(props, thename) {
       return false;
     };
-
     DimensionWidget.prototype.dataSample = function(columnName) {
       return SAMPLE_DATA[columnName];
     };
-
     DimensionWidget.prototype._makeFieldRow = function(name, dimensionName, iatiField, constant) {
       var tplName;
-      if (constant == null) constant = false;
+      if (constant == null) {
+        constant = false;
+      }
       tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
       return $.tmpl(tplName, {
         'fieldName': name,
@@ -1111,10 +1091,11 @@
         'required': this.formFieldRequired
       });
     };
-
     DimensionWidget.prototype._makeFieldRowTransaction = function(fieldname, transaction_field, dimension_name, iatiField, constant) {
       var tplName;
-      if (constant == null) constant = false;
+      if (constant == null) {
+        constant = false;
+      }
       tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
       return $.tmpl(tplName, {
         'fieldName': fieldname,
@@ -1126,10 +1107,11 @@
         'iatiField': iatiField
       });
     };
-
     DimensionWidget.prototype._makeFieldRowUpdate = function(name, thisfield, requiredvar, constant) {
       var tplName;
-      if (constant == null) constant = false;
+      if (constant == null) {
+        constant = false;
+      }
       tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
       return $.tmpl(tplName, {
         'fieldName': name,
@@ -1137,21 +1119,15 @@
         'required': this.formFieldRequired2
       });
     };
-
     return DimensionWidget;
-
-  })(Widget);
-
-  DimensionsWidget = (function(_super) {
-
-    __extends(DimensionsWidget, _super);
-
+  })();
+  DimensionsWidget = (function() {
+    __extends(DimensionsWidget, Delegator);
     DimensionsWidget.prototype.events = {
       '.iati_field_add change': 'onAddIATIFieldClick',
       '.add_value_dimension click': 'onAddValueDimensionClick',
       '.add_compound_dimension click': 'onAddCompoundDimensionClick'
     };
-
     function DimensionsWidget(element, options) {
       DimensionsWidget.__super__.constructor.apply(this, arguments);
       this.widgets = [];
@@ -1159,14 +1135,12 @@
       this.element.trigger('doFieldSelectors', 'iatifield');
       this.element.trigger('doFieldSelectors', 'column');
     }
-
     DimensionsWidget.prototype.addDimension = function(name) {
       var w;
       w = new DimensionWidget(name, this.dimsEl);
       this.widgets.push(w);
       return w;
     };
-
     DimensionsWidget.prototype.removeDimension = function(name) {
       var idx, w, _i, _len, _ref;
       idx = null;
@@ -1178,12 +1152,15 @@
           break;
         }
       }
-      if (idx !== null) return this.widgets.splice(idx, 1)[0].element.remove();
+      if (idx !== null) {
+        return this.widgets.splice(idx, 1)[0].element.remove();
+      }
     };
-
     DimensionsWidget.prototype.deserialize = function(data) {
       var dims, name, obj, toRemove, widget, _i, _j, _len, _len2, _ref, _results;
-      if (this.ignoreParent) return;
+      if (this.ignoreParent) {
+        return;
+      }
       dims = data['mapping'] || {};
       toRemove = [];
       _ref = this.widgets;
@@ -1207,11 +1184,12 @@
       }
       return _results;
     };
-
     DimensionsWidget.prototype.promptAddDimension = function(props) {
       var data, iati_field, name;
       name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):");
-      if (!name) return false;
+      if (!name) {
+        return false;
+      }
       data = {
         'mapping': {}
       };
@@ -1222,33 +1200,31 @@
       data['mapping'][name]['iati-field'] = iati_field;
       return this.addDimension(name.trim()).deserialize(data);
     };
-
     DimensionsWidget.prototype.promptAddDimensionNamed = function(thename, props) {
       var data, name;
       alert("Column \"" + thename + "\" has been added.");
       name = thename;
-      if (!name) return false;
+      if (!name) {
+        return false;
+      }
       data = {
         'mapping': {}
       };
       data['mapping'][name] = props;
       return this.addDimension(name.trim()).deserialize(data);
     };
-
     DimensionsWidget.prototype.onAddValueDimensionClick = function(e) {
       this.promptAddDimension({
         'datatype': 'value'
       });
       return false;
     };
-
     DimensionsWidget.prototype.onAddCompoundDimensionClick = function(e) {
       this.promptAddDimension({
         'datatype': 'compound'
       });
       return false;
     };
-
     DimensionsWidget.prototype.onAddIATIFieldClick = function(e) {
       var thefield;
       thefield = $(e.currentTarget).val();
@@ -1259,20 +1235,14 @@
       $(e.currentTarget).val('');
       return false;
     };
-
     return DimensionsWidget;
-
-  })(Delegator);
-
-  ModelEditor = (function(_super) {
-
-    __extends(ModelEditor, _super);
-
+  })();
+  ModelEditor = (function() {
+    __extends(ModelEditor, Delegator);
     ModelEditor.prototype.widgetTypes = {
       '.unique_keys_widget': UniqueKeyWidget,
       '.dimensions_widget': DimensionsWidget
     };
-
     ModelEditor.prototype.events = {
       'multipleSectorsRequest': 'onMultipleSectorsSetup',
       'modelChange': 'onModelChange',
@@ -1290,7 +1260,6 @@
       '#iatifields .availablebtn click': 'onIATIFieldsAvailableClick',
       '#iatifields .allbtn click': 'onIATIFieldsAllClick'
     };
-
     function ModelEditor(element, options) {
       var ctor, e, model_data, selector, x, _i, _len, _ref, _ref2;
       ModelEditor.__super__.constructor.apply(this, arguments);
@@ -1342,19 +1311,16 @@
       this.element.trigger('modelChange');
       this.setStep(0);
     }
-
     ModelEditor.prototype.setStep = function(s) {
       $(this.element).find('.steps > ul > li').removeClass('active').eq(s).addClass('active');
       return $(this.element).find('.forms div.formpart').hide().eq(s).show();
     };
-
     ModelEditor.prototype.onStepClick = function(e) {
       var idx;
       idx = this.element.find('.steps > ul > li').index(e.currentTarget);
       this.setStep(idx);
       return false;
     };
-
     ModelEditor.prototype.onAddDataFieldClick = function(e) {
       var thevar, w, _i, _len, _ref;
       thevar = $(e.currentTarget).text();
@@ -1371,7 +1337,6 @@
       this.element.trigger('modelChange');
       return $(e.currentTarget).removeClass('add_data_field available').addClass('unavailable');
     };
-
     ModelEditor.prototype.onShowDebugClick = function(e) {
       if ($('#debug').hasClass('debug-shown')) {
         $('#debug').slideUp().removeClass('debug-shown');
@@ -1380,9 +1345,10 @@
       }
       return false;
     };
-
     ModelEditor.prototype.onFormChange = function(e) {
-      if (this.ignoreFormChange) return;
+      if (this.ignoreFormChange) {
+        return;
+      }
       this.data = this.form.serializeObject();
       this.form.find('.column').each(function() {
         var columnname;
@@ -1399,31 +1365,26 @@
       this.element.trigger('modelChange');
       return this.ignoreFormChange = false;
     };
-
     ModelEditor.prototype.onColumnsAvailableClick = function(e) {
       $('#columns ul').addClass('hideunavailable');
       $('#columns .allbtn').removeClass('fieldsbuttons-selected');
       return $('#columns .availablebtn').addClass('fieldsbuttons-selected');
     };
-
     ModelEditor.prototype.onColumnsAllClick = function(e) {
       $('#columns ul').removeClass('hideunavailable');
       $('#columns .availablebtn').removeClass('fieldsbuttons-selected');
       return $('#columns .allbtn').addClass('fieldsbuttons-selected');
     };
-
     ModelEditor.prototype.onIATIFieldsAvailableClick = function(e) {
       $('#iatifields ul').addClass('hideunavailable');
       $('#iatifields .allbtn').removeClass('fieldsbuttons-selected');
       return $('#iatifields .availablebtn').addClass('fieldsbuttons-selected');
     };
-
     ModelEditor.prototype.onIATIFieldsAllClick = function(e) {
       $('#iatifields ul').removeClass('hideunavailable');
       $('#iatifields .availablebtn').removeClass('fieldsbuttons-selected');
       return $('#iatifields .allbtn').addClass('fieldsbuttons-selected');
     };
-
     ModelEditor.prototype.onDoFieldSelectors = function(e) {
       $('#' + e + 's ul li code').each(function() {
         if ($(this).hasClass('unavailable')) {
@@ -1442,7 +1403,6 @@
         });
       });
     };
-
     ModelEditor.prototype.onFormSubmit = function(e) {
       var api_address, csv_file, model_file;
       e.preventDefault();
@@ -1459,7 +1419,6 @@
       }, "json");
       return false;
     };
-
     ModelEditor.prototype.onModelChange = function() {
       var dimNames, k, n, v, w, _i, _len, _ref, _ref2;
       _ref = util.flattenObject(this.data);
@@ -1487,13 +1446,12 @@
         _results = [];
         for (_j = 0, _len2 = dimNames.length; _j < _len2; _j++) {
           n = dimNames[_j];
-          _results.push('<li><a href="#' + ("m1_dim_" + n) + '">' + ("" + n + "</a>"));
+          _results.push('<li><a href="#' + ("m1_dim_" + n) + '">' + ("" + this.data['mapping'][n]['label'] + "</a>"));
         }
         return _results;
-      })()).join('\n'));
+      }).call(this)).join('\n'));
       return $('#debug').text(JSON.stringify(this.data, null, 2));
     };
-
     ModelEditor.prototype.onFillColumnsRequest = function(elem) {
       var x;
       return $(elem).html(((function() {
@@ -1507,7 +1465,6 @@
         return _results;
       }).call(this)).join('\n'));
     };
-
     ModelEditor.prototype.onFillIATIfieldsRequest = function(elem) {
       var x;
       return $(elem).html(((function() {
@@ -1521,13 +1478,8 @@
         return _results;
       }).call(this)).join('\n'));
     };
-
     return ModelEditor;
-
-  })(Delegator);
-
+  })();
   $.plugin('modelEditor', ModelEditor);
-
   this.ModelEditor = ModelEditor;
-
 }).call(this);

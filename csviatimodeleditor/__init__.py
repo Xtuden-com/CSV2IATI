@@ -39,21 +39,33 @@ class IATIModel(db.Model):
     model_owner = db.Column(UnicodeText)
     model_name = db.Column(UnicodeText)
     model_content = db.Column(UnicodeText)
-    csv_headers = db.Column(UnicodeText)
-    csv_file = db.Column(UnicodeText)
-    csv_encoding = db.Column(UnicodeText)
+    csv_id = db.Column(UnicodeText)
     model_created = db.Column(Date)
     
-    def __init__(self, model_name, model_owner, filename,csv_headers,csv_encoding):
+    def __init__(self, model_name, model_owner, csv_id): 
         self.model_name = model_name
         self.model_owner = model_owner
         self.model_created = datetime.utcnow()
-        self.csv_file = filename
-        self.csv_headers = csv_headers
-        self.csv_encoding = csv_encoding
+	self.csv_id = csv_id
 
     def __repr__(self):
         return self.model_owner, self.id
+
+class CSVFile(db.Model):
+    id = db.Column(Integer, primary_key=True)
+    csv_headers = db.Column(UnicodeText)
+    csv_file = db.Column(UnicodeText)
+    csv_encoding = db.Column(UnicodeText)
+    csv_owner = db.Column(UnicodeText)
+
+    def __init__(self, csv_file, csv_headers, csv_encoding, csv_owner):
+        self.csv_file = csv_file
+        self.csv_headers = csv_headers
+        self.csv_encoding = csv_encoding
+        self.csv_owner = csv_owner
+
+    def __repr__(self):
+        return self.csv_file, self.id
 
 class User(db.Model):
     id = db.Column(Integer, primary_key=True)
@@ -79,13 +91,24 @@ class User(db.Model):
     def __repr__(self):
         return self.username, self.id, self.password
 
+def is_logged_in():
+    if ('username' in session):
+        return True
+    else:
+        return False
+
+def is_admin():
+    if (('username' in session) and ('admin' in session)):
+        return True
+    else:
+        return False
+
 @app.route("/")
 def index():
     if 'username' in session:
         user_id = session['user_id']
         models = IATIModel.query.filter_by(model_owner=user_id)
         if 'admin' in session:
-            admin = True
             all_users = User.query.all()
             all_models = []
             for user in all_users:
@@ -97,8 +120,7 @@ def index():
         else:
             all_models = ''
             all_users = ''
-            admin = False
-        return render_template('dashboard.html', username=escape(session['username']), user_id=escape(session['user_id']), user_name=escape(session['user_name']), user_models=models, admin=admin, models=all_models, users=all_users)
+        return render_template('dashboard.html', username=escape(session['username']), user_id=escape(session['user_id']), user_name=escape(session['user_name']), user_models=models, admin=is_admin(), logged_in=is_logged_in(), models=all_models, users=all_users)
     return render_template('form.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -167,7 +189,11 @@ def create_model():
                 user_id = session['user_id']
                 #filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
                 #the_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                newmodel = IATIModel(model_name, user_id, filename,csv_headers,csv_encoding)
+		newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
+		db.session.add(newcsvfile)
+		db.session.commit()
+		
+                newmodel = IATIModel(model_name, user_id, newcsvfile.id)
                 db.session.add(newmodel)
                 db.session.commit()
                 flash('Created your model', 'good')
@@ -187,8 +213,9 @@ def create_model():
 def csv_file(id='',filename=''):
     if (id and filename):
         getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-        if (filename==(getmodel.csv_file)):
-            thepath=os.path.join(app.config['UPLOAD_FOLDER'], getmodel.csv_file)
+	getcsv = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
+        if (filename==(getcsv.csv_file)):
+            thepath=os.path.join(app.config['UPLOAD_FOLDER'], getcsv.csv_file)
             thefile = (open(thepath, 'r')).read()
             return Response(thefile, mimetype='text/csv')
         else:
@@ -198,17 +225,78 @@ def csv_file(id='',filename=''):
         flash('No CSV file selected.','bad')
         return redirect(url_for('index'))
 
+@app.route('/model/<id>/change_csv/<csv_id>', methods=['GET'])
+@app.route('/model/<id>/change_csv/', methods=['POST'])
+def model_change_csv(id=id, csv_id=''):
+    if ('username' in session):
+        if (request.method == 'POST'):
+            csv_file = request.files['newcsvfile']
+            something = request.files['newcsvfile'].stream
+            filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
+            csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
+            the_csv = csv.DictReader(reopen_for_headers)
+            columnnames = the_csv.fieldnames
+            reopen_for_headers.close()
+            reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
+            
+            if not columnnames:
+                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad')
+                return redirect(url_for('model', id=id))
+                    
+            result = chardet.detect(reopen_for_decoding.read())
+            csv_encoding = result['encoding']
+            
+            csv_headers = json.dumps(columnnames,encoding=csv_encoding)
+
+            #csv_headers = ', '.join('"%s"' % unicode(header,csv_encoding) for header in columnnames)
+            if csv_file and allowed_file(csv_file.filename):
+                user_id = session['user_id']
+                newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
+                db.session.add(newcsvfile)
+                db.session.commit()
+                getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+                getmodel.csv_id = newcsvfile.id
+                db.session.add(getmodel)
+                db.session.commit()
+                flash('Uploaded new CSV file', 'good')
+                return redirect(url_for('model', id=id))
+            else:
+                flash('Could not upload your file.')
+        else:
+            #otherwise, just change it...
+            if (id and csv_id):
+                getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+                getcsv = CSVFile.query.filter_by(id=csv_id).first_or_404()
+                if (('admin' in session) or (((session['user_id'])==int(getmodel.model_owner)) and ((session['user_id'])==int(getcsv.csv_owner)))):
+                    # update IATIModel to use new CSVfile
+                    getmodel.csv_id = csv_id
+                    db.session.add(getmodel)
+                    db.session.commit()
+                    flash('Updated CSV file', 'good')
+                    return redirect(url_for('model', id=id))
+                else:
+                    flash("Sorry, you don't have permission to change that model or CSV file.", 'bad')
+                    return redirect(url_for('index'))
+            else:
+                flash("The model and/or CSV file were not supplied.", 'bad')
+                return redirect(url_for('index'))
+    else:
+        flash("Please log in.", 'bad')
+        return redirect(url_for('index'))
+
 @app.route('/model/convert/<id>')
 def model_convert(id=id):
     if ('username' in session):
         if (id):        
             getmodel = IATIModel.query.filter_by(id=id).first_or_404()
             if getmodel is not None:
+	        getcsvfile = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
                 if getmodel.model_content is not None:
                     import urllib
                     import urllib2
                     url = CONVERSION_API_SERVER
-                    values = {'csv_url' : url_for('csv_file',id=getmodel.id,filename=getmodel.csv_file,_external=True),
+                    values = {'csv_url' : url_for('csv_file',id=getmodel.id,filename=getcsvfile.csv_file,_external=True),
                               'model_url' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
 
                     data = urllib.urlencode(values)
@@ -248,18 +336,21 @@ def model(id='',responsetype=''):
                 return Response(getmodel.model_content, mimetype='application/json')
             else:
                 flash('That model has not been defined yet. Please map your dimensions using the browser.', 'bad')
+		return redirect(url_for('index'))
     if ('username' in session):
         if (id):
             if request.method == 'GET':
                 # Get model details        
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+		getcsv = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
+		getallcsv = CSVFile.query.filter_by(csv_owner=session['user_id'])
                 if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
-                    sd = json.loads(getmodel.csv_headers)
+                    sd = json.loads(getcsv.csv_headers)
                     if getmodel.model_content is not None:
                         model_content_real = getmodel.model_content
                     else:
                         model_content_real = ''
-                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=sd,csv_encoding=getmodel.csv_encoding,csv_file=getmodel.csv_file,model_created=str(getmodel.model_created))
+                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=sd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),all_csv_files=getallcsv)
                 else:
                     flash("You don't have permission to edit that model.", 'bad')
                     return redirect(url_for('index'))

@@ -39,6 +39,29 @@ DEFAULT_MODEL =
       label: 'Description'
       fields:
         'text': {}
+    'activity-status':
+      datatype: 'compound'
+      'iati-field':'activity-status'
+      label: 'Activity Status'
+      fields: 
+        'code': {}
+        'text': {}
+    'activity-date-start':
+      datatype: 'compound'
+      label: 'Activity Start Date'
+      'iati-field':'activity-date'
+      fields: 
+        'type': {}
+        'iso-date': {}
+        'text': {}
+    'activity-date-end':
+      datatype: 'compound'
+      label: 'Activity End Date'
+      'iati-field':'activity-date'
+      fields: 
+        'type': {}
+        'iso-date': {}
+        'text': {}
     'recipient-country':
       datatype: 'compound'
       'iati-field': 'recipient-country'
@@ -1015,7 +1038,7 @@ class ModelEditor extends Delegator
     # Update dimension list in sidebar
     dimNames = (k for k, v of @data['mapping'])
     @element.find('.steps ul.steps_dimensions').html(
-      ('<li><a href="#' + "m1_dim_#{n}" + '">' + "#{n}</a>" for n in dimNames).join('\n')
+      ('<li><a href="#' + "m1_dim_#{n}" + '">' + "#{@data['mapping'][n]['label']}</a>" for n in dimNames).join('\n')
     )
 
     $('#debug').text(JSON.stringify(@data, null, 2))
