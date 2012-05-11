@@ -26,6 +26,7 @@ APP_SECRET_KEY = Config.get('Environment','app_secret_key')
 APP_ADMIN_USERNAME = Config.get('Admin','username')
 APP_ADMIN_PASSWORD = Config.get('Admin','password')
 
+app = Flask(__name__)
 # Initialise the database
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
