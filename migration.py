@@ -92,7 +92,7 @@ class User(db.Model):
         return self.username, self.id, self.password
 
 def run_the_migration():
-    iatimodels = IATI_model.query.all()
+    iatimodels = IATIModel.query.all()
     for model in iatimodels:
 	filename = model.csv_file
         csv_headers = model.csv_headers
