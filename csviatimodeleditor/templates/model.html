@@ -2,7 +2,6 @@
 {% block body %}
 <link href="{{ url_for('static', filename='modelstyle.css') }}" media="screen" rel="stylesheet" type="text/css" />
 <link href="{{ url_for('static', filename='forms.css') }}" media="screen" rel="stylesheet" type="text/css" />
-<p><a href="{{url_for('index')}}">&laquo; Dashboard</a> | <a href="{{url_for('logout')}}">Logout</a></p>
 <div id="model_page_view">
   <div class="banner" style="width:100%;color:#365e93;">
   <h1>Model: <span id="model_title"><a>{{model_name}}</a></span> &raquo; Tell us about your data</h1>

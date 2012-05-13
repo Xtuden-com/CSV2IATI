@@ -20,7 +20,7 @@
 <div class="nav">
 <ul>
 	<li>Hello, {{user_name}}.</li>
-	{% if not_home %}<li><a href="{{url_for('index')}}">Dashboard</a></li>{%endif%}
+	<li><a href="{{url_for('index')}}">Dashboard</a></li>
 	<li><a href="{{url_for('user', id=user_id)}}">Edit your profile</a></li>
 	{% if admin %}<li><a href="{{url_for('user')}}">Edit other users</a></li>{%endif%}
 	<li><a href="{{url_for('logout')}}">Logout</a></li>

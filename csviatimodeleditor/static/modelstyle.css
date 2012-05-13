@@ -77,6 +77,10 @@ table td:first-child {
   clear: both;
   visibility: hidden;
 }
+#right_pane {
+  max-height:50%;
+  overflow:auto;
+}
 
 .modeleditor .steps {
   position:fixed;

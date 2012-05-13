@@ -6,7 +6,7 @@
 <div id="login_register_forms_container">
 <fieldset>
 <legend>Your existing models</legend>
-<ul>
+<ul class="model_ul">
 {% for model in user_models %}
         <li><span class="ui-icon ui-icon-folder-open iconfloat_left">&nbsp;</span><a href="{{url_for('model', id=model.id)}}">{{model.model_name}}</a></li>
 {% else %}
@@ -16,6 +16,8 @@
 </fieldset>
 <fieldset>
 <legend>Create new model</legend>
+<p>In order to convert your data to the IATI Standard, you need to create a "model" which explains how your data relates to the Standard.</p>
+<p>To get started, give your model a name and upload a spreadsheet of data.</p>
 <form action="{{url_for('create_model')}}" enctype="multipart/form-data" method="post" id="create_model_form">
 <dl>
 <dt>
@@ -37,6 +39,13 @@
 </dd>
 </dl>
 </form>
+<h2>Preconditions</h2>
+<ul>
+<li>The spreadsheet must be saved in the CSV format.</li>
+<li>All the data must be formatted according to the IATI Standard (e.g., all dates must be of the format <code>YYYY-MM-DD</code>)</li>
+<li>All codelists must be incorporated into the data as a separate column (e.g. all recipient countries should have a recipient country code)</li>
+<li>The data can have a maximum of one dimension of multiplicity per activity (e.g., multiple rows per sector, <b>or</b> mutliple rows per transaction, <b>or</b> multiple rows per recipient country, etc.).</li>
+</ul>
 </fieldset>
 {% if admin %}
 <div class="clearer">&nbsp;</div>

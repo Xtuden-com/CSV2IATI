@@ -103,6 +103,24 @@ def is_admin():
     else:
         return False
 
+def username():
+    if ('username' in session):
+        return escape(session['username'])
+    else:
+        return False
+
+def user_id():
+    if ('username' in session):
+        return escape(session['user_id'])
+    else:
+        return False
+
+def user_name():
+    if ('username' in session):
+        return escape(session['user_name'])
+    else:
+        return False
+
 @app.route("/")
 def index():
     if 'username' in session:
@@ -120,7 +138,7 @@ def index():
         else:
             all_models = ''
             all_users = ''
-        return render_template('dashboard.html', username=escape(session['username']), user_id=escape(session['user_id']), user_name=escape(session['user_name']), user_models=models, admin=is_admin(), logged_in=is_logged_in(), models=all_models, users=all_users)
+        return render_template('dashboard.html', username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in(), models=all_models, users=all_users, user_models=models)
     return render_template('form.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -350,7 +368,7 @@ def model(id='',responsetype=''):
                         model_content_real = getmodel.model_content
                     else:
                         model_content_real = ''
-                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=sd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),all_csv_files=getallcsv)
+                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=sd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),all_csv_files=getallcsv,username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
                 else:
                     flash("You don't have permission to edit that model.", 'bad')
                     return redirect(url_for('index'))
@@ -407,14 +425,14 @@ def user(id=''):
                     db.session.add(u)
                     db.session.commit()
                     flash('Updated user', 'good')
-                    return render_template('user.html', user=u, admin=admin)
+                    return render_template('user.html', user=u, admin=is_admin(), logged_in=is_logged_in())
                 else:
                     flash("You do not have permission to edit that user's details.", 'bad')
                     return redirect(url_for('index'))                
                 
         else:
             users = User.query.all()
-            return render_template('users.html', users=users)
+            return render_template('users.html', users=users,admin=is_admin(), logged_in=is_logged_in())
     else:
         flash('Please log in.', 'bad')
         return redirect(url_for('index'))

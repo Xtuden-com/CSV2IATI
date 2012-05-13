@@ -19,6 +19,10 @@ pre {
   font-size: 11px;
 }
 
+li {
+  list-style-type:square;
+}
+
 a { color: #365e93; }
 a:visited { color: #365e93; }
 a:hover { text-decoration:none; color: #fff; background-color:#365e93; }
@@ -243,10 +247,10 @@ fieldset {
 #login_register_forms_container fieldset p {
     padding:2px;
 }
-#login_register_forms_container ul li {
+#login_register_forms_container ul.model_ul li {
     list-style-type:none;
 }
-#login_register_forms_container ul {
+#login_register_forms_container ul.model_ul {
     padding-left:0px;
 }
 #login_register_forms_container ul ul {
