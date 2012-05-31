@@ -6,40 +6,34 @@ This repository shows the CSV-IATI Model Editor, which will help you to create a
 
 Clone the repository
 
-::
 
     $ git clone git://github.com/markbrough/CSV-IATI-Converter.modeleditor.git
 
 Change into the directory and create a virtual environment (``virtualenv``)
 
-::
 
     $ cd CSV-IATI-Converter.modeleditor
     $ virtualenv --no-site-packages ./pyenv
 
 Now activate the environment:
 
-::
 
     $ source ./pyenv/bin/activate
 
 Install dependencies:
 
-::
 
     $ pip install -r requirements.txt
 
-Copy the configuration templates:
+Copy the configuration templates (must be installed in ``/usr/sites``):
 
-::
 
-    $ cp icconfig.ini.tmpl /var/www/icconfig.ini
+    $ cp icconfig.ini.tmpl /usr/sites/icconfig.ini
 
 Edit the configuration files and make sure that you have set a valid database URL. In production mode, remember to set the absolute path to the database.
 
 Then run the application. In a local instance you can just do:
 
-::
 
     $ cd csviatimodeleditor
     $ python __init__.py
@@ -48,28 +42,30 @@ Then run the application. In a local instance you can just do:
 
 Install mod_wsgi
 
-::
     
     $ apt-get install libapache2-mod-wsgi
 
-Copy csviati.wsgi from the main directory to your web server default directory, e.g. /var/www
+Copy csviati.wsgi from the main directory to the appropriate folder in your web server directory, e.g. ``/var/www/csviatimodel``
 
-::
     
-    $ cp csviatimodel.wsgi /var/www
+    $ cp csviatimodel.wsgi /var/www/csviatimodel/csviatimodel.wsgi
 
 Edit the file to make sure the paths are correct for your web server
 
+
+Create a symlink from this folder to the static files folder in your installation directory, so that they can be accessed by the web server:
+
+    
+    $ ln -s /PATH_TO_YOUR_MODELEDITOR_FILES/CSV-IATI-Converter.modeleditor/csviatimodeleditor/static /var/www/csviatimodel/static
+
+
 Set up your Apache configuration files. You can do this easily by copying the default file:
 
-::
     
     $ cd /etc/apache2/sites-available/
     $ cp default csviati
 
 Then edit the configuration to something like:
-
-::
     
     <VirtualHost *:80>
         ServerAdmin webmaster@localhost
@@ -83,10 +79,11 @@ Then edit the configuration to something like:
 
         CustomLog /var/log/apache2/access.log combined
 
-        WSGIDaemonProcess csviatimodel user=user1 group=group1 threads=5
-        WSGIScriptAlias /csviatimodel /var/www/csviatimodel/csviatimodel.wsgi
+        WSGIDaemonProcess csviatimodel user=user__www group=group1 threads=5
+        WSGIScriptAlias /csviatimodel /var/www/csviatimodel/wsgi.py
 
         Alias /csviatimodel/static/ "/var/www/csviatimodel/static/"
+
 
         <Directory /var/www/csviatimodel>
             Options Indexes FollowSymLinks Multiviews
@@ -100,15 +97,13 @@ Then edit the configuration to something like:
 
 Disable the default site and enable your new site
 
-::
     
-    $ a2dissite default && a2ensite csviati
+    $ sudo a2dissite default && a2ensite csviati
 
 Reload Apache:
 
-::
     
-    $ /etc/init.d/apache2 reload
+    $ sudo /etc/init.d/apache2 reload
     
 # Troubleshooting:
 
