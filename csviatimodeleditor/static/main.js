@@ -198,7 +198,10 @@
         label: 'Activity Start Date',
         'iati-field': 'activity-date',
         fields: {
-          'type': {},
+          'type': {
+            'constant': 'start-planned',
+            'datatype': 'constant'
+          },
           'iso-date': {},
           'text': {}
         }
@@ -208,7 +211,10 @@
         label: 'Activity End Date',
         'iati-field': 'activity-date',
         fields: {
-          'type': {},
+          'type': {
+            'constant': 'end-planned',
+            'datatype': 'constant'
+          },
           'iso-date': {},
           'text': {}
         }
@@ -1270,7 +1276,7 @@
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           x = _ref[_i];
           if (x !== '') {
-            _results.push("<option value='" + x + "'>Multiple rows per " + x + "</option>");
+            _results.push("<option value='" + x + "'>Multiple " + x + " rows per activity</option>");
           }
         }
         return _results;

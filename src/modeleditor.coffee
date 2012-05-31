@@ -51,7 +51,9 @@ DEFAULT_MODEL =
       label: 'Activity Start Date'
       'iati-field':'activity-date'
       fields: 
-        'type': {}
+        'type':
+            'constant': 'start-planned'
+            'datatype': 'constant'
         'iso-date': {}
         'text': {}
     'activity-date-end':
@@ -59,7 +61,9 @@ DEFAULT_MODEL =
       label: 'Activity End Date'
       'iati-field':'activity-date'
       fields: 
-        'type': {}
+        'type':
+            'constant': 'end-planned'
+            'datatype': 'constant'
         'iso-date': {}
         'text': {}
     'recipient-country':
@@ -894,7 +898,7 @@ class ModelEditor extends Delegator
     
     
     $('#multiple_rows_selector').html(
-      "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple rows per #{x}</option>" for x in @options.iatifields when x isnt '').join('\n')
+      "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple #{x} rows per activity</option>" for x in @options.iatifields when x isnt '').join('\n')
     )
     
     if (@options.model_data)

@@ -148,8 +148,6 @@
                   <dd>
                   <select name="organisation[data-structure][multiple]" id="multiple_rows_selector">
                   <option value="">One row per activity</option>
-                  <option value="sector">Multiple rows per sector</option>
-                  <option value="transaction">Multiple rows per transaction</option>
                   </select>
                   <dd class='hints'>
                     <p>How is your data structured? You can have one row per activity, or multiple rows per activity. 
@@ -157,7 +155,7 @@
                     (presumably your project ID) to group your projects together.</p>
                     <p>Most of the activity information will be taken from one row in your CSV file. Additional rows will 
                     be used to construct multiple instances of the field you select above.</p>
-                    <p>For example, if you select <code>Multiple rows per sector</code>, then each row with the same 
+                    <p>For example, if you select <code>Multiple sector rows per activity</code>, then each row with the same 
                     <code>iati-identifier</code> will create a new <code>sector</code>, which will be defined by whatever 
                     you state as the sector in your dimensions mapping.</p>
                   </dd>
