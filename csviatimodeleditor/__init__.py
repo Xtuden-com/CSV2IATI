@@ -10,6 +10,7 @@ import os
 import chardet
 import json
 from werkzeug import secure_filename
+import re
 
 # Get configuration details
 Config = ConfigParser.RawConfigParser()
@@ -182,6 +183,7 @@ def allowed_file(filename):
 def create_model():
     if 'username' in session:
         if (request.method == 'POST'):
+            errors = False
             model_name = request.form['model_name']
             csv_file = request.files['file']
             something = request.files['file'].stream
@@ -192,21 +194,36 @@ def create_model():
             columnnames = the_csv.fieldnames
             reopen_for_headers.close()
             reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
-            
+
             if not columnnames:
-                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad')
+                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad persist')
+                errors = True
+            else:
+                columnnumber = 0
+                goodheaders = 0
+                for column in columnnames:
+                    columnnumber = columnnumber +1
+                    if ('\n' in column):
+                        flash('Warning: You have a new line in a column (found the following in column '+str(columnnumber)+': ' + column + '). This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                    if (column == ''):
+                        flash('Warning: Found an empty header in the first row of column ' + str(columnnumber) + '. This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                    else:
+                        goodheaders = goodheaders +1
+                if (goodheaders == 0):
+                    flash('Error: The headers in your data appear to be blank. Please check that you have headers in the first row of your data.', 'bad persist')
+                    errors = True
+
+            if errors:                
                 return redirect(url_for('index'))
                     
             result = chardet.detect(reopen_for_decoding.read())
             csv_encoding = result['encoding']
             
+            # csv headers are being converted into the csv encoding here. Need to ensure that the conversion API is also reading the headers according to this character encoding.
             csv_headers = json.dumps(columnnames,encoding=csv_encoding)
 
-            #csv_headers = ', '.join('"%s"' % unicode(header,csv_encoding) for header in columnnames)
             if csv_file and allowed_file(csv_file.filename):
                 user_id = session['user_id']
-                #filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
-                #the_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 		newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
 		db.session.add(newcsvfile)
 		db.session.commit()
@@ -257,9 +274,27 @@ def model_change_csv(id=id, csv_id=''):
             columnnames = the_csv.fieldnames
             reopen_for_headers.close()
             reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
+            errors = False
             
             if not columnnames:
-                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad')
+                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad persist')
+                errors = True
+            else:
+                columnnumber = 0
+                goodheaders = 0
+                for column in columnnames:
+                    columnnumber = columnnumber +1
+                    if ('\n' in column):
+                        flash('Warning: You have a new line in a column (found the following in column '+str(columnnumber)+': ' + column + '). This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                    if (column == ''):
+                        flash('Warning: Found an empty header in the first row of column ' + str(columnnumber) + '. This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                    else:
+                        goodheaders = goodheaders +1
+                if (goodheaders == 0):
+                    flash('Error: The headers in your data appear to be blank. Please check that you have headers in the first row of your data.', 'bad persist')
+                    errors = True
+
+            if errors:                
                 return redirect(url_for('model', id=id))
                     
             result = chardet.detect(reopen_for_decoding.read())
@@ -364,11 +399,15 @@ def model(id='',responsetype=''):
 		getallcsv = CSVFile.query.filter_by(csv_owner=session['user_id'])
                 if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
                     sd = json.loads(getcsv.csv_headers)
+                    newsd = []
+                    for header in sd:
+                        newheader = re.sub('\n', '[newline]', header)
+                        newsd.append(newheader)
                     if getmodel.model_content is not None:
                         model_content_real = getmodel.model_content
                     else:
                         model_content_real = ''
-                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=sd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),all_csv_files=getallcsv,username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
+                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),all_csv_files=getallcsv,username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
                 else:
                     flash("You don't have permission to edit that model.", 'bad')
                     return redirect(url_for('index'))
@@ -408,27 +447,22 @@ def user(id=''):
                     return redirect(url_for('index'))
             elif request.method == 'POST':
                 id = request.form['id']
-                # if the user is an admin or is looking at their own profile
-                if ((session['admin']) or ((session['user_id'])==int(id))):
-                    u = User.query.filter_by(id=id).first()
-                    u.username = request.form['username']
-                    u.user_name = request.form['user_name']
-                    u.email_address = request.form['email_address']
-                    if (('admin' in request.form) and ('admin' in session)):
-                        u.admin = '1'
-                    else:
-                        u.admin = '0'
-                    if 'admin' in session:
-                        admin = True
-                    else:
-                        admin = False
-                    db.session.add(u)
-                    db.session.commit()
-                    flash('Updated user', 'good')
-                    return render_template('user.html', user=u, admin=is_admin(), logged_in=is_logged_in())
+                u.email_address = request.form['email_address']
+                if (('admin' in request.form) and ('admin' in session)):
+                    u.admin = '1'
                 else:
-                    flash("You do not have permission to edit that user's details.", 'bad')
-                    return redirect(url_for('index'))                
+                    u.admin = '0'
+                if 'admin' in session:
+                    admin = True
+                else:
+                    admin = False
+                db.session.add(u)
+                db.session.commit()
+                flash('Updated user', 'good')
+                return render_template('user.html', user=u, admin=is_admin(), logged_in=is_logged_in())
+            else:
+                flash("You do not have permission to edit that user's details.", 'bad')
+                return redirect(url_for('index'))                
                 
         else:
             users = User.query.all()
