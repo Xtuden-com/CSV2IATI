@@ -2,6 +2,7 @@ lib
 src/*~
 *~
 *.py~*
+*.pyc
 *.gitignore~
 *.css~
 *.html~

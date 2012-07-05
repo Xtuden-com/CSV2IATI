@@ -190,7 +190,7 @@ def create_model():
             filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
             csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            if csv_file and allowed_file(csv_file.filename):
+            if ((csv_file) and (allowed_file(csv_file.filename)) and (model_name)):
                 reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
                 the_csv = csv.DictReader(reopen_for_headers)
                 columnnames = the_csv.fieldnames
@@ -232,7 +232,7 @@ def create_model():
                 flash('Created your model', 'good')
                 return redirect(url_for('model', id=newmodel.id))
             else:
-                flash('Please supply a file in the CSV format.', 'bad persist')
+                flash('Please supply a model name and a file in the CSV format.', 'bad persist')
                 return redirect(url_for('index'))                
         else:
             flash('Please supply a file.', 'bad')
