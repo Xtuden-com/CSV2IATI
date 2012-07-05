@@ -189,55 +189,53 @@ def create_model():
             something = request.files['file'].stream
             filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
             csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
-            the_csv = csv.DictReader(reopen_for_headers)
-            columnnames = the_csv.fieldnames
-            reopen_for_headers.close()
-            reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
-
-            if not columnnames:
-                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad persist')
-                errors = True
-            else:
-                columnnumber = 0
-                goodheaders = 0
-                for column in columnnames:
-                    columnnumber = columnnumber +1
-                    if ('\n' in column):
-                        flash('Warning: You have a new line in a column (found the following in column '+str(columnnumber)+': ' + column + '). This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
-                    if (column == ''):
-                        flash('Warning: Found an empty header in the first row of column ' + str(columnnumber) + '. This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
-                    else:
-                        goodheaders = goodheaders +1
-                if (goodheaders == 0):
-                    flash('Error: The headers in your data appear to be blank. Please check that you have headers in the first row of your data.', 'bad persist')
-                    errors = True
-
-            if errors:                
-                return redirect(url_for('index'))
-                    
-            result = chardet.detect(reopen_for_decoding.read())
-            csv_encoding = result['encoding']
-            
-            # csv headers are being converted into the csv encoding here. Need to ensure that the conversion API is also reading the headers according to this character encoding.
-            csv_headers = json.dumps(columnnames,encoding=csv_encoding)
 
             if csv_file and allowed_file(csv_file.filename):
+                reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
+                the_csv = csv.DictReader(reopen_for_headers)
+                columnnames = the_csv.fieldnames
+                reopen_for_headers.close()
+                reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
+
+                if not columnnames:
+                    flash('Could not detect column names from your data. Maybe your file is empty?', 'bad persist')
+                    errors = True
+                else:
+                    columnnumber = 0
+                    goodheaders = 0
+                    for column in columnnames:
+                        columnnumber = columnnumber +1
+                        if ('\n' in column):
+                            flash('Warning: You have a new line in a column (found the following in column '+str(columnnumber)+': ' + column + '). This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                        if (column == ''):
+                            flash('Warning: Found an empty header in the first row of column ' + str(columnnumber) + '. This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                        else:
+                            goodheaders = goodheaders +1
+                    if (goodheaders == 0):
+                        flash('Error: The headers in your data appear to be blank. Please check that you have headers in the first row of your data.', 'bad persist')
+                        errors = True
+
+                if errors:                
+                    return redirect(url_for('index'))
+                        
+                result = chardet.detect(reopen_for_decoding.read())
+                csv_encoding = result['encoding']
+                # csv headers are being converted into the csv encoding here. Need to ensure that the conversion API is also reading the headers according to this character encoding.
+                csv_headers = json.dumps(columnnames,encoding=csv_encoding)
                 user_id = session['user_id']
-		newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
-		db.session.add(newcsvfile)
-		db.session.commit()
-		
+                newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
+                db.session.add(newcsvfile)
+                db.session.commit()
                 newmodel = IATIModel(model_name, user_id, newcsvfile.id)
                 db.session.add(newmodel)
                 db.session.commit()
                 flash('Created your model', 'good')
                 return redirect(url_for('model', id=newmodel.id))
             else:
-                flash('Please supply a file', 'bad')
+                flash('Please supply a file in the CSV format.', 'bad persist')
                 return redirect(url_for('index'))                
         else:
-            flash('Please supply a file', 'bad')
+            flash('Please supply a file.', 'bad')
             return redirect(url_for('index'))
     flash("Please log in.", 'bad')
     return redirect(url_for('index'))
