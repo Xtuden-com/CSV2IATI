@@ -445,7 +445,7 @@ def user(id=''):
                     return redirect(url_for('index'))
             elif request.method == 'POST':
                 id = request.form['id']
-                u.email_address = request.form['email_address']
+            	u = User.query.filter_by(id=id).first_or_404()
                 if (('admin' in request.form) and ('admin' in session)):
                     u.admin = '1'
                 else:
