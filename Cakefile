@@ -4,10 +4,10 @@ path = require 'path'
 {spawn, exec} = require 'child_process'
 
 task 'watch', 'Run development source watcher', ->
-  util.relay 'coffee', ['-w', '-b', '-c', '-o', 'lib/', 'src/'], util.noisyPrint
+  util.relay 'coffee', ['-w', '-b', '-c', '-j', 'csviatimodeleditor/static/main.js', 'src/'], util.noisyPrint
 
 task 'compile', 'Compile production source', ->
-  util.relay 'coffee', ['-j', 'static/main.js', '-c', 'src/extensions', 'src/delegator', 'src/modeleditor'], print
+  util.relay 'coffee', ['-j', 'csviatimodeleditor/static/main.js', '-c', 'src/extensions', 'src/delegator', 'src/modeleditor'], print
 
 util =
   # relay: run child process relaying std{out,err} to this process
