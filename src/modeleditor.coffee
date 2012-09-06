@@ -564,6 +564,9 @@ class UniqueKeyWidget extends Widget
 class DimensionWidget extends Widget
   events:
     '.add_field click': 'onAddFieldClick'
+    '.field_add_transform click': 'onAddTransformClick'
+    '.field_add_transform_transaction click': 'onAddTransformClickTransaction'
+    '.field_remove_transform click': 'onRemoveTransformClick'
     '.field_switch_constant click': 'onFieldSwitchConstantClick'
     '.field_switch_column click': 'onFieldSwitchColumnClick'
     '.field_switch_constant_transaction click': 'onFieldSwitchConstantClickTransaction'
@@ -652,7 +655,7 @@ class DimensionWidget extends Widget
     row.appendTo(@element.find('tbody'))
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     return false
-    
+  
   onDeleteDimensionClick: (e) ->
     theform = @element.parents('form').first()
     $(e.currentTarget).parents('fieldset').first().remove()
@@ -713,6 +716,28 @@ class DimensionWidget extends Widget
     @element.parents('form').first().change()
     return false
 
+  onAddTransformClick: (e) ->
+    curRow = $(e.currentTarget).parents('tr').first()
+    prefix = @formFieldPrefix(curRow.data('field-name'))
+    curRow.after("<tr><td><input name=\"#{prefix}[text-transform-type]\" value=\"\" /></td></tr>") 
+    @element.parents('form').first().change()
+    return false
+
+  onAddTransformClickTransaction: (e) ->
+    curRow = $(e.currentTarget).parents('tr').first()
+    curDimension = $(e.currentTarget).parents('fieldset').first()
+    curDimensionPart = $(e.currentTarget).parents('fieldset')
+    prefix = @formFieldTransactionPrefix(curRow.data('field-name'), curDimensionPart.data('transaction-field-type'), curDimension.data('dimension-name'))
+    curRow.after("<tr><td><input name=\"#{prefix}[text-transform-type]\" value=\"\" /></td></tr>") 
+    @element.parents('form').first().change()
+    return false
+
+  onRemoveTransformClick: (e) ->
+    curRow = $(e.currentTarget).parents('tr').first()
+    curRow.find('.transform').remove()
+    @element.parents('form').first().change()
+    return false
+
   onFieldSwitchConstantClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
     curDimension = $(e.currentTarget).parents('fieldset').first()
@@ -768,6 +793,7 @@ class DimensionWidget extends Widget
       'iatiField': iatiField
       'prefix': this.formFieldPrefix
       'required': this.formFieldRequired
+      field: {}
 
   _makeFieldRowTransaction: (fieldname, transaction_field, dimension_name, iatiField, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
@@ -779,6 +805,7 @@ class DimensionWidget extends Widget
       'required': this.formFieldRequired
       'transaction':'yes'
       'iatiField':iatiField
+      field: {}
       
   _makeFieldRowUpdate: (name, thisfield, requiredvar, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
@@ -966,6 +993,7 @@ class ModelEditor extends Delegator
     return if @ignoreFormChange
 
     @data = @form.serializeObject()
+    console.log(@data)
     @form.find('.column').each -> 
         columnname = ($(this).val())
         $('#user_columns ul li a').each ->
@@ -1029,6 +1057,7 @@ class ModelEditor extends Delegator
 
   onModelChange: () ->
     # Populate straightforward bits
+    console.log(util.flattenObject(@data))
     for k, v of util.flattenObject(@data)
       # FIXME? this may not deal with complex form elements such as radio
       # buttons or <select multiple>.
