@@ -346,7 +346,7 @@ def model_convert(id=id):
                 if getmodel.model_content is not None:
                     import urllib
                     import urllib2
-                    url = CONVERSION_API_SERVER
+                    url = CONVERSION_API_SERVER + '/json'
                     values = {'csv_url' : url_for('csv_file',id=getmodel.id,filename=getcsvfile.csv_file,_external=True),
                               'model_url' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
 
@@ -354,14 +354,25 @@ def model_convert(id=id):
                     req = urllib2.Request(url, data)
                     try:
                         response = urllib2.urlopen(req)
-                        the_page = response.read()
-                        return the_page
+                        the_page_json = response.read()
+                        the_page = json.loads(the_page_json)
+                        if "error" in the_page:
+                            output = the_page["error"]
+                        else:
+                            url = the_page["result"]
+                            output = "<p>IATI-XML file saved to <a href=\"" + url  + "\">" + url + "</a></p>"
+                        # Handle keyerror TODO
                     except urllib2.HTTPError, e:
                         if (e.code == 400):
                             flash("Error 400. Could not convert your data. There was a fundamental error in the application. Please report this error.", "bad persist")
                             flash("The data file provided was: " + values["csv_file"], "notice persist")
                             flash("The mapping file provided was: " + values["model_file"], "notice persist")
                             return redirect(url_for('index'))
+                    return render_template('model-convert.html', output=Markup(output), id=id, model_name=getmodel.model_name,
+                            #model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,
+                            csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),
+                            #all_csv_files=getallcsv,
+                            username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
                 
                 else:
                     flash("That model has not yet been defined.", 'bad')
