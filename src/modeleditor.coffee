@@ -330,8 +330,43 @@ DEFAULT_FIELD_SETUP =
             required: true
         'text':
             required: true
+  'budget':
+    datatype: 'hierarchy'
+    label: 'Budget'
+    fields: 
+        'type':
+            required: false 
+    tdatafields:
+        'value' : {
+          "datatype": "compound"
+          "label": "Budget Value"
+          "iati-field": "value"
+          "fields": {
+              "text": {required: true}
+              "value-date": {required: true}
+              "currency": {required: false}
+          }
+        }
+        'period-start' : {
+          "datatype": "compound"
+          "label": "Budget Start Date"
+          "iati-field": "period-start"
+          "fields": {
+              "text": {required: false}
+              "iso-date": {required: true}
+          }
+        },
+        'period-end' : {
+          "datatype": "compound"
+          "label": "Budget End Date"
+          "iati-field": "period-start"
+          "fields": {
+              "text": {required: false}
+              "iso-date": {required: true}
+          }
+        }
   'transaction':
-    datatype: 'transaction'
+    datatype: 'hierarchy'
     label: 'Transaction'
     'tdatafields':
       'transaction-type': { 
@@ -472,6 +507,11 @@ DIMENSION_META =
     fixedDataType:true
     helpText: '''
               Amounts by degree of restriction on where procurement of goods or services can take place, classified as untied (open procurement), partially tied (donor and developing countries) and tied (donor or group not including most developing countries). Note that there is both a default for the entire activity, and an optional status for each transaction, for when different contributions to an activity have different tied statuses.
+              '''
+  budget:
+    fixedDataType:true
+    helpText: '''
+              The value of the aid activity's budget for each financial year as in the original project document.
               '''
   transaction:
     fixedDataType:true
@@ -993,7 +1033,6 @@ class ModelEditor extends Delegator
     return if @ignoreFormChange
 
     @data = @form.serializeObject()
-    console.log(@data)
     @form.find('.column').each -> 
         columnname = ($(this).val())
         $('#user_columns ul li a').each ->
@@ -1057,7 +1096,6 @@ class ModelEditor extends Delegator
 
   onModelChange: () ->
     # Populate straightforward bits
-    console.log(util.flattenObject(@data))
     for k, v of util.flattenObject(@data)
       # FIXME? this may not deal with complex form elements such as radio
       # buttons or <select multiple>.

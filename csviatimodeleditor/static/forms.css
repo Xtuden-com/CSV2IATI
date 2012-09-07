@@ -99,6 +99,12 @@ form dl {
   form dl dd.notes, form dl dd.hints {
     padding: 0 0 0.3em 0;
     color: #555555; }
+.dimensions dl dt {
+  width: 30%;
+}
+.dimensions dl dd {
+  width: 68%;
+}
 
 label.has-errors, label.fieldWithErrors {
   font-weight: bold;

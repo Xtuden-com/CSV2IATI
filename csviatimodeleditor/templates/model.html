@@ -415,7 +415,7 @@
           {{/if}}
           <input type='hidden' name='mapping[${name}][label]' value='${data.label}'>
         </dl>
-        {{if data.datatype == 'compound' }}
+        {{if data.datatype == 'compound' || data.datatype == 'hierarchy' }}
           <table class='fields'>
             <thead>
               <tr>
@@ -436,9 +436,8 @@
             </tbody>
           </table>
           <p><a class='add_field' href='#'>Add a field</a></p>
-          <p><a class='delete_dimension' href='#'>Delete this dimension</a></p>
         {{/if}}
-        {{if data.datatype == 'transaction' }}
+        {{if data.datatype == 'hierarchy' || data.datatype == 'transaction' }}
         {{each(n, f) data.tdatafields}}
             <fieldset id="m1_dim_transaction_${n}" class="tdatafield" data-transaction-field-type="${n}">
             <legend>${f['label']}</legend>
@@ -466,8 +465,8 @@
                 <p><a class='delete_tdatafield' href='#'>Delete this part of the transaction</a></p>
               </fieldset>
         {{/each}}
-          <p><a class='delete_dimension' href='#'>Delete this dimension</a></p>
         {{/if}}
+        <p><a class='delete_dimension' href='#'>Delete this dimension</a></p>
       </script>
     </div> <!-- /.modeleditor -->
   </div> <!-- /.content -->
@@ -492,7 +491,7 @@
     });
     jQuery(function($) {
       var column_data=[{%endraw%}{% for header in csv_headers %}{% if not loop.first %}, {%endif%}"{{header}}"{% endfor %}{%raw%}];
-      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction','other-identifier'];
+      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction','other-identifier','budget'];
       var model_data = $('#debug').text();
       $('#model_page_view').modelEditor({
         'columns': column_data,

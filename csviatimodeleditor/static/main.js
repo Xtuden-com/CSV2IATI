@@ -592,8 +592,61 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
+  'budget': {
+    datatype: 'hierarchy',
+    label: 'Budget',
+    fields: {
+      'type': {
+        required: false
+      }
+    },
+    tdatafields: {
+      'value': {
+        "datatype": "compound",
+        "label": "Budget Value",
+        "iati-field": "value",
+        "fields": {
+          "text": {
+            required: true
+          },
+          "value-date": {
+            required: true
+          },
+          "currency": {
+            required: false
+          }
+        }
+      },
+      'period-start': {
+        "datatype": "compound",
+        "label": "Budget Start Date",
+        "iati-field": "period-start",
+        "fields": {
+          "text": {
+            required: false
+          },
+          "iso-date": {
+            required: true
+          }
+        }
+      },
+      'period-end': {
+        "datatype": "compound",
+        "label": "Budget End Date",
+        "iati-field": "period-start",
+        "fields": {
+          "text": {
+            required: false
+          },
+          "iso-date": {
+            required: true
+          }
+        }
+      }
+    }
+  },
   'transaction': {
-    datatype: 'transaction',
+    datatype: 'hierarchy',
     label: 'Transaction',
     'tdatafields': {
       'transaction-type': {
@@ -748,6 +801,10 @@ DIMENSION_META = {
   'default-tied-status': {
     fixedDataType: true,
     helpText: 'Amounts by degree of restriction on where procurement of goods or services can take place, classified as untied (open procurement), partially tied (donor and developing countries) and tied (donor or group not including most developing countries). Note that there is both a default for the entire activity, and an optional status for each transaction, for when different contributions to an activity have different tied statuses.'
+  },
+  budget: {
+    fixedDataType: true,
+    helpText: 'The value of the aid activity\'s budget for each financial year as in the original project document.'
   },
   transaction: {
     fixedDataType: true,
@@ -1484,7 +1541,6 @@ ModelEditor = (function(_super) {
       return;
     }
     this.data = this.form.serializeObject();
-    console.log(this.data);
     this.form.find('.column').each(function() {
       var columnname;
       columnname = $(this).val();
@@ -1563,7 +1619,6 @@ ModelEditor = (function(_super) {
 
   ModelEditor.prototype.onModelChange = function() {
     var dimNames, k, n, v, w, _i, _len, _ref, _ref1;
-    console.log(util.flattenObject(this.data));
     _ref = util.flattenObject(this.data);
     for (k in _ref) {
       v = _ref[k];
