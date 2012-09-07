@@ -292,17 +292,17 @@
                 {{/if}}
           {{else}}
               <td>${fieldName}
-                <input type='hidden' name='${prefix(fieldName)}[datatype]' value='column'>
+                <input type='hidden' name='${prefix}[${fieldName}][datatype]' value='column'>
               </td>
               <td>
-                <select class='column' name='${prefix(fieldName)}[column]'></select>
+                <select class='column' name='${prefix}[${fieldName}][column]'></select>
                 {{if field['text-transform-type'] !== undefined}}
                   <span class="transform">
                     Transform:
-                    <select type="text" name="${prefix(fieldName)}[text-transform-type]">
+                    <select type="text" name="${prefix}[${fieldName}][text-transform-type]">
                       <option value="date">Date</option>
                     </select>
-                    <input name="${prefix(fieldName)}[text-transform-format]" size="10"/>
+                    <input name="${prefix}[${fieldName}][text-transform-format]" size="10"/>
                   </span>
                 {{/if}}
               </td>
@@ -361,9 +361,9 @@
           {{else}}
               <td>
                 ${fieldName}
-                <input type='hidden' name='${prefix(fieldName)}[datatype]' value='constant'>
+                <input type='hidden' name='${prefix}[${fieldName}][datatype]' value='constant'>
               </td>
-              <td><input type='text' name='${prefix(fieldName)}[constant]'></td>
+              <td><input type='text' name='${prefix}[${fieldName}][constant]'></td>
               <td>
                 <a title="Switch this field's data type to a column in your data" href='#' class='field_switch_column'><span class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
               </td>
@@ -381,6 +381,25 @@
         </tr>
       </script>
 
+      <!-- Recursive table template -->
+      <script id='tpl_table_recursive' type='text/x-jquery-tmpl'>
+        {{each(n, f) data.fields}}
+          {{if f.datatype === 'compound'}}
+            <tr>
+              <td colspan="4">
+                <input type='hidden' name='${prefix}[${n}][datatype]' value='${f.datatype}'>
+                <legend>${f.label}</legend>
+                <input type='hidden' name='${prefix}[${n}][label]' value='${f.label}'>
+              </td>
+            </tr>
+            {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
+          {{else f.datatype === 'constant'}}
+            {{tmpl({'fieldName': n, 'prefix':prefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
+          {{else}}
+            {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field'}}
+          {{/if}}
+        {{/each}}
+      </script>
       <!-- Dimension template -->
       <script id='tpl_dimension' type='text/x-jquery-tmpl'>
         <input type='hidden' name='mapping[${name}][datatype]' value='${data.datatype}'>
@@ -415,7 +434,7 @@
           {{/if}}
           <input type='hidden' name='mapping[${name}][label]' value='${data.label}'>
         </dl>
-        {{if data.datatype == 'compound' || data.datatype == 'hierarchy' }}
+        {{if data.datatype == 'compound' }}
           <table class='fields'>
             <thead>
               <tr>
@@ -426,18 +445,12 @@
               </tr>
             </thead>
             <tbody>
-            {{each(n, f) data.fields}}
-              {{if f.datatype === 'constant'}}
-                {{tmpl({'fieldName': n, 'prefix': formFieldPrefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
-              {{else}}
-                {{tmpl({'fieldName': n, 'field': f, 'prefix': formFieldPrefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field'}}
-              {{/if}}
-            {{/each}}
+              {{tmpl({'data': data, 'meta': meta, 'prefix':'mapping['+name+'][fields]', 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
             </tbody>
           </table>
           <p><a class='add_field' href='#'>Add a field</a></p>
         {{/if}}
-        {{if data.datatype == 'hierarchy' || data.datatype == 'transaction' }}
+        {{if data.datatype == 'transaction' }}
         {{each(n, f) data.tdatafields}}
             <fieldset id="m1_dim_transaction_${n}" class="tdatafield" data-transaction-field-type="${n}">
             <legend>${f['label']}</legend>

@@ -331,12 +331,11 @@ DEFAULT_FIELD_SETUP =
         'text':
             required: true
   'budget':
-    datatype: 'hierarchy'
+    datatype: 'compound'
     label: 'Budget'
     fields: 
         'type':
             required: false 
-    tdatafields:
         'value' : {
           "datatype": "compound"
           "label": "Budget Value"
@@ -366,7 +365,7 @@ DEFAULT_FIELD_SETUP =
           }
         }
   'transaction':
-    datatype: 'hierarchy'
+    datatype: 'transaction'
     label: 'Transaction'
     'tdatafields':
       'transaction-type': { 
