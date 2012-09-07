@@ -92,6 +92,18 @@ class User(db.Model):
     def __repr__(self):
         return self.username, self.id, self.password
 
+class XMLFile(db.Model):
+    id = db.Column(Integer, primary_key=True)
+    iati_model_id = db.Column(Integer)
+    xml_url = db.Column(UnicodeText)
+
+    def __init__(self, iati_model_id, xml_url):
+        self.iati_model_id = iati_model_id
+        self.xml_url = xml_url  
+
+    def __repr__(self):
+        return self.xml_url, self.id
+
 def is_logged_in():
     if ('username' in session):
         return True
@@ -126,7 +138,7 @@ def user_name():
 def index():
     if 'username' in session:
         user_id = session['user_id']
-        models = IATIModel.query.filter_by(model_owner=user_id)
+        models = IATIModel.query.filter_by(model_owner=unicode(user_id))
         if 'admin' in session:
             all_users = User.query.all()
             all_models = []
@@ -352,6 +364,7 @@ def model_convert(id=id):
 
                     data = urllib.urlencode(values)
                     req = urllib2.Request(url, data)
+                    xml_url = ''
                     try:
                         response = urllib2.urlopen(req)
                         the_page_json = response.read()
@@ -359,8 +372,8 @@ def model_convert(id=id):
                         if "error" in the_page:
                             output = the_page["error"]
                         else:
-                            url = the_page["result"]
-                            output = "<p>IATI-XML file saved to <a href=\"" + url  + "\">" + url + "</a></p>"
+                            xml_url = the_page["result"]
+                            output = "<p>IATI-XML file saved to <a href=\"" + xml_url  + "\">" + xml_url + "</a></p>"
                         # Handle keyerror TODO
                     except urllib2.HTTPError, e:
                         if (e.code == 400):
@@ -368,6 +381,11 @@ def model_convert(id=id):
                             flash("The data file provided was: " + values["csv_file"], "notice persist")
                             flash("The mapping file provided was: " + values["model_file"], "notice persist")
                             return redirect(url_for('index'))
+
+                    xml_file = XMLFile(id, xml_url)
+                    db.session.add(xml_file)
+                    db.session.commit()
+
                     return render_template('model-convert.html', output=Markup(output), id=id, model_name=getmodel.model_name,
                             #model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,
                             csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),
@@ -405,7 +423,7 @@ def model(id='',responsetype=''):
                 # Get model details        
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
 		getcsv = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
-		getallcsv = CSVFile.query.filter_by(csv_owner=session['user_id'])
+		getallcsv = CSVFile.query.filter_by(csv_owner=unicode(session['user_id']))
                 if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
                     sd = json.loads(getcsv.csv_headers)
                     newsd = []
