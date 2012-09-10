@@ -263,3 +263,8 @@ h1 #model_title input {
   background-color:#000000;
   color:#ffffff;
 }
+.magic {
+  border-style: solid;
+  border-color: #365e93;
+  border-width: 1px;
+}

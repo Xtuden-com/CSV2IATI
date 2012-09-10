@@ -643,6 +643,163 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
+  'result': {
+    datatype: 'compound',
+    label: 'Result',
+    fields: {
+      'type': {
+        required: false
+      },
+      'title': {
+        required: false
+      },
+      'description': {
+        "datatype": "compound",
+        "label": "Description",
+        "iati-field": "description",
+        "fields": {
+          "text": {
+            required: true
+          },
+          "type": {
+            required: false
+          }
+        }
+      },
+      'indicator': {
+        "datatype": "compound",
+        "label": "Indicator",
+        "iati-field": "indicator",
+        "fields": {
+          "measure": {
+            required: true
+          },
+          "ascending": {
+            required: false
+          },
+          'title': {
+            "datatype": "compound",
+            "label": "Title",
+            "iati-field": "title",
+            "fields": {
+              "text": {
+                required: false
+              }
+            }
+          },
+          'description': {
+            "datatype": "compound",
+            "label": "Description",
+            "iati-field": "description",
+            "fields": {
+              "text": {
+                required: true
+              },
+              "type": {
+                required: false
+              }
+            }
+          },
+          'baseline': {
+            "datatype": "compound",
+            "label": "Baseline",
+            "iati-field": "baseline",
+            "fields": {
+              "value": {
+                required: true
+              },
+              "year": {
+                required: false
+              },
+              'comment': {
+                "datatype": "compound",
+                "label": "Comment",
+                "iati-field": "comment",
+                "fields": {
+                  "text": {
+                    required: true
+                  }
+                }
+              }
+            }
+          },
+          'period': {
+            "datatype": "compound",
+            "label": "Period",
+            "iati-field": "period",
+            "fields": {
+              'period-start': {
+                "datatype": "compound",
+                "label": "Period Start Date",
+                "iati-field": "period-start",
+                "fields": {
+                  "text": {
+                    required: false
+                  },
+                  "iso-date": {
+                    required: true
+                  }
+                }
+              },
+              'period-end': {
+                "datatype": "compound",
+                "label": "End Date",
+                "iati-field": "period-start",
+                "fields": {
+                  "text": {
+                    required: false
+                  },
+                  "iso-date": {
+                    required: true
+                  }
+                }
+              },
+              'target': {
+                "datatype": "compound",
+                "label": "Target",
+                "iati-field": "target",
+                "fields": {
+                  "value": {
+                    required: true
+                  },
+                  'comment': {
+                    "datatype": "compound",
+                    "label": "Comment",
+                    "iati-field": "comment",
+                    "fields": {
+                      "text": {
+                        required: true
+                      }
+                    }
+                  }
+                }
+              },
+              'actual': {
+                "datatype": "compound",
+                "label": "Actual",
+                "iati-field": "actual",
+                "fields": {
+                  "value": {
+                    required: true
+                  },
+                  'comment': {
+                    "datatype": "compound",
+                    "label": "Comment",
+                    "iati-field": "comment",
+                    "fields": {
+                      "text": {
+                        required: true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   'transaction': {
     datatype: 'transaction',
     label: 'Transaction',
@@ -803,6 +960,10 @@ DIMENSION_META = {
   budget: {
     fixedDataType: true,
     helpText: 'The value of the aid activity\'s budget for each financial year as in the original project document.'
+  },
+  result: {
+    fixedDataType: true,
+    helpText: 'A measurable result of aid work.'
   },
   transaction: {
     fixedDataType: true,
@@ -1007,8 +1168,8 @@ DimensionWidget = (function(_super) {
     return _results;
   };
 
-  DimensionWidget.prototype.formFieldPrefix = function(fieldName) {
-    return "mapping[" + this.name + "][fields][" + fieldName + "]";
+  DimensionWidget.prototype.formFieldPrefix = function() {
+    return "mapping[" + this.name + "][fields]";
   };
 
   DimensionWidget.prototype.formFieldTransactionPrefix = function(fieldName, transaction_field, transaction_part) {
@@ -1064,10 +1225,11 @@ DimensionWidget = (function(_super) {
   };
 
   DimensionWidget.prototype.onAddFieldClick = function(e) {
-    var name, row;
+    var curRow, name, row;
+    curRow = $(e.currentTarget).parents('tr').first();
     name = prompt("Field name:").trim();
-    row = this._makeFieldRow(name);
-    row.appendTo(this.element.find('tbody'));
+    row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'));
+    row.insertBefore(curRow);
     this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
     return false;
   };
@@ -1152,10 +1314,11 @@ DimensionWidget = (function(_super) {
   };
 
   DimensionWidget.prototype.onAddTransformClick = function(e) {
-    var curRow, prefix;
+    var curRow, fieldName, prefix;
     curRow = $(e.currentTarget).parents('tr').first();
-    prefix = this.formFieldPrefix(curRow.data('field-name'));
-    curRow.after("<tr><td><input name=\"" + prefix + "[text-transform-type]\" value=\"\" /></td></tr>");
+    prefix = this.formFieldPrefix();
+    fieldName = curRow.data('field-name');
+    curRow.after("<tr><td><input name=\"" + prefix + "[" + fieldName + "][text-transform-type]\" value=\"\" /></td></tr>");
     this.element.parents('form').first().change();
     return false;
   };
@@ -1184,7 +1347,7 @@ DimensionWidget = (function(_super) {
     curRow = $(e.currentTarget).parents('tr').first();
     curDimension = $(e.currentTarget).parents('fieldset').first();
     iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
-    row = this._makeFieldRow(curRow.data('field-name'), curDimension.data('dimension-name'), iatiField, true);
+    row = this._makeFieldRow(curRow.data('field-name'), curRow.data('prefix'), curRow.data('level'), curDimension.data('dimension-name'), iatiField, true);
     curRow.replaceWith(row);
     this.element.parents('form').first().change();
     return false;
@@ -1195,7 +1358,7 @@ DimensionWidget = (function(_super) {
     curRow = $(e.currentTarget).parents('tr').first();
     curDimension = $(e.currentTarget).parents('fieldset').first();
     iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
-    row = this._makeFieldRow(curRow.data('field-name'), curDimension.data('dimension-name'), iatiField, false);
+    row = this._makeFieldRow(curRow.data('field-name'), curRow.data('prefix'), curRow.data('level'), curDimension.data('dimension-name'), iatiField, false);
     curRow.replaceWith(row);
     this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
     this.element.parents('form').first().change();
@@ -1236,7 +1399,7 @@ DimensionWidget = (function(_super) {
     return SAMPLE_DATA[columnName];
   };
 
-  DimensionWidget.prototype._makeFieldRow = function(name, dimensionName, iatiField, constant) {
+  DimensionWidget.prototype._makeFieldRow = function(name, prefix, level, dimensionName, iatiField, constant) {
     var tplName;
     if (constant == null) {
       constant = false;
@@ -1246,7 +1409,8 @@ DimensionWidget = (function(_super) {
       'fieldName': name,
       'dimensionName': dimensionName,
       'iatiField': iatiField,
-      'prefix': this.formFieldPrefix,
+      'prefix': prefix,
+      'level': level,
       'required': this.formFieldRequired,
       field: {}
     });

@@ -245,7 +245,7 @@
 
       <!-- Dimension column field template -->
       <script id='tpl_dimension_field' type='text/x-jquery-tmpl'>
-        <tr data-field-name='${fieldName}'>
+        <tr data-field-name='${fieldName}' data-prefix='${prefix}' data-level='${level}'>
           {{if transaction}}
                 <td>${fieldName}
                 <input type='hidden' name='${prefix(fieldName,transaction_field,transaction_part)}[datatype]' value='column'>
@@ -291,7 +291,7 @@
               </td>                
                 {{/if}}
           {{else}}
-              <td>${fieldName}
+              <td style="border-left: ${level*2}px solid #365e93;"> ${fieldName}
                 <input type='hidden' name='${prefix}[${fieldName}][datatype]' value='column'>
               </td>
               <td>
@@ -339,7 +339,7 @@
       
       <!-- Dimension constant field template -->
       <script id='tpl_dimension_field_const' type='text/x-jquery-tmpl'>
-        <tr data-field-name='${fieldName}'>
+        <tr data-field-name='${fieldName}' data-prefix='${prefix}' data-level='${level}'>
           {{if transaction}}
               <td>
                 ${fieldName}
@@ -359,7 +359,7 @@
               </td>                
                 {{/if}}
           {{else}}
-              <td>
+              <td style="border-left: ${level*2}px solid #365e93;">
                 ${fieldName}
                 <input type='hidden' name='${prefix}[${fieldName}][datatype]' value='constant'>
               </td>
@@ -386,17 +386,22 @@
         {{each(n, f) data.fields}}
           {{if f.datatype === 'compound'}}
             <tr>
-              <td colspan="4">
+              <td colspan="4" style="border-left: ${(level+1)*2}px solid #365e93; border-top: ${(level+1)*2}px solid #365e93">
                 <input type='hidden' name='${prefix}[${n}][datatype]' value='${f.datatype}'>
-                <legend>${f.label}</legend>
+                <legend>${prefix2} ${f.label}</legend>
                 <input type='hidden' name='${prefix}[${n}][label]' value='${f.label}'>
               </td>
             </tr>
-            {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
+              {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'prefix2':prefix2+f.label+'/', 'level':level+1, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
+            <tr data-prefix='${prefix+'['+n+'][fields]'}' data-level='${level+1}'>
+              <td colspan="4" style="border-left: ${(level+1)*2}px solid #365e93">
+                <p><a class='add_field' href='#'>Add a field</a></p>
+              </td>
+            </tr>
           {{else f.datatype === 'constant'}}
-            {{tmpl({'fieldName': n, 'prefix':prefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
+            {{tmpl({'fieldName': n, 'prefix':prefix, 'level':level, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
           {{else}}
-            {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field'}}
+            {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'level':level, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field'}}
           {{/if}}
         {{/each}}
       </script>
@@ -445,10 +450,14 @@
               </tr>
             </thead>
             <tbody>
-              {{tmpl({'data': data, 'meta': meta, 'prefix':'mapping['+name+'][fields]', 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
+              {{tmpl({'data': data, 'meta': meta, 'prefix':'mapping['+name+'][fields]', 'prefix2':'', 'level':0, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
+            <tr data-prefix='mapping[${name}][fields]' data-level='0'>
+              <td colspan="4">
+                <p><a class='add_field' href='#'>Add a field</a></p>
+              </td>
+            </tr>
             </tbody>
           </table>
-          <p><a class='add_field' href='#'>Add a field</a></p>
         {{/if}}
         {{if data.datatype == 'transaction' }}
         {{each(n, f) data.tdatafields}}
@@ -504,7 +513,7 @@
     });
     jQuery(function($) {
       var column_data=[{%endraw%}{% for header in csv_headers %}{% if not loop.first %}, {%endif%}"{{header}}"{% endfor %}{%raw%}];
-      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction','other-identifier','budget'];
+      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction','other-identifier','budget', 'result'];
       var model_data = $('#debug').text();
       $('#model_page_view').modelEditor({
         'columns': column_data,
