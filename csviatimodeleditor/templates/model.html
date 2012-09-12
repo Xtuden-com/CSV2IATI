@@ -258,6 +258,10 @@
                     Transform:
                     <select type="text" name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-type]">
                       <option value="date">Date</option>
+                      <option value="text-before">Text Before</option>
+                      <option value="text-after">Text After</option>
+                      <option value="field-before">Field Before</option>
+                      <option value="field-after">Field After</option>
                     </select>
                     <input name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-format]" size="10"/>
                   </span>
@@ -301,6 +305,10 @@
                     Transform:
                     <select type="text" name="${prefix}[${fieldName}][text-transform-type]">
                       <option value="date">Date</option>
+                      <option value="text-before">Text Before</option>
+                      <option value="text-after">Text After</option>
+                      <option value="field-before">Field Before</option>
+                      <option value="field-after">Field After</option>
                     </select>
                     <input name="${prefix}[${fieldName}][text-transform-format]" size="10"/>
                   </span>

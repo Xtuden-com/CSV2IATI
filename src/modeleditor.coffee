@@ -875,7 +875,9 @@ class DimensionWidget extends Widget
     return false
 
   onFieldRemoveClick: (e) ->
-    $(e.currentTarget).parents('tr').first().remove()
+    curRow = $(e.currentTarget).parents('tr').first()
+    curRow.next('.alternativesCounter').remove()
+    curRow.remove()
     @element.parents('form').first().change()
     return false
 

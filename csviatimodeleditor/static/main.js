@@ -1309,7 +1309,10 @@ DimensionWidget = (function(_super) {
   };
 
   DimensionWidget.prototype.onFieldRemoveClick = function(e) {
-    $(e.currentTarget).parents('tr').first().remove();
+    var curRow;
+    curRow = $(e.currentTarget).parents('tr').first();
+    curRow.next('.alternativesCounter').remove();
+    curRow.remove();
     this.element.parents('form').first().change();
     return false;
   };
