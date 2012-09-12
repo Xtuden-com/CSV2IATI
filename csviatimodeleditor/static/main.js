@@ -1109,6 +1109,7 @@ DimensionWidget = (function(_super) {
 
   DimensionWidget.prototype.events = {
     '.add_field click': 'onAddFieldClick',
+    '.field_add_alternative click': 'onAddAlternativeClick',
     '.field_add_transform click': 'onAddTransformClick',
     '.field_add_transform_transaction click': 'onAddTransformClickTransaction',
     '.field_remove_transform click': 'onRemoveTransformClick',
@@ -1309,6 +1310,20 @@ DimensionWidget = (function(_super) {
 
   DimensionWidget.prototype.onFieldRemoveClick = function(e) {
     $(e.currentTarget).parents('tr').first().remove();
+    this.element.parents('form').first().change();
+    return false;
+  };
+
+  DimensionWidget.prototype.onAddAlternativeClick = function(e) {
+    var alternativesCounter, curRow, fieldName, prefix;
+    curRow = $(e.currentTarget).parents('tr').first();
+    prefix = this.formFieldPrefix();
+    fieldName = curRow.data('field-name');
+    alternativesCounter = curRow.data('alternatives-counter');
+    alternativesCounter += 1;
+    alert(alternativesCounter);
+    curRow.next('.alternativesCounter').first().val(alternativesCounter);
+    curRow.after("<tr><td><input name=\"" + prefix + "[" + fieldName + "][alternatives][" + alternativesCounter + "]\" value=\"test\" /></td></tr>");
     this.element.parents('form').first().change();
     return false;
   };

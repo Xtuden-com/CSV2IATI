@@ -725,6 +725,7 @@ class UniqueKeyWidget extends Widget
 class DimensionWidget extends Widget
   events:
     '.add_field click': 'onAddFieldClick'
+    '.field_add_alternative click': 'onAddAlternativeClick'
     '.field_add_transform click': 'onAddTransformClick'
     '.field_add_transform_transaction click': 'onAddTransformClickTransaction'
     '.field_remove_transform click': 'onRemoveTransformClick'
@@ -875,6 +876,18 @@ class DimensionWidget extends Widget
 
   onFieldRemoveClick: (e) ->
     $(e.currentTarget).parents('tr').first().remove()
+    @element.parents('form').first().change()
+    return false
+
+  onAddAlternativeClick: (e) ->
+    curRow = $(e.currentTarget).parents('tr').first()
+    prefix = @formFieldPrefix()
+    fieldName = curRow.data('field-name')
+    alternativesCounter = curRow.data('alternatives-counter')
+    alternativesCounter += 1
+    alert(alternativesCounter)
+    curRow.next('.alternativesCounter').first().val(alternativesCounter)
+    curRow.after("<tr><td><input name=\"#{prefix}[#{fieldName}][alternatives][#{alternativesCounter}]\" value=\"test\" /></td></tr>") 
     @element.parents('form').first().change()
     return false
 
