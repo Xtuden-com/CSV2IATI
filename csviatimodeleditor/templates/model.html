@@ -254,7 +254,7 @@
               <td>
                 <select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column]'></select>
                 {{if field['text-transform-type'] !== undefined}}
-                  <span class="transform">
+                  <div class="transform">
                     Transform:
                     <select type="text" name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-type]">
                       <option value="date">Date</option>
@@ -265,7 +265,7 @@
                       <option value="field-after">Field After</option>
                     </select>
                     <input name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-format]" size="10"/>
-                  </span>
+                  </div>
                 {{/if}}
               </td>
               <td>
@@ -302,7 +302,7 @@
               <td>
                 <select class='column' name='${prefix}[${fieldName}][column]'></select>
                 {{if field['text-transform-type'] !== undefined}}
-                  <span class="transform">
+                  <div class="transform">
                     Transform:
                     <select type="text" name="${prefix}[${fieldName}][text-transform-type]">
                       <option value="date">Date</option>
@@ -313,7 +313,7 @@
                       <option value="field-after">Field After</option>
                     </select>
                     <input name="${prefix}[${fieldName}][text-transform-format]" size="10"/>
-                  </span>
+                  </div>
                 {{/if}}
               </td>
               <td>

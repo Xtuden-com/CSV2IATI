@@ -894,7 +894,7 @@ class DimensionWidget extends Widget
 
   onAddTransformClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
-    prefix = @formFieldPrefix()
+    prefix = curRow.data('prefix')
     fieldName = curRow.data('field-name')
     curRow.after("<tr><td><input name=\"#{prefix}[#{fieldName}][text-transform-type]\" value=\"\" /></td></tr>") 
     @element.parents('form').first().change()

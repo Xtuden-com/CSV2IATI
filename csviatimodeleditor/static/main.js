@@ -1333,7 +1333,7 @@ DimensionWidget = (function(_super) {
   DimensionWidget.prototype.onAddTransformClick = function(e) {
     var curRow, fieldName, prefix;
     curRow = $(e.currentTarget).parents('tr').first();
-    prefix = this.formFieldPrefix();
+    prefix = curRow.data('prefix');
     fieldName = curRow.data('field-name');
     curRow.after("<tr><td><input name=\"" + prefix + "[" + fieldName + "][text-transform-type]\" value=\"\" /></td></tr>");
     this.element.parents('form').first().change();
