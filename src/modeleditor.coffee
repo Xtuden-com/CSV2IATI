@@ -725,6 +725,7 @@ class UniqueKeyWidget extends Widget
 class DimensionWidget extends Widget
   events:
     '.add_field click': 'onAddFieldClick'
+    '.add_nested_el click': 'onAddNestedElClick'
     '.field_add_alternative click': 'onAddAlternativeClick'
     '.field_add_transform click': 'onAddTransformClick'
     '.field_add_transform_transaction click': 'onAddTransformClickTransaction'
@@ -819,6 +820,29 @@ class DimensionWidget extends Widget
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     return false
   
+  onAddNestedElClick: (e) ->
+    curRow = $(e.currentTarget).parents('tr').first()
+    name = prompt("Element name:").trim()
+    prefix = curRow.data('prefix')
+    level = curRow.data('level')
+    data = {'fields':{}}
+    data['fields'][name] = {
+      'datatype':'compound'
+      'label':'User field: '+name
+      'iati_field':name
+    }
+    row = $.tmpl 'tpl_table_recursive',
+      'data': data 
+      'dimensionName': ''
+      'prefix2': ''
+      'iati_field': ''
+      'prefix': prefix
+      'level': level
+      'formFieldRequired2': ''
+    row.insertBefore(curRow)
+    @element.trigger('fillColumnsRequest', [row.find('select.column')])
+    return false
+
   onDeleteDimensionClick: (e) ->
     theform = @element.parents('form').first()
     $(e.currentTarget).parents('fieldset').first().remove()

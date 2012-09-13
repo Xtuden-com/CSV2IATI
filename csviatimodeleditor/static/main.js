@@ -1109,6 +1109,7 @@ DimensionWidget = (function(_super) {
 
   DimensionWidget.prototype.events = {
     '.add_field click': 'onAddFieldClick',
+    '.add_nested_el click': 'onAddNestedElClick',
     '.field_add_alternative click': 'onAddAlternativeClick',
     '.field_add_transform click': 'onAddTransformClick',
     '.field_add_transform_transaction click': 'onAddTransformClickTransaction',
@@ -1230,6 +1231,34 @@ DimensionWidget = (function(_super) {
     curRow = $(e.currentTarget).parents('tr').first();
     name = prompt("Field name:").trim();
     row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'));
+    row.insertBefore(curRow);
+    this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
+    return false;
+  };
+
+  DimensionWidget.prototype.onAddNestedElClick = function(e) {
+    var curRow, data, level, name, prefix, row;
+    curRow = $(e.currentTarget).parents('tr').first();
+    name = prompt("Element name:").trim();
+    prefix = curRow.data('prefix');
+    level = curRow.data('level');
+    data = {
+      'fields': {}
+    };
+    data['fields'][name] = {
+      'datatype': 'compound',
+      'label': 'User field: ' + name,
+      'iati_field': name
+    };
+    row = $.tmpl('tpl_table_recursive', {
+      'data': data,
+      'dimensionName': '',
+      'prefix2': '',
+      'iati_field': '',
+      'prefix': prefix,
+      'level': level,
+      'formFieldRequired2': ''
+    });
     row.insertBefore(curRow);
     this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
     return false;
