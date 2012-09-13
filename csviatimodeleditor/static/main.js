@@ -1475,7 +1475,8 @@ DimensionsWidget = (function(_super) {
   DimensionsWidget.prototype.events = {
     '.iati_field_add change': 'onAddIATIFieldClick',
     '.add_value_dimension click': 'onAddValueDimensionClick',
-    '.add_compound_dimension click': 'onAddCompoundDimensionClick'
+    '.add_compound_dimension click': 'onAddCompoundDimensionClick',
+    '.copy_dimension click': 'onCopyDimensionClick'
   };
 
   function DimensionsWidget(element, options) {
@@ -1536,6 +1537,27 @@ DimensionsWidget = (function(_super) {
       _results.push(this.addDimension(name).deserialize(data));
     }
     return _results;
+  };
+
+  DimensionsWidget.prototype.onCopyDimensionClick = function(e) {
+    var data, fieldset, name, widget, _i, _len, _ref;
+    fieldset = $(e.currentTarget).parents('fieldset').first();
+    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):");
+    data = {
+      'mapping': {}
+    };
+    data['mapping'][name] = {};
+    _ref = this.widgets;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      widget = _ref[_i];
+      if (widget.name === fieldset.data('dimension-name')) {
+        data['mapping'][name] = widget.data;
+        break;
+      }
+    }
+    data['mapping'][name]['label'] = 'User field: ' + name;
+    this.addDimension(name.trim()).deserialize(data);
+    return false;
   };
 
   DimensionsWidget.prototype.promptAddDimension = function(props) {

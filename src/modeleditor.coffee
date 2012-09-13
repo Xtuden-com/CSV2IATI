@@ -824,7 +824,7 @@ class DimensionWidget extends Widget
     $(e.currentTarget).parents('fieldset').first().remove()
     theform.change()
     return false
-    
+
   onDeleteTDataFieldClick: (e) ->
     theform = @element.parents('form').first()
     $(e.currentTarget).parents('fieldset').first().remove()
@@ -997,6 +997,7 @@ class DimensionsWidget extends Delegator
     '.iati_field_add change': 'onAddIATIFieldClick'
     '.add_value_dimension click': 'onAddValueDimensionClick'
     '.add_compound_dimension click': 'onAddCompoundDimensionClick'
+    '.copy_dimension click': 'onCopyDimensionClick'
 
   constructor: (element, options) ->
     super
@@ -1042,6 +1043,19 @@ class DimensionsWidget extends Delegator
     # Any keys left in dims need to be added
     for name, obj of dims
       this.addDimension(name).deserialize(data)
+
+  onCopyDimensionClick: (e) ->
+    fieldset = $(e.currentTarget).parents('fieldset').first()
+    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):")
+    data = {'mapping': {}}
+    data['mapping'][name] = {}
+    for widget in @widgets
+        if widget.name == fieldset.data('dimension-name')
+            data['mapping'][name] = widget.data
+            break
+    data['mapping'][name]['label'] = 'User field: ' + name
+    this.addDimension(name.trim()).deserialize(data)
+    return false
 
   promptAddDimension: (props) ->
     name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):")
