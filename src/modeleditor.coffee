@@ -193,157 +193,203 @@ DEFAULT_FIELD_SETUP =
     label: 'IATI Identifier'
     fields: 
         'text':
+            datatype: "column"
             required: true
   'other-identifier':
     datatype: 'compound'
     label: 'Other Identifier'
     fields: 
         'text':
+            datatype: "column"
             required: true
         'owner-name':
+            datatype: "column"
             required: false
         'owner-ref':
+            datatype: "column"
             required: false
   'title':
     datatype: 'compound'
     label: 'Title'
     fields: 
         'text':
+            datatype: "column"
             required: true
   'description':
     datatype: 'compound'
     label: 'Description'
     fields: 
         'text':
+            datatype: "column"
             required: true
   'activity-status':
     datatype: 'compound'
     label: 'Activity Status'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'activity-date':
     datatype: 'compound'
     label: 'Activity Dates'
     fields: 
         'type':
+            datatype: "column"
             required: true
         'iso-date':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'participating-org':
     datatype: 'compound'
     label: 'Participating Organisation'
     fields: 
         'role':
+            datatype: "column"
             required: true
         'ref':
+            datatype: "column"
             required: false
         'type':
+            datatype: "column"
             required: false
         'text':
+            datatype: "column"
             required: true
   'recipient-country':
     datatype: 'compound'
     label: 'Recipient country'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
         'percentage':
+            datatype: "column"
             required: false
   'recipient-region':
     datatype: 'compound'
     label: 'Recipient region'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
         'percentage':
+            datatype: "column"
             required: false
   'sector':
     datatype: 'compound'
     label: 'Sectors'
     fields: 
         'vocabulary':
+            datatype: "column"
             required: true
         'code':
+            datatype: "column"
             required: false
         'text':
+            datatype: "column"
             required: true
         'percentage':
+            datatype: "column"
             required: false
   'policy-marker':
     datatype: 'compound'
     label: 'Policy Marker'
     fields: 
         'significance':
+            datatype: "column"
             required: true
         'vocabulary':
+            datatype: "column"
             required: true
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'collaboration-type':
     datatype: 'compound'
     label: 'Collaboration type'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'default-flow-type':
     datatype: 'compound'
     label: 'Flow type'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'default-finance-type':
     datatype: 'compound'
     label: 'Finance type'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'default-aid-type':
     datatype: 'compound'
     label: 'Aid type'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'default-tied-status':
     datatype: 'compound'
     label: 'Tied Aid Status'
     fields: 
         'code':
+            datatype: "column"
             required: true
         'text':
+            datatype: "column"
             required: true
   'budget':
     datatype: 'compound'
     label: 'Budget'
     fields: 
         'type':
+            datatype: "column"
             required: false 
         'value' : {
           "datatype": "compound"
           "label": "Budget Value"
           "iati-field": "value"
           "fields": {
-              "text": {required: true}
-              "value-date": {required: true}
-              "currency": {required: false}
+              "text":
+                datatype: "column"
+                required: true
+              "value-date":
+                datatype: "column"
+                required: true
+              "currency":
+                datatype: "column"
+                required: false
           }
         }
         'period-start' : {
@@ -351,8 +397,12 @@ DEFAULT_FIELD_SETUP =
           "label": "Budget Start Date"
           "iati-field": "period-start"
           "fields": {
-              "text": {required: false}
-              "iso-date": {required: true}
+              "text":
+                datatype: "column"
+                required: false
+              "iso-date":
+                datatype: "column"
+                required: true
           }
         },
         'period-end' : {
@@ -360,8 +410,12 @@ DEFAULT_FIELD_SETUP =
           "label": "Budget End Date"
           "iati-field": "period-start"
           "fields": {
-              "text": {required: false}
-              "iso-date": {required: true}
+              "text":
+                datatype: "column"
+                required: false
+              "iso-date":
+                datatype: "column"
+                required: true
           }
         }
   'result':
@@ -369,16 +423,22 @@ DEFAULT_FIELD_SETUP =
     label: 'Result'
     fields: 
         'type':
+            datatype: "column"
             required: false 
         'title':
+            datatype: "column"
             required: false 
         'description' : {
           "datatype": "compound"
           "label": "Description"
           "iati-field": "description"
           "fields": {
-              "text": {required: true}
-              "type": {required: false}
+              "text":
+                datatype: "column"
+                required: true
+              "type":
+                datatype: "column"
+                required: false
           }
         }
         'indicator' : {
@@ -386,14 +446,20 @@ DEFAULT_FIELD_SETUP =
           "label": "Indicator"
           "iati-field": "indicator"
           "fields": {
-              "measure": {required: true}
-              "ascending": {required: false}
+              "measure":
+                datatype: "column"
+                required: true
+              "ascending":
+                datatype: "column"
+                required: false
               'title' : {
                 "datatype": "compound"
                 "label": "Title"
                 "iati-field": "title"
                 "fields": {
-                    "text": {required: false}
+                    "text":
+                      datatype: "column"
+                      required: false
                 }
               }
               'description' : {
@@ -401,7 +467,9 @@ DEFAULT_FIELD_SETUP =
                 "label": "Description"
                 "iati-field": "description"
                 "fields": {
-                    "text": {required: true}
+                    "text":
+                      datatype: "column"
+                      required: true
                     "type": {required: false}
                 }
               }
@@ -410,14 +478,20 @@ DEFAULT_FIELD_SETUP =
                 "label": "Baseline"
                 "iati-field": "baseline"
                 "fields": {
-                    "value": {required: true}
-                    "year": {required: false}
+                    "value":
+                      datatype: "column"
+                      required: true
+                    "year":
+                      datatype: "column"
+                      required: false
                     'comment' : {
                       "datatype": "compound"
                       "label": "Comment"
                       "iati-field": "comment"
                       "fields": {
-                          "text": {required: true}
+                          "text":
+                            datatype: "column"
+                            required: true
                       }
                     }
                 }
@@ -432,8 +506,12 @@ DEFAULT_FIELD_SETUP =
                     "label": "Period Start Date"
                     "iati-field": "period-start"
                     "fields": {
-                        "text": {required: false}
-                        "iso-date": {required: true}
+                        "text":
+                          datatype: "column"
+                          required: false
+                        "iso-date":
+                          datatype: "column"
+                          required: true
                     }
                   },
                   'period-end' : {
@@ -441,8 +519,12 @@ DEFAULT_FIELD_SETUP =
                     "label": "End Date"
                     "iati-field": "period-start"
                     "fields": {
-                        "text": {required: false}
-                        "iso-date": {required: true}
+                        "text":
+                          datatype: "column"
+                          required: false
+                        "iso-date":
+                          datatype: "column"
+                          required: true
                     }
                   }
                   'target' : {
@@ -450,13 +532,17 @@ DEFAULT_FIELD_SETUP =
                     "label": "Target"
                     "iati-field": "target"
                     "fields": {
-                        "value": {required: true}
+                        "value":
+                          datatype: "column"
+                          required: true
                         'comment' : {
                           "datatype": "compound"
                           "label": "Comment"
                           "iati-field": "comment"
                           "fields": {
-                              "text": {required: true}
+                              "text":
+                                datatype: "column"
+                                required: true
                           }
                         }
                     }
@@ -466,13 +552,17 @@ DEFAULT_FIELD_SETUP =
                     "label": "Actual"
                     "iati-field": "actual"
                     "fields": {
-                        "value": {required: true}
+                        "value":
+                          datatype: "column"
+                          required: true
                         'comment' : {
                           "datatype": "compound"
                           "label": "Comment"
                           "iati-field": "comment"
                           "fields": {
-                              "text": {required: true}
+                              "text":
+                                datatype: "column"
+                                required: true
                           }
                         }
                     }
@@ -490,8 +580,12 @@ DEFAULT_FIELD_SETUP =
           "label": "Transaction Type"
           "iati-field": "transaction-type"
           "fields": {
-              "text": {required: true}
-              "code": {required: true}
+              "text":
+                datatype: "column"
+                required: true
+              "code":
+                datatype: "column"
+                required: true
           }
       },
       'value': {
@@ -499,9 +593,15 @@ DEFAULT_FIELD_SETUP =
           "label": "Transaction Value"
           "iati-field": "value"
           "fields": {
-              "text": {required: true}
-              "value-date": {required: true}
-              "currency": {required: false}
+              "text":
+                datatype: "column"
+                required: true
+              "value-date":
+                datatype: "column"
+                required: true
+              "currency":
+                datatype: "column"
+                required: false
           }
       },
       'description': {
@@ -509,7 +609,9 @@ DEFAULT_FIELD_SETUP =
           "label": "Transaction Description"
           "iati-field": "description"
           "fields": {
-              "text": {required: true}
+              "text":
+                datatype: "column"
+                required: true
           }
       },
       'transaction-date': {
@@ -517,8 +619,12 @@ DEFAULT_FIELD_SETUP =
           "label": "Transaction Date"
           "iati-field": "transaction-date"
           "fields": {
-              "iso-date": {required: true}
-              "text": {required: false}
+              "iso-date":
+                datatype: "column"
+                required: true
+              "text":
+                datatype: "column"
+                required: false
           }
       },
       'provider-org': {
@@ -526,9 +632,15 @@ DEFAULT_FIELD_SETUP =
           "label": "Transaction Provider"
           "iati-field": "provider-org"
           "fields": {
-              "text": {required: false}
-              "ref": {required: false}
-              "provider-activity-id": {required: false}
+              "text":
+                datatype: "column"
+                required: false
+              "ref":
+                datatype: "column"
+                required: false
+              "provider-activity-id":
+                datatype: "column"
+                required: false
           }
       },
       'receiver-org': {
@@ -536,9 +648,15 @@ DEFAULT_FIELD_SETUP =
           "label": "Transaction Receiver"
           "iati-field": "receiver-org"
           "fields": {
-              "text": {required: false}
-              "ref": {required: false}
-              "receiver-activity-id": {required: false}
+              "text":
+                datatype: "column"
+                required: false
+              "ref":
+                datatype: "column"
+                required: false
+              "receiver-activity-id":
+                datatype: "column"
+                required: false
           }
       }
 

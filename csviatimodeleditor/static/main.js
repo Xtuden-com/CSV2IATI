@@ -384,6 +384,7 @@ DEFAULT_FIELD_SETUP = {
     label: 'IATI Identifier',
     fields: {
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -393,12 +394,15 @@ DEFAULT_FIELD_SETUP = {
     label: 'Other Identifier',
     fields: {
       'text': {
+        datatype: "column",
         required: true
       },
       'owner-name': {
+        datatype: "column",
         required: false
       },
       'owner-ref': {
+        datatype: "column",
         required: false
       }
     }
@@ -408,6 +412,7 @@ DEFAULT_FIELD_SETUP = {
     label: 'Title',
     fields: {
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -417,6 +422,7 @@ DEFAULT_FIELD_SETUP = {
     label: 'Description',
     fields: {
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -426,9 +432,11 @@ DEFAULT_FIELD_SETUP = {
     label: 'Activity Status',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -438,12 +446,15 @@ DEFAULT_FIELD_SETUP = {
     label: 'Activity Dates',
     fields: {
       'type': {
+        datatype: "column",
         required: true
       },
       'iso-date': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -453,15 +464,19 @@ DEFAULT_FIELD_SETUP = {
     label: 'Participating Organisation',
     fields: {
       'role': {
+        datatype: "column",
         required: true
       },
       'ref': {
+        datatype: "column",
         required: false
       },
       'type': {
+        datatype: "column",
         required: false
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -471,12 +486,15 @@ DEFAULT_FIELD_SETUP = {
     label: 'Recipient country',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       },
       'percentage': {
+        datatype: "column",
         required: false
       }
     }
@@ -486,12 +504,15 @@ DEFAULT_FIELD_SETUP = {
     label: 'Recipient region',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       },
       'percentage': {
+        datatype: "column",
         required: false
       }
     }
@@ -501,15 +522,19 @@ DEFAULT_FIELD_SETUP = {
     label: 'Sectors',
     fields: {
       'vocabulary': {
+        datatype: "column",
         required: true
       },
       'code': {
+        datatype: "column",
         required: false
       },
       'text': {
+        datatype: "column",
         required: true
       },
       'percentage': {
+        datatype: "column",
         required: false
       }
     }
@@ -519,15 +544,19 @@ DEFAULT_FIELD_SETUP = {
     label: 'Policy Marker',
     fields: {
       'significance': {
+        datatype: "column",
         required: true
       },
       'vocabulary': {
+        datatype: "column",
         required: true
       },
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -537,9 +566,11 @@ DEFAULT_FIELD_SETUP = {
     label: 'Collaboration type',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -549,9 +580,11 @@ DEFAULT_FIELD_SETUP = {
     label: 'Flow type',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -561,9 +594,11 @@ DEFAULT_FIELD_SETUP = {
     label: 'Finance type',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -573,9 +608,11 @@ DEFAULT_FIELD_SETUP = {
     label: 'Aid type',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -585,9 +622,11 @@ DEFAULT_FIELD_SETUP = {
     label: 'Tied Aid Status',
     fields: {
       'code': {
+        datatype: "column",
         required: true
       },
       'text': {
+        datatype: "column",
         required: true
       }
     }
@@ -597,6 +636,7 @@ DEFAULT_FIELD_SETUP = {
     label: 'Budget',
     fields: {
       'type': {
+        datatype: "column",
         required: false
       },
       'value': {
@@ -605,12 +645,15 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "value",
         "fields": {
           "text": {
+            datatype: "column",
             required: true
           },
           "value-date": {
+            datatype: "column",
             required: true
           },
           "currency": {
+            datatype: "column",
             required: false
           }
         }
@@ -621,9 +664,11 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "period-start",
         "fields": {
           "text": {
+            datatype: "column",
             required: false
           },
           "iso-date": {
+            datatype: "column",
             required: true
           }
         }
@@ -634,9 +679,11 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "period-start",
         "fields": {
           "text": {
+            datatype: "column",
             required: false
           },
           "iso-date": {
+            datatype: "column",
             required: true
           }
         }
@@ -648,9 +695,11 @@ DEFAULT_FIELD_SETUP = {
     label: 'Result',
     fields: {
       'type': {
+        datatype: "column",
         required: false
       },
       'title': {
+        datatype: "column",
         required: false
       },
       'description': {
@@ -659,9 +708,11 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "description",
         "fields": {
           "text": {
+            datatype: "column",
             required: true
           },
           "type": {
+            datatype: "column",
             required: false
           }
         }
@@ -672,9 +723,11 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "indicator",
         "fields": {
           "measure": {
+            datatype: "column",
             required: true
           },
           "ascending": {
+            datatype: "column",
             required: false
           },
           'title': {
@@ -683,6 +736,7 @@ DEFAULT_FIELD_SETUP = {
             "iati-field": "title",
             "fields": {
               "text": {
+                datatype: "column",
                 required: false
               }
             }
@@ -693,6 +747,7 @@ DEFAULT_FIELD_SETUP = {
             "iati-field": "description",
             "fields": {
               "text": {
+                datatype: "column",
                 required: true
               },
               "type": {
@@ -706,9 +761,11 @@ DEFAULT_FIELD_SETUP = {
             "iati-field": "baseline",
             "fields": {
               "value": {
+                datatype: "column",
                 required: true
               },
               "year": {
+                datatype: "column",
                 required: false
               },
               'comment': {
@@ -717,6 +774,7 @@ DEFAULT_FIELD_SETUP = {
                 "iati-field": "comment",
                 "fields": {
                   "text": {
+                    datatype: "column",
                     required: true
                   }
                 }
@@ -734,9 +792,11 @@ DEFAULT_FIELD_SETUP = {
                 "iati-field": "period-start",
                 "fields": {
                   "text": {
+                    datatype: "column",
                     required: false
                   },
                   "iso-date": {
+                    datatype: "column",
                     required: true
                   }
                 }
@@ -747,9 +807,11 @@ DEFAULT_FIELD_SETUP = {
                 "iati-field": "period-start",
                 "fields": {
                   "text": {
+                    datatype: "column",
                     required: false
                   },
                   "iso-date": {
+                    datatype: "column",
                     required: true
                   }
                 }
@@ -760,6 +822,7 @@ DEFAULT_FIELD_SETUP = {
                 "iati-field": "target",
                 "fields": {
                   "value": {
+                    datatype: "column",
                     required: true
                   },
                   'comment': {
@@ -768,6 +831,7 @@ DEFAULT_FIELD_SETUP = {
                     "iati-field": "comment",
                     "fields": {
                       "text": {
+                        datatype: "column",
                         required: true
                       }
                     }
@@ -780,6 +844,7 @@ DEFAULT_FIELD_SETUP = {
                 "iati-field": "actual",
                 "fields": {
                   "value": {
+                    datatype: "column",
                     required: true
                   },
                   'comment': {
@@ -788,6 +853,7 @@ DEFAULT_FIELD_SETUP = {
                     "iati-field": "comment",
                     "fields": {
                       "text": {
+                        datatype: "column",
                         required: true
                       }
                     }
@@ -810,9 +876,11 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "transaction-type",
         "fields": {
           "text": {
+            datatype: "column",
             required: true
           },
           "code": {
+            datatype: "column",
             required: true
           }
         }
@@ -823,12 +891,15 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "value",
         "fields": {
           "text": {
+            datatype: "column",
             required: true
           },
           "value-date": {
+            datatype: "column",
             required: true
           },
           "currency": {
+            datatype: "column",
             required: false
           }
         }
@@ -839,6 +910,7 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "description",
         "fields": {
           "text": {
+            datatype: "column",
             required: true
           }
         }
@@ -849,9 +921,11 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "transaction-date",
         "fields": {
           "iso-date": {
+            datatype: "column",
             required: true
           },
           "text": {
+            datatype: "column",
             required: false
           }
         }
@@ -862,12 +936,15 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "provider-org",
         "fields": {
           "text": {
+            datatype: "column",
             required: false
           },
           "ref": {
+            datatype: "column",
             required: false
           },
           "provider-activity-id": {
+            datatype: "column",
             required: false
           }
         }
@@ -878,12 +955,15 @@ DEFAULT_FIELD_SETUP = {
         "iati-field": "receiver-org",
         "fields": {
           "text": {
+            datatype: "column",
             required: false
           },
           "ref": {
+            datatype: "column",
             required: false
           },
           "receiver-activity-id": {
+            datatype: "column",
             required: false
           }
         }
