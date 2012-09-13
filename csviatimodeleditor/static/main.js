@@ -1324,7 +1324,6 @@ DimensionWidget = (function(_super) {
     fieldName = curRow.data('field-name');
     alternativesCounter = curRow.data('alternatives-counter');
     alternativesCounter += 1;
-    alert(alternativesCounter);
     curRow.next('.alternativesCounter').first().val(alternativesCounter);
     curRow.after("<tr><td><input name=\"" + prefix + "[" + fieldName + "][alternatives][" + alternativesCounter + "]\" value=\"test\" /></td></tr>");
     this.element.parents('form').first().change();

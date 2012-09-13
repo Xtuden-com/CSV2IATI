@@ -258,6 +258,7 @@
                     Transform:
                     <select type="text" name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-type]">
                       <option value="date">Date</option>
+                      <option value="multiply">Multiply</option>
                       <option value="text-before">Text Before</option>
                       <option value="text-after">Text After</option>
                       <option value="field-before">Field Before</option>
@@ -305,6 +306,7 @@
                     Transform:
                     <select type="text" name="${prefix}[${fieldName}][text-transform-type]">
                       <option value="date">Date</option>
+                      <option value="multiply">Multiply</option>
                       <option value="text-before">Text Before</option>
                       <option value="text-after">Text After</option>
                       <option value="field-before">Field Before</option>
@@ -349,16 +351,19 @@
                 {{/if}}
           {{/if}}
         </tr>
-        {{if iatiField != '_alternative' }}
-          <input type="hidden" name="${prefix}[${fieldName}][alternatives-counter]" class="alternativesCounter" />
-        {{/if}}
-        {{each(n,alternative) field.alternatives}}
-          {{if alternative.datatype === 'constant'}}
-            {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field_const'}}
-          {{else}}
-            {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field'}}
+        {{if transaction}}
+        {{else}}
+          {{if iatiField != '_alternative' }}
+            <input type="hidden" name="${prefix}[${fieldName}][alternatives-counter]" class="alternativesCounter" />
           {{/if}}
-        {{/each}}
+          {{each(n,alternative) field.alternatives}}
+            {{if alternative.datatype === 'constant'}}
+              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field_const'}}
+            {{else}}
+              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field'}}
+            {{/if}}
+          {{/each}}
+        {{/if}}
       </script>
       
       <!-- Dimension constant field template -->
@@ -403,16 +408,19 @@
               </td>
           {{/if}}
         </tr>
-        {{if iatiField != '_alternative' }}
-          <input type="hidden" name="${prefix}[${fieldName}][alternatives-counter]" class="alternativesCounter" />
-        {{/if}}
-        {{each(n,alternative) field.alternatives}}
-          {{if alternative.datatype === 'constant'}}
-            {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field_const'}}
-          {{else}}
-            {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field'}}
+        {{if transaction}}
+        {{else}}
+          {{if iatiField != '_alternative' }}
+            <input type="hidden" name="${prefix}[${fieldName}][alternatives-counter]" class="alternativesCounter" />
           {{/if}}
-        {{/each}}
+          {{each(n,alternative) field.alternatives}}
+            {{if alternative.datatype === 'constant'}}
+              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field_const'}}
+            {{else}}
+              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field'}}
+            {{/if}}
+          {{/each}}
+        {{/if}}
       </script>
 
       <!-- Recursive table template -->
@@ -534,7 +542,8 @@
   {%raw%}
   <script>
     $('#save_model a').click(function(){
-        $('#model_data').ajaxSubmit(function() {
+      $('#model_data').ajaxSubmit({
+        success: function() {
             flash = $('<li class="good">Model saved</li>')
             $('.flashes').append(flash);
             $('ul.flashes').css('position','fixed');
@@ -543,7 +552,18 @@
             $('ul.flashes').css('right','25px');
             flash.fadeIn('slow');
             flash.not('.flashes li.persist').delay(1500).fadeOut('slow');
-        });
+          },
+        error: function(xhr) {
+            flash = $('<li class="bad">Error saving model: '+xhr.responseText+'</li>')
+            $('.flashes').append(flash);
+            $('ul.flashes').css('position','fixed');
+            $('ul.flashes').css('top','0px');
+            $('ul.flashes').css('left','25px');
+            $('ul.flashes').css('right','25px');
+            flash.fadeIn('slow');
+            flash.not('.flashes li.persist').delay(1500).fadeOut('slow');
+          }
+      });
     });
     jQuery(function($) {
       var column_data=[{%endraw%}{% for header in csv_headers %}{% if not loop.first %}, {%endif%}"{{header}}"{% endfor %}{%raw%}];

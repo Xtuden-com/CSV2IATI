@@ -446,14 +446,16 @@ def model(id='',responsetype=''):
                     db.session.commit()
                     return redirect(url_for('model', id=id))
                 else:
-                    flash("You don't have permission to edit that model.", 'bad')
-                    return redirect(url_for('index'))
+                    return "You don't have permission to edit that model.", 403
         else:
             flash("Please select or create a model.", 'bad')
             return redirect(url_for('index'))
     else:
-        flash("Please log in.", 'bad')
-        return redirect(url_for('index'))
+        if request.method == 'POST':
+            return "Please log in.", 403
+        else:
+            flash("Please log in.", 'bad')
+            return redirect(url_for('index'))
 
 @app.route('/user/')
 @app.route('/user/<id>', methods=['GET', 'POST'])
