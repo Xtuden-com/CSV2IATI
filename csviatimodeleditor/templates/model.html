@@ -263,8 +263,25 @@
                       <option value="text-after">Text After</option>
                       <option value="field-before">Field Before</option>
                       <option value="field-after">Field After</option>
+                      <option value="crs-country-code">CRS-&gt;Country Code</option>
+                      <option value="crs-country-name">CRS-&gt;Country Name</option>
+                      <option value="crs-region-code">CRS-&gt;Region Code</option>
+                      <option value="crs-region-name">CRS-&gt;Region Name</option>
+                      <option value="crs-tied-status">CRS Tied Status</option>
                     </select>
-                    <input name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-format]" size="10"/>
+                    {{if field['text-transform-type'] in {'date':'', 'multiply':'', 'text-before':'', 'text-after':'', 'field-before':'', 'field-after':''} }}
+                      <input name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-format]" size="10"/>
+                    {{/if}}
+                    {{if field['text-transform-type'] in {'crs-tied-status':''} }}
+                      <div>
+                        Untield:
+                        <select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column2]'></select>
+                      </div>
+                      <div>
+                        PartialTied:
+                        <select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column3]'></select>
+                      </div>
+                    {{/if}}
                   </div>
                 {{/if}}
               </td>
@@ -311,8 +328,25 @@
                       <option value="text-after">Text After</option>
                       <option value="field-before">Field Before</option>
                       <option value="field-after">Field After</option>
+                      <option value="crs-country-code">CRS-&gt;Country Code</option>
+                      <option value="crs-country-name">CRS-&gt;Country Name</option>
+                      <option value="crs-region-code">CRS-&gt;Region Code</option>
+                      <option value="crs-region-name">CRS-&gt;Region Name</option>
+                      <option value="crs-tied-status">CRS Tied Status</option>
                     </select>
-                    <input name="${prefix}[${fieldName}][text-transform-format]" size="10"/>
+                    {{if field['text-transform-type'] in {'date':'', 'multiply':'', 'text-before':'', 'text-after':'', 'field-before':'', 'field-after':''} }}
+                      <input name="${prefix}[${fieldName}][text-transform-format]" size="10"/>
+                    {{/if}}
+                    {{if field['text-transform-type'] in {'crs-tied-status':''} }}
+                      <div>
+                        Untield:
+                        <select class='column' name='${prefix}[${fieldName}][column2]'></select>
+                      </div>
+                      <div>
+                        PartialTied:
+                        <select class='column' name='${prefix}[${fieldName}][column3]'></select>
+                      </div>
+                    {{/if}}
                   </div>
                 {{/if}}
               </td>
