@@ -28,7 +28,7 @@ Install dependencies:
 Copy the configuration templates (must be installed in ``/usr/sites``):
 
 
-    $ cp icconfig.ini.tmpl /usr/sites/icconfig.ini
+    $ cp csviatimodeleditor/icconfig.ini.tmpl /usr/sites/icconfig.ini
 
 Edit the configuration files and make sure that you have set a valid database URL. In production mode, remember to set the absolute path to the database.
 

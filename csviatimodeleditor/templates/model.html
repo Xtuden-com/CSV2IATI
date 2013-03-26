@@ -313,7 +313,12 @@
               </td>                
                 {{/if}}
           {{else}}
-              <td style="border-left: ${level*2}px solid #365e93;"> ${fieldName}
+              <td style="border-left: ${level*2}px solid #365e93;">
+                {{if iatiField == '_alternative' }}
+                  ${altFieldName},
+                  alternative
+                {{/if}}
+                ${fieldName}
                 <input type='hidden' name='${prefix}[${fieldName}][datatype]' value='column'>
               </td>
               <td>
@@ -367,12 +372,14 @@
                   </a>
                 {{/if}}
                 </div>
-                <div>
-                <a href='#' class='field_add_alternative'>
-                  <span class="ui-icon iconfloat_left">&nbsp;</span> 
-                  add alternative
-                </a>
-                </div>
+                {{if iatiField != '_alternative' }}
+                  <div>
+                  <a href='#' class='field_add_alternative'>
+                    <span class="ui-icon iconfloat_left">&nbsp;</span> 
+                    add alternative
+                  </a>
+                  </div>
+                {{/if}}
               </td>
                 {{if required(fieldName, iatiField) == true}}
               <td>
@@ -392,9 +399,9 @@
           {{/if}}
           {{each(n,alternative) field.alternatives}}
             {{if alternative.datatype === 'constant'}}
-              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field_const'}}
+              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative', 'altFieldName':fieldName }) '#tpl_dimension_field_const'}}
             {{else}}
-              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field'}}
+              {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative', 'altFieldName':fieldName }) '#tpl_dimension_field'}}
             {{/if}}
           {{/each}}
         {{/if}}
@@ -423,7 +430,10 @@
                 {{/if}}
           {{else}}
               <td style="border-left: ${level*2}px solid #365e93;">
-                ${fieldName}
+                {{if iatiField == '_alternative' }}
+                  ${altFieldName},
+                  alternative
+                {{/if}}
                 <input type='hidden' name='${prefix}[${fieldName}][datatype]' value='constant'>
               </td>
               <td><input type='text' name='${prefix}[${fieldName}][constant]'></td>
