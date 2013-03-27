@@ -489,7 +489,7 @@
             </tr>
           {{else f.datatype === 'constant'}}
             {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'level':level, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
-          {{else f.datatype === 'column'}}
+          {{else}}
             {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'level':level, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field'}}
           {{/if}}
         {{/each}}
