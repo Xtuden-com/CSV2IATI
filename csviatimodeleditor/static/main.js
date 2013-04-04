@@ -6,67 +6,6 @@ var DEFAULT_FIELD_SETUP, DEFAULT_MODEL, DIMENSION_META, Delegator, DimensionWidg
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-$.plugin = function(name, object) {
-  return jQuery.fn[name] = function(options) {
-    var args;
-    args = Array.prototype.slice.call(arguments, 1);
-    return this.each(function() {
-      var instance;
-      instance = $.data(this, name);
-      if (instance) {
-        return options && instance[options].apply(instance, args);
-      } else {
-        instance = new object(this, options);
-        return $.data(this, name, instance);
-      }
-    });
-  };
-};
-
-$.a2o = function(ary) {
-  var obj, walk;
-  obj = {};
-  walk = function(o, path, value) {
-    var key;
-    key = path[0];
-    if (path.length === 2 && path[1] === '') {
-      if ($.type(o[key]) !== 'array') {
-        o[key] = [];
-      }
-      return o[key].push(value);
-    } else if (path.length === 1) {
-      return o[key] = value;
-    } else {
-      if ($.type(o[key]) !== 'object') {
-        o[key] = {};
-      }
-      return walk(o[key], path.slice(1), value);
-    }
-  };
-  $.each(ary, function() {
-    var p, path;
-    path = this.name.split('[');
-    path = [path[0]].concat(__slice.call((function() {
-        var _i, _len, _ref, _results;
-        _ref = path.slice(1);
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          p = _ref[_i];
-          _results.push(p.slice(0, -1));
-        }
-        return _results;
-      })()));
-    return walk(obj, path, this.value);
-  });
-  return obj;
-};
-
-$.fn.serializeObject = function() {
-  var ary;
-  ary = this.serializeArray();
-  return $.a2o(ary);
-};
-
 Delegator = (function() {
 
   Delegator.prototype.events = {};
@@ -146,6 +85,67 @@ Delegator = (function() {
   return Delegator;
 
 })();
+
+$.plugin = function(name, object) {
+  return jQuery.fn[name] = function(options) {
+    var args;
+    args = Array.prototype.slice.call(arguments, 1);
+    return this.each(function() {
+      var instance;
+      instance = $.data(this, name);
+      if (instance) {
+        return options && instance[options].apply(instance, args);
+      } else {
+        instance = new object(this, options);
+        return $.data(this, name, instance);
+      }
+    });
+  };
+};
+
+$.a2o = function(ary) {
+  var obj, walk;
+  obj = {};
+  walk = function(o, path, value) {
+    var key;
+    key = path[0];
+    if (path.length === 2 && path[1] === '') {
+      if ($.type(o[key]) !== 'array') {
+        o[key] = [];
+      }
+      return o[key].push(value);
+    } else if (path.length === 1) {
+      return o[key] = value;
+    } else {
+      if ($.type(o[key]) !== 'object') {
+        o[key] = {};
+      }
+      return walk(o[key], path.slice(1), value);
+    }
+  };
+  $.each(ary, function() {
+    var p, path;
+    path = this.name.split('[');
+    path = [path[0]].concat(__slice.call((function() {
+        var _i, _len, _ref, _results;
+        _ref = path.slice(1);
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          p = _ref[_i];
+          _results.push(p.slice(0, -1));
+        }
+        return _results;
+      })()));
+    return walk(obj, path, this.value);
+  });
+  return obj;
+};
+
+$.fn.serializeObject = function() {
+  var ary;
+  ary = this.serializeArray();
+  return $.a2o(ary);
+};
 
 SAMPLE_DATA = {
   "Project ID": "AGNA64",
@@ -254,7 +254,7 @@ DEFAULT_MODEL = {
       label: 'Funding Organisation',
       fields: {
         'role': {
-          'constant': 'funding',
+          'constant': 'Funding',
           'datatype': 'constant'
         },
         'text': {},
@@ -268,7 +268,7 @@ DEFAULT_MODEL = {
       label: 'Extending Organisation',
       fields: {
         'role': {
-          'constant': 'extending',
+          'constant': 'Extending',
           'datatype': 'constant'
         },
         'text': {},
@@ -282,7 +282,7 @@ DEFAULT_MODEL = {
       label: 'Implementing Organisation',
       fields: {
         'role': {
-          'constant': 'implementing',
+          'constant': 'Implementing',
           'datatype': 'constant'
         },
         'text': {},
@@ -999,7 +999,7 @@ DIMENSION_META = {
   },
   'participating-org': {
     fixedDataType: true,
-    helpText: 'Organisations involved the project. Roles available for participating organisations are <code>funding</code>, <code>extending</code> and <code>implementing</code>.'
+    helpText: 'Organisations involved the project. Roles available for participating organisations are <code>Funding</code>, <code>Extending</code> and <code>Implementing</code>.'
   },
   'recipient-country': {
     fixedDataType: true,

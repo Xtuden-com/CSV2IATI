@@ -86,7 +86,7 @@ DEFAULT_MODEL =
       label: 'Funding Organisation'
       fields:
         'role':
-            'constant': 'funding'
+            'constant': 'Funding'
             'datatype': 'constant'
         'text': {}
         'ref': {}
@@ -97,7 +97,7 @@ DEFAULT_MODEL =
       label: 'Extending Organisation'
       fields:
         'role':
-            'constant': 'extending'
+            'constant': 'Extending'
             'datatype': 'constant'
         'text': {}
         'ref': {}
@@ -108,7 +108,7 @@ DEFAULT_MODEL =
       label: 'Implementing Organisation'
       fields:
         'role':
-            'constant': 'implementing'
+            'constant': 'Implementing'
             'datatype': 'constant'
         'text': {}
         'ref': {}
@@ -695,7 +695,7 @@ DIMENSION_META =
   'participating-org':
     fixedDataType:true
     helpText: '''
-              Organisations involved the project. Roles available for participating organisations are <code>funding</code>, <code>extending</code> and <code>implementing</code>.
+              Organisations involved the project. Roles available for participating organisations are <code>Funding</code>, <code>Extending</code> and <code>Implementing</code>.
 	          '''
   'recipient-country':
     fixedDataType:true
