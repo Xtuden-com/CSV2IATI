@@ -373,7 +373,9 @@ def model_convert(id=id):
                             output = the_page["error"]
                         else:
                             xml_url = the_page["result"]
-                            output = "<p>IATI-XML file saved to <a href=\"" + xml_url  + "\">" + xml_url + "</a></p>"
+                            output = ("<p>IATI-XML file saved to <a href=\"" + xml_url  + "\">" + xml_url + "</a></p>" +
+                            "<p><a href=\"http://tools.aidinfolabs.org/showmydata/index.php?url="+urllib.quote_plus(xml_url)+"\">Preview</a> " +
+                            "<form action=\"http://tools.aidinfolabs.org/validator/\" method=\"post\"><input type=\"hidden\" value=\""+xml_url+"\" name=\"url\"><a href=\"\" onclick=\"parentNode.submit();return false;\">Validate</a></form></p>")
                         # Handle keyerror TODO
                     except urllib2.HTTPError, e:
                         if (e.code == 400):
