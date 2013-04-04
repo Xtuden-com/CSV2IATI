@@ -18,7 +18,7 @@ Config = ConfigParser.RawConfigParser()
 #    CONFIGURATION_FILE_DIR
 #except NameError:
 
-Config.read('/usr/sites/icconfig.ini')
+Config.read('csviatimodeleditor/icconfig.ini')
 DATABASE_CONNECTION = Config.get('Environment','database_connection')
 UPLOAD_FOLDER = Config.get('Environment','uploads_location_path')
 CONVERSION_API_SERVER = Config.get('Environment','conversion_api_server')
@@ -557,4 +557,4 @@ if __name__ == "__main__":
         except Exception, e:
             print "Failed:", e
             print "Couldn't create directory"        
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)
