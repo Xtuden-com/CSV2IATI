@@ -302,7 +302,9 @@ DEFAULT_MODEL = {
           'label': 'Code for the sector'
         },
         'vocabulary': {
-          'label': 'Sector code vocabulary'
+          'label': 'Sector code vocabulary',
+          'constant': 'DAC',
+          'datatype': 'constant'
         }
       }
     },

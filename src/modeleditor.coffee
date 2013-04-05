@@ -124,6 +124,8 @@ DEFAULT_MODEL =
             'label': 'Code for the sector'
         'vocabulary':
             'label': 'Sector code vocabulary'
+            'constant': 'DAC'
+            'datatype': 'constant'
     transaction:
       datatype: 'transaction'
       label: 'Transactions'
