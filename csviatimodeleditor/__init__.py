@@ -71,7 +71,6 @@ class CSVFile(db.Model):
 class User(db.Model):
     id = db.Column(Integer, primary_key=True)
     username = db.Column(UnicodeText)
-    password = db.Column(UnicodeText)
     user_name = db.Column(UnicodeText)
     email_address = db.Column(UnicodeText)
     admin = db.Column(Boolean)
@@ -86,11 +85,14 @@ class User(db.Model):
         self.user_created = datetime.utcnow()
         self.admin = admin
 
+    def set_password(self, password):
+        self.pw_hash = generate_password_hash(password)
+
     def check_password(self, password):
         return check_password_hash(self.pw_hash, password)
 
     def __repr__(self):
-        return self.username, self.id, self.password
+        return self.username, self.id
 
 class XMLFile(db.Model):
     id = db.Column(Integer, primary_key=True)
@@ -487,6 +489,17 @@ def user(id=''):
                     admin = True
                 else:
                     admin = False
+                
+                username = escape(request.form['username'])
+                if username != u.username:
+                    user_check = User.query.filter_by(username=username).first()
+                    if user_check:
+                        flash("Sorry, that username has already been taken. Please choose another one.", 'bad')
+                        return redirect(url_for('user', id=id))
+                    else:
+                        u.username = username
+                u.user_name = escape(request.form['user_name'])
+                u.email_address = escape(request.form['email_address'])
                 db.session.add(u)
                 db.session.commit()
                 flash('Updated user', 'good')
