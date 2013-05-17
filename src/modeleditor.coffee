@@ -660,7 +660,18 @@ DEFAULT_FIELD_SETUP =
                 datatype: "column"
                 required: false
           }
-      }
+      },
+  'document-link':
+    datatype: 'compound'
+    label: 'Document Link'
+    fields: {
+        "url":
+          datatype: "column"
+          required: true
+        "format":
+          datatype: "column"
+          required: false
+    }
 
 
 DIMENSION_META =
@@ -758,6 +769,11 @@ DIMENSION_META =
     fixedDataType:true
     helpText: '''
               Details of each financial transaction by the donor.
+              '''
+  'document-link':
+    fixedDataType:true
+    helpText: '''
+              A categorized link to an external document.
               '''
 
 FIELDS_META =
