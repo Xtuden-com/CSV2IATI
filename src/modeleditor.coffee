@@ -672,6 +672,30 @@ DEFAULT_FIELD_SETUP =
           datatype: "column"
           required: false
     }
+  'activity-website':
+    fields: {
+    }
+  'contact-info':
+    fields: {
+    }
+  'policy-marker':
+    fields: {
+    }
+  location:
+    fields: {
+    }
+  conditions:
+    fields: {
+    }
+  'planned-disbursement':
+    fields: {
+    }
+  'related-activity':
+    fields: {
+    }
+  'legacy-data':
+    fields: {
+    }
 
 
 DIMENSION_META =
@@ -775,6 +799,23 @@ DIMENSION_META =
     helpText: '''
               A categorized link to an external document.
               '''
+
+  'activity-website':
+    fixedDataType:true
+  'contact-info':
+    fixedDataType:true
+  'policy-marker':
+    fixedDataType:true
+  location:
+    fixedDataType:true
+  conditions:
+    fixedDataType:true
+  'planned-disbursement':
+    fixedDataType:true
+  'related-activity':
+    fixedDataType:true
+  'legacy-data':
+    fixedDataType:true
 
 FIELDS_META =
   label:

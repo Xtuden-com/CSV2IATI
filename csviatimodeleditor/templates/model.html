@@ -620,7 +620,7 @@
     });
     jQuery(function($) {
       var column_data=[{%endraw%}{% for header in csv_headers %}{% if not loop.first %}, {%endif%}"{{header}}"{% endfor %}{%raw%}];
-      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction','other-identifier','budget', 'result','document-link'];
+      var iati_data=['iati-identifier', 'title', 'description', 'activity-status','activity-date', 'participating-org','recipient-country','recipient-region', 'sector','policy-marker','collaboration-type','default-flow-type','default-finance-type','default-aid-type','default-tied-status','transaction','other-identifier','budget', 'result','document-link','activity-website','contact-info','policy-marker','location','conditions','planned-disbursement', 'related-activity',  'legacy-data'];
       var model_data = $('#debug').text();
       $('#model_page_view').modelEditor({
         'columns': column_data,

@@ -147,7 +147,7 @@ def index():
             for user in all_users:
                 this_user_data = []
                 x='1'
-                user_models = IATIModel.query.filter_by(model_owner=user.id)
+                user_models = IATIModel.query.filter_by(model_owner=unicode(user.id))
                 this_user_data = dict({'user_id': user.id,'username': user.username, 'user_models':user_models})
                 all_models.append(this_user_data)
         else:
@@ -377,7 +377,8 @@ def model_convert(id=id):
                             xml_url = the_page["result"]
                             output = ("<p>IATI-XML file saved to <a href=\"" + xml_url  + "\">" + xml_url + "</a></p>" +
                             "<p><a href=\"http://tools.aidinfolabs.org/showmydata/index.php?url="+urllib.quote_plus(xml_url)+"\">Preview</a> " +
-                            "<form action=\"http://tools.aidinfolabs.org/validator/\" method=\"post\"><input type=\"hidden\" value=\""+xml_url+"\" name=\"url\"><a href=\"\" onclick=\"parentNode.submit();return false;\">Validate</a></form></p>")
+                            "<form action=\"http://tools.aidinfolabs.org/validator/\" method=\"post\"><input type=\"hidden\" value=\""+xml_url+"\" name=\"url\"><a href=\"\" onclick=\"parentNode.submit();return false;\">Validate</a></form></p>" +
+                            "<p><a href=\"http://hacks.bjwebb.co.uk/iati/split/"+re.match('.*\/([^\/]+\/[^\/]+)', xml_url).group(1)+"\">Split XML</a></p>")
                         # Handle keyerror TODO
                     except urllib2.HTTPError, e:
                         if (e.code == 400):
