@@ -673,27 +673,31 @@ DEFAULT_FIELD_SETUP =
           required: false
     }
   'activity-website':
+    datatype: 'compound'
     fields: {
     }
   'contact-info':
-    fields: {
-    }
-  'policy-marker':
+    datatype: 'compound'
     fields: {
     }
   location:
+    datatype: 'compound'
     fields: {
     }
   conditions:
+    datatype: 'compound'
     fields: {
     }
   'planned-disbursement':
+    datatype: 'compound'
     fields: {
     }
   'related-activity':
+    datatype: 'compound'
     fields: {
     }
   'legacy-data':
+    datatype: 'compound'
     fields: {
     }
 
@@ -803,8 +807,6 @@ DIMENSION_META =
   'activity-website':
     fixedDataType:true
   'contact-info':
-    fixedDataType:true
-  'policy-marker':
     fixedDataType:true
   location:
     fixedDataType:true
