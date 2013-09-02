@@ -246,74 +246,6 @@
       <!-- Dimension column field template -->
       <script id='tpl_dimension_field' type='text/x-jquery-tmpl'>
         <tr data-field-name='${fieldName}' data-prefix='${prefix}' data-level='${level}' data-alternatives-counter="${field['alternatives-counter']}">
-          {{if transaction}}
-                <td>${fieldName}
-                <input type='hidden' name='${prefix(fieldName,transaction_field,transaction_part)}[datatype]' value='column'>
-                </td>
-
-              <td>
-                <select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column]'></select>
-                {{if field['text-transform-type'] !== undefined}}
-                  <div class="transform">
-                    Transform:
-                    <select type="text" name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-type]">
-                      <option value=""></option>
-                      <option value="date">Date</option>
-                      <option value="multiply">Multiply</option>
-                      <option value="text-before">Text Before</option>
-                      <option value="text-after">Text After</option>
-                      <option value="field-before">Field Before</option>
-                      <option value="field-after">Field After</option>
-                      <option value="crs-country-code">CRS-&gt;Country Code</option>
-                      <option value="crs-country-name">CRS-&gt;Country Name</option>
-                      <option value="crs-region-code">CRS-&gt;Region Code</option>
-                      <option value="crs-region-name">CRS-&gt;Region Name</option>
-                      <option value="crs-tied-status">CRS Tied Status</option>
-                    </select>
-                    {{if field['text-transform-type'] in {'date':'', 'multiply':'', 'text-before':'', 'text-after':'', 'field-before':'', 'field-after':''} }}
-                      <input name="${prefix(fieldName,transaction_field,transaction_part)}[text-transform-format]" size="10"/>
-                    {{/if}}
-                    {{if field['text-transform-type'] in {'crs-tied-status':''} }}
-                      <div>
-                        Untield:
-                        <select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column2]'></select>
-                      </div>
-                      <div>
-                        PartialTied:
-                        <select class='column' name='${prefix(fieldName,transaction_field,transaction_part)}[column3]'></select>
-                      </div>
-                    {{/if}}
-                  </div>
-                {{/if}}
-              </td>
-              <td>
-                <div>
-                  <a title="Switch this field's data type to a fixed value (the same value for all rows in your data)" href='#' class='field_switch_constant_transaction'><span class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
-                </div>
-                <div>
-                {{if field['text-transform-type'] !== undefined}}
-                  <a href='#' class='field_remove_transform'>
-                    <span class="ui-icon iconfloat_left">&nbsp;</span>
-                    remove transform
-                  </a>
-                {{else}}
-                  <a href='#' class='field_add_transform_transaction'>
-                    <span class="ui-icon iconfloat_left">&nbsp;</span>
-                    add transform
-                  </a>
-                {{/if}}
-                </div>
-              </td>
-                {{if required(fieldName, iatiField, transaction_field) == true}}
-              <td>
-                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
-              </td>
-                {{else}}
-              <td>
-                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
-              </td>                
-                {{/if}}
-          {{else}}
               <td style="border-left: ${level*2}px solid #365e93;">
                 {{if iatiField == '_alternative' }}
                   ${altFieldName},
@@ -392,10 +324,7 @@
                 <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
               </td>                
                 {{/if}}
-          {{/if}}
         </tr>
-        {{if transaction}}
-        {{else}}
           {{if iatiField != '_alternative' }}
             <input type="hidden" name="${prefix}[${fieldName}][alternatives-counter]" class="alternativesCounter" />
           {{/if}}
@@ -406,31 +335,11 @@
               {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative', 'altFieldName':fieldName }) '#tpl_dimension_field'}}
             {{/if}}
           {{/each}}
-        {{/if}}
       </script>
       
       <!-- Dimension constant field template -->
       <script id='tpl_dimension_field_const' type='text/x-jquery-tmpl'>
         <tr data-field-name='${fieldName}' data-prefix='${prefix}' data-level='${level}'>
-          {{if transaction}}
-              <td>
-                ${fieldName}
-                <input type='hidden' name='${prefix(fieldName,transaction_field,transaction_part)}[datatype]' value='constant'>
-              </td>
-              <td><input type='text' name='${prefix(fieldName,transaction_field,transaction_part)}[constant]'></td>
-              <td>
-                <a title="Switch this field's data type to a column in your data" href='#' class='field_switch_column_transaction'><span class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
-              </td>
-                {{if required(fieldName, iatiField, transaction_field) == true}}
-              <td>
-                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
-              </td>
-                {{else}}
-              <td>
-                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
-              </td>                
-                {{/if}}
-          {{else}}
               <td style="border-left: ${level*2}px solid #365e93;">
                 {{if iatiField == '_alternative' }}
                   ${altFieldName},
@@ -453,10 +362,7 @@
               </td>                
                 {{/if}}
               </td>
-          {{/if}}
         </tr>
-        {{if transaction}}
-        {{else}}
           {{if iatiField != '_alternative' }}
             <input type="hidden" name="${prefix}[${fieldName}][alternatives-counter]" class="alternativesCounter" />
           {{/if}}
@@ -467,7 +373,6 @@
               {{tmpl({'fieldName': n, 'field': field['alternatives'][n], 'prefix':prefix+'['+fieldName+'][alternatives]', 'level':level+1, 'dimensionName':dimensionName, 'required': required, 'iatiField': '_alternative'}) '#tpl_dimension_field'}}
             {{/if}}
           {{/each}}
-        {{/if}}
       </script>
 
       <!-- Recursive table template -->
@@ -551,35 +456,6 @@
             </tr>
             </tbody>
           </table>
-        {{/if}}
-        {{if data.datatype == 'transaction' }}
-        {{each(n, f) data.tdatafields}}
-            <fieldset id="m1_dim_transaction_${n}" class="tdatafield" data-transaction-field-type="${n}">
-            <legend>${f['label']}</legend>
-            <input type="hidden" name="mapping[${name}][tdatafields][${n}][label]" value="${f['label']}" />
-            <input type="hidden" name="mapping[${name}][tdatafields][${n}][iati-field]" value="${f['iati-field']}" />
-            <table class='fields'>
-                <thead>
-                  <tr>
-                    <td>Attribute</td>
-                    <td>Column/Const</td>
-                    <td>Change type</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                </thead>
-                <tbody>
-                {{each(x, y) f.fields}}
-                  {{if y.datatype === 'constant'}}
-                    {{tmpl({'fieldName': x, 'field':y, 'transaction_field': n, 'transaction_part': name, 'prefix': formFieldTransactionPrefix, 'required': formFieldRequired2, 'dimensionName': name, 'transaction':'yes', 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
-                  {{else}}
-                    {{tmpl({'fieldName': x, 'field':y, 'transaction_field': n, 'transaction_part': name, 'prefix': formFieldTransactionPrefix, 'required': formFieldRequired2, 'dimensionName': name, 'transaction':'yes', 'iatiField': iati_field}) '#tpl_dimension_field'}}
-                  {{/if}}
-                {{/each}}
-                </tbody>
-              </table>
-                <p><a class='delete_tdatafield' href='#'>Delete this part of the transaction</a></p>
-              </fieldset>
-        {{/each}}
         {{/if}}
         <p><a class='delete_dimension' href='#'>Delete this dimension</a></p>
         <p><a class='copy_dimension' href='#'>Copy this dimension</a></p>

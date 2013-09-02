@@ -177,12 +177,9 @@ class DimensionWidget extends Widget
     '.add_nested_el click': 'onAddNestedElClick'
     '.field_add_alternative click': 'onAddAlternativeClick'
     '.field_add_transform click': 'onAddTransformClick'
-    '.field_add_transform_transaction click': 'onAddTransformClickTransaction'
     '.field_remove_transform click': 'onRemoveTransformClick'
     '.field_switch_constant click': 'onFieldSwitchConstantClick'
     '.field_switch_column click': 'onFieldSwitchColumnClick'
-    '.field_switch_constant_transaction click': 'onFieldSwitchConstantClickTransaction'
-    '.field_switch_column_transaction click': 'onFieldSwitchColumnClickTransaction'
     '.field_rm click': 'onFieldRemoveClick'
     '.delete_dimension click': 'onDeleteDimensionClick'
     '.delete_tdatafield click': 'onDeleteTDataFieldClick'
@@ -223,12 +220,6 @@ class DimensionWidget extends Widget
   formFieldPrefix: () =>
     "mapping[#{@name}][fields]"
     
-  formFieldTransactionPrefix: (fieldName, transaction_field='', transaction_part='') =>
-    # transaction_part is dimension (e.g. 'transactions')
-    # transaction_field is the transactions sub-part (e.g. 'transaction-type')
-    # fieldName is the attribute (e.g. 'text')
-    "mapping[#{@name}][tdatafields][#{transaction_field}][fields][#{fieldName}]"
-
   formFieldRequired: (fieldName,fieldParent) =>
     if (fieldParent)
         FIELDS_META[fieldName]?['required'] or false
@@ -237,29 +228,16 @@ class DimensionWidget extends Widget
 
   formFieldRequired2: (fieldName, fieldParent, transactionField) =>
     #NB that fieldParent is the IATI field here
-    #If it's a transaction field, look at the constituent bits of the transaction
-    if (transactionField)
-      if (fieldParent)
-        if (DEFAULT_FIELD_SETUP[fieldParent])
-          if ((DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]) and (DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]))
-            DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]?['required'] or false
-          else
-            false
+    if (fieldParent)
+      if (DEFAULT_FIELD_SETUP[fieldParent])
+        if ((DEFAULT_FIELD_SETUP[fieldParent]['fields']) and (DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]))
+          DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]?['required'] or false
         else
           false
       else
-        FIELDS_META[fieldName]?['required'] or false
+        false
     else
-      if (fieldParent)
-        if (DEFAULT_FIELD_SETUP[fieldParent])
-          if ((DEFAULT_FIELD_SETUP[fieldParent]['fields']) and (DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]))
-            DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]?['required'] or false
-          else
-            false
-        else
-          false
-      else
-        FIELDS_META[fieldName]?['required'] or false
+      FIELDS_META[fieldName]?['required'] or false
 
   onAddFieldClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
@@ -373,15 +351,6 @@ class DimensionWidget extends Widget
     @element.parents('form').first().change()
     return false
 
-  onAddTransformClickTransaction: (e) ->
-    curRow = $(e.currentTarget).parents('tr').first()
-    curDimension = $(e.currentTarget).parents('fieldset').first()
-    curDimensionPart = $(e.currentTarget).parents('fieldset')
-    prefix = @formFieldTransactionPrefix(curRow.data('field-name'), curDimensionPart.data('transaction-field-type'), curDimension.data('dimension-name'))
-    curRow.after("<tr><td><input name=\"#{prefix}[text-transform-type]\" value=\"\" /></td></tr>") 
-    @element.parents('form').first().change()
-    return false
-
   onRemoveTransformClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
     curRow.find('.transform').remove()
@@ -407,28 +376,6 @@ class DimensionWidget extends Widget
     @element.parents('form').first().change()
     return false
 
-  onFieldSwitchConstantClickTransaction: (e) ->
-    curRow = $(e.currentTarget).parents('tr').first()
-    curDimensionPart = $(e.currentTarget).parents('fieldset')
-    curDimension = $(e.currentTarget).parents('fieldset').first()
-    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val()
-    newrow = this._makeFieldRowTransaction(curRow.data('field-name'),curDimensionPart.data('transaction-field-type'),curDimension.data('dimension-name'),iatiField,true)
-    curRow.replaceWith(newrow)
-    @element.trigger('fillColumnsRequest', [newrow.find('select.column')])
-    @element.parents('form').first().change()
-    return false
-
-  onFieldSwitchColumnClickTransaction: (e) ->
-    curRow = $(e.currentTarget).parents('tr').first()
-    curDimensionPart = $(e.currentTarget).parents('fieldset')
-    curDimension = $(e.currentTarget).parents('fieldset').first()
-    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val()
-    newrow = this._makeFieldRowTransaction(curRow.data('field-name'),curDimensionPart.data('transaction-field-type'),curDimension.data('dimension-name'),iatiField,false)
-    curRow.replaceWith(newrow)
-    @element.trigger('fillColumnsRequest', [newrow.find('select.column')])
-    @element.parents('form').first().change()
-    return false
-    
   promptAddDimensionNamed: (props, thename) ->
     return false
   
@@ -446,18 +393,6 @@ class DimensionWidget extends Widget
       'required': this.formFieldRequired
       field: {}
 
-  _makeFieldRowTransaction: (fieldname, transaction_field, dimension_name, iatiField, constant=false) ->
-    tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
-    $.tmpl tplName,
-      'fieldName': fieldname
-      'transaction_field':transaction_field
-      'transaction_part':dimension_name
-      'prefix': this.formFieldTransactionPrefix
-      'required': this.formFieldRequired
-      'transaction':'yes'
-      'iatiField':iatiField
-      field: {}
-      
   _makeFieldRowUpdate: (name, thisfield, requiredvar, constant=false) ->
     tplName = if constant then 'tpl_dimension_field_const' else 'tpl_dimension_field'
     $.tmpl tplName,
