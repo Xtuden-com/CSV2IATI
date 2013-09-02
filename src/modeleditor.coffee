@@ -25,8 +25,6 @@ DEFAULT_MODEL =
       datatype: 'compound'
       'iati-field': 'iati-identifier'
       label: 'IATI Identifier'
-      fields: 
-        'text': {}
     'title':
       datatype: 'compound'
       'iati-field': 'title'
@@ -127,697 +125,203 @@ DEFAULT_MODEL =
             'constant': 'DAC'
             'datatype': 'constant'
     transaction:
-      datatype: 'transaction'
-      label: 'Transactions'
-      'iati-field':'transaction'
-      'tdatafields':
-          transaction_type: {
-              "label":"Transaction type",
-              "iati-field":"transaction-type",
-              "datatype":"compound",
-	          "fields": {
-	              "text": {"constant":"Disbursement", "datatype":"constant"}
-	              "code": {"constant":"D", "datatype":"constant"}
-              }
-          },
-          value: {
-              "label":"Transaction value",
-              "iati-field":"value",
-              "datatype":"compound",
-	          "fields": {
-	              "text": {}
-	              "value-date": {}
-              }
-          },
-          description: {
-              "label":"Transaction Description",
-              "iati-field":"description",
-              "datatype":"compound",
-	          "fields": {
-	              "iso-date": {}
-	              "text": {}
-              }
-          },
-          'transaction-date': {
-              "label":"Transaction Date",
-              "iati-field":"transaction-date",
-              "datatype":"compound",
-	          "fields": {
-	              "iso-date": {}
-	              "text": {}
-              }
-          },
-          'provider-org': {
-              "label":"Transaction Provider",
-              "iati-field":"provider-org",
-              "datatype":"compound",
-	          "fields": {
-	              "text": {}
-	              "ref": {}
-	              "provider-activity-id": {}
-              }
-          },
-          'receiver-org': {
-              "label":"Transaction Receiver",
-              "iati-field":"receiver-org",
-              "datatype":"compound",
-	          "fields": {
-	              "text": {}
-	              "ref": {}
-	              "receiver-activity-id": {}
-              }
-          }
-
-
-DEFAULT_FIELD_SETUP =
-  'iati-identifier':
-    datatype: 'compound'
-    label: 'IATI Identifier'
-    fields: 
-        'text':
-            datatype: "column"
-            required: true
-  'other-identifier':
-    datatype: 'compound'
-    label: 'Other Identifier'
-    fields: 
-        'text':
-            datatype: "column"
-            required: true
-        'owner-name':
-            datatype: "column"
-            required: false
-        'owner-ref':
-            datatype: "column"
-            required: false
-  'title':
-    datatype: 'compound'
-    label: 'Title'
-    fields: 
-        'text':
-            datatype: "column"
-            required: true
-  'description':
-    datatype: 'compound'
-    label: 'Description'
-    fields: 
-        'text':
-            datatype: "column"
-            required: true
-  'activity-status':
-    datatype: 'compound'
-    label: 'Activity Status'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'activity-date':
-    datatype: 'compound'
-    label: 'Activity Dates'
-    fields: 
-        'type':
-            datatype: "column"
-            required: true
-        'iso-date':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'participating-org':
-    datatype: 'compound'
-    label: 'Participating Organisation'
-    fields: 
-        'role':
-            datatype: "column"
-            required: true
-        'ref':
-            datatype: "column"
-            required: false
-        'type':
-            datatype: "column"
-            required: false
-        'text':
-            datatype: "column"
-            required: true
-  'recipient-country':
-    datatype: 'compound'
-    label: 'Recipient country'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-        'percentage':
-            datatype: "column"
-            required: false
-  'recipient-region':
-    datatype: 'compound'
-    label: 'Recipient region'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-        'percentage':
-            datatype: "column"
-            required: false
-  'sector':
-    datatype: 'compound'
-    label: 'Sectors'
-    fields: 
-        'vocabulary':
-            datatype: "column"
-            required: true
-        'code':
-            datatype: "column"
-            required: false
-        'text':
-            datatype: "column"
-            required: true
-        'percentage':
-            datatype: "column"
-            required: false
-  'policy-marker':
-    datatype: 'compound'
-    label: 'Policy Marker'
-    fields: 
-        'significance':
-            datatype: "column"
-            required: true
-        'vocabulary':
-            datatype: "column"
-            required: true
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'collaboration-type':
-    datatype: 'compound'
-    label: 'Collaboration type'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'default-flow-type':
-    datatype: 'compound'
-    label: 'Flow type'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'default-finance-type':
-    datatype: 'compound'
-    label: 'Finance type'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'default-aid-type':
-    datatype: 'compound'
-    label: 'Aid type'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'default-tied-status':
-    datatype: 'compound'
-    label: 'Tied Aid Status'
-    fields: 
-        'code':
-            datatype: "column"
-            required: true
-        'text':
-            datatype: "column"
-            required: true
-  'budget':
-    datatype: 'compound'
-    label: 'Budget'
-    fields: 
-        'type':
-            datatype: "column"
-            required: false 
-        'value' : {
-          "datatype": "compound"
-          "label": "Budget Value"
-          "iati-field": "value"
+      "datatype": "compound",
+      "iati-field": "transaction",
+      "label": "transaction",
+      "fields": {
+        "ref": {
+          "datatype": "column",
+          "column": "",
+          "alternatives-counter": ""
+        },
+        "value": {
+          "datatype": "compound",
+          "label": "Value",
           "fields": {
-              "text":
-                datatype: "column"
-                required: true
-              "value-date":
-                datatype: "column"
-                required: true
-              "currency":
-                datatype: "column"
-                required: false
-          }
-        }
-        'period-start' : {
-          "datatype": "compound"
-          "label": "Budget Start Date"
-          "iati-field": "period-start"
-          "fields": {
-              "text":
-                datatype: "column"
-                required: false
-              "iso-date":
-                datatype: "column"
-                required: true
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "currency": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "value-date": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
         },
-        'period-end' : {
-          "datatype": "compound"
-          "label": "Budget End Date"
-          "iati-field": "period-start"
+        "description": {
+          "datatype": "compound",
+          "label": "Description",
           "fields": {
-              "text":
-                datatype: "column"
-                required: false
-              "iso-date":
-                datatype: "column"
-                required: true
-          }
-        }
-  'result':
-    datatype: 'compound'
-    label: 'Result'
-    fields: 
-        'type':
-            datatype: "column"
-            required: false 
-        'title':
-            datatype: "column"
-            required: false 
-        'description' : {
-          "datatype": "compound"
-          "label": "Description"
-          "iati-field": "description"
-          "fields": {
-              "text":
-                datatype: "column"
-                required: true
-              "type":
-                datatype: "column"
-                required: false
-          }
-        }
-        'indicator' : {
-          "datatype": "compound"
-          "label": "Indicator"
-          "iati-field": "indicator"
-          "fields": {
-              "measure":
-                datatype: "column"
-                required: true
-              "ascending":
-                datatype: "column"
-                required: false
-              'title' : {
-                "datatype": "compound"
-                "label": "Title"
-                "iati-field": "title"
-                "fields": {
-                    "text":
-                      datatype: "column"
-                      required: false
-                }
-              }
-              'description' : {
-                "datatype": "compound"
-                "label": "Description"
-                "iati-field": "description"
-                "fields": {
-                    "text":
-                      datatype: "column"
-                      required: true
-                    "type": {required: false}
-                }
-              }
-              'baseline' : {
-                "datatype": "compound"
-                "label": "Baseline"
-                "iati-field": "baseline"
-                "fields": {
-                    "value":
-                      datatype: "column"
-                      required: true
-                    "year":
-                      datatype: "column"
-                      required: false
-                    'comment' : {
-                      "datatype": "compound"
-                      "label": "Comment"
-                      "iati-field": "comment"
-                      "fields": {
-                          "text":
-                            datatype: "column"
-                            required: true
-                      }
-                    }
-                }
-              }
-              'period' : {
-                "datatype": "compound"
-                "label": "Period"
-                "iati-field": "period"
-                "fields": {
-                  'period-start' : {
-                    "datatype": "compound"
-                    "label": "Period Start Date"
-                    "iati-field": "period-start"
-                    "fields": {
-                        "text":
-                          datatype: "column"
-                          required: false
-                        "iso-date":
-                          datatype: "column"
-                          required: true
-                    }
-                  },
-                  'period-end' : {
-                    "datatype": "compound"
-                    "label": "End Date"
-                    "iati-field": "period-start"
-                    "fields": {
-                        "text":
-                          datatype: "column"
-                          required: false
-                        "iso-date":
-                          datatype: "column"
-                          required: true
-                    }
-                  }
-                  'target' : {
-                    "datatype": "compound"
-                    "label": "Target"
-                    "iati-field": "target"
-                    "fields": {
-                        "value":
-                          datatype: "column"
-                          required: true
-                        'comment' : {
-                          "datatype": "compound"
-                          "label": "Comment"
-                          "iati-field": "comment"
-                          "fields": {
-                              "text":
-                                datatype: "column"
-                                required: true
-                          }
-                        }
-                    }
-                  }
-                  'actual' : {
-                    "datatype": "compound"
-                    "label": "Actual"
-                    "iati-field": "actual"
-                    "fields": {
-                        "value":
-                          datatype: "column"
-                          required: true
-                        'comment' : {
-                          "datatype": "compound"
-                          "label": "Comment"
-                          "iati-field": "comment"
-                          "fields": {
-                              "text":
-                                datatype: "column"
-                                required: true
-                          }
-                        }
-                    }
-                  }
-                }
-              }
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
         },
-  'transaction':
-    datatype: 'transaction'
-    label: 'Transaction'
-    'tdatafields':
-      'transaction-type': { 
-          "datatype": "compound"
-          "label": "Transaction Type"
-          "iati-field": "transaction-type"
+        "transaction-type": {
+          "datatype": "compound",
+          "label": "Transaction Type",
           "fields": {
-              "text":
-                datatype: "column"
-                required: true
-              "code":
-                datatype: "column"
-                required: true
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
-      },
-      'value': {
-          "datatype": "compound"
-          "label": "Transaction Value"
-          "iati-field": "value"
+        },
+        "provider-org": {
+          "datatype": "compound",
+          "label": "Provider Org",
           "fields": {
-              "text":
-                datatype: "column"
-                required: true
-              "value-date":
-                datatype: "column"
-                required: true
-              "currency":
-                datatype: "column"
-                required: false
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "ref": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "provider-activity-id": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
-      },
-      'description': {
-          "datatype": "compound"
-          "label": "Transaction Description"
-          "iati-field": "description"
+        },
+        "receiver-org": {
+          "datatype": "compound",
+          "label": "Receiver Org",
           "fields": {
-              "text":
-                datatype: "column"
-                required: true
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "ref": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "receiver-activity-id": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
-      },
-      'transaction-date': {
-          "datatype": "compound"
-          "label": "Transaction Date"
-          "iati-field": "transaction-date"
+        },
+        "transaction-date": {
+          "datatype": "compound",
+          "label": "Transaction Date",
           "fields": {
-              "iso-date":
-                datatype: "column"
-                required: true
-              "text":
-                datatype: "column"
-                required: false
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "iso-date": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
-      },
-      'provider-org': {
-          "datatype": "compound"
-          "label": "Transaction Provider"
-          "iati-field": "provider-org"
+        },
+        "flow-type": {
+          "datatype": "compound",
+          "label": "Flow Type",
           "fields": {
-              "text":
-                datatype: "column"
-                required: false
-              "ref":
-                datatype: "column"
-                required: false
-              "provider-activity-id":
-                datatype: "column"
-                required: false
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
-      },
-      'receiver-org': {
-          "datatype": "compound"
-          "label": "Transaction Receiver"
-          "iati-field": "receiver-org"
+        },
+        "aid-type": {
+          "datatype": "compound",
+          "label": "Aid Type",
           "fields": {
-              "text":
-                datatype: "column"
-                required: false
-              "ref":
-                datatype: "column"
-                required: false
-              "receiver-activity-id":
-                datatype: "column"
-                required: false
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
           }
-      },
-  'document-link':
-    datatype: 'compound'
-    label: 'Document Link'
-    fields: {
-        "url":
-          datatype: "column"
-          required: true
-        "format":
-          datatype: "column"
-          required: false
-    }
-  'activity-website':
-    datatype: 'compound'
-    fields: {
-    }
-  'contact-info':
-    datatype: 'compound'
-    fields: {
-    }
-  location:
-    datatype: 'compound'
-    fields: {
-    }
-  conditions:
-    datatype: 'compound'
-    fields: {
-    }
-  'planned-disbursement':
-    datatype: 'compound'
-    fields: {
-    }
-  'related-activity':
-    datatype: 'compound'
-    fields: {
-    }
-  'legacy-data':
-    datatype: 'compound'
-    fields: {
-    }
+        },
+        "finance-type": {
+          "datatype": "compound",
+          "label": "Finance Type",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "tied-status": {
+          "datatype": "compound",
+          "label": "Tied Status",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "disbursement-channel": {
+          "datatype": "compound",
+          "label": "Disbursement Channel",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        }
+      }
 
-
-DIMENSION_META =
-  'iati-identifier':
-    fixedDataType: true
-    helpText: '''
-              The unique IATI Identifier for your project. This must appear only once in the file: there can not be two activities with the same IATI Identifier. The Identifier is normally composed of the reporting organisation's unique reference, followed by the organisation's internal project code.<br />E.g. an Oxfam project would be <code>GB-CHC-202918-<b>P00001</b></code>, where <code>P0001</code> is the project code.
-              '''
-  'other-identifier':
-    fixedDataType: true
-    helpText: '''
-              An activity can be defined and/or reported on by multiple organisations. All such identifiers can be reported here.
-              '''
-  title:
-    fixedDataType: true
-    helpText: '''
-              A short, human-readable title. May be repeated for different languages. 
-              '''
-  description:
-    fixedDataType: true
-    helpText: '''
-              A longer, human-readable description. May be repeated for different languages. 
-              '''
-  'activity-status':
-    fixedDataType:true
-    helpText: '''
-              The current stage of the aid activity at the time the IATI information is published/updated. The stages are based on an activity lifecycle.
-              '''
-  'activity-date':
-    fixedDataType:true
-    helpText: '''
-              The expected and actual start and completion dates of the activity, where start is the date of first disbursement for the activity and completion is the date of last disbursement for the activity.
-              '''
-  'participating-org':
-    fixedDataType:true
-    helpText: '''
-              Organisations involved the project. Roles available for participating organisations are <code>Funding</code>, <code>Extending</code> and <code>Implementing</code>.
-	          '''
-  'recipient-country':
-    fixedDataType:true
-    helpText: '''
-              The country(ies) for whose benefit the aid flow is provided, if applicable. Repeat for each country where known.
-              '''    
-  'recipient-region':
-    fixedDataType:true
-    helpText: '''
-              Supra-national: The geographical or administrative region grouping various countries (e.g. Sub-Saharan Africa, Mekong Delta). Use ‘global’ for activities benefiting substantially all developing countries. If percentages are shown for each region they must add to 100% for the activity being reported.
-              '''    
-  sector:
-    fixedDataType:true
-    helpText: '''
-              The specific area(s) of the recipient's economic or social development that the transfer intends to foster. Also known as purpose codes.
-              '''
-  'policy-marker':
-    fixedDataType:true
-    helpText: '''
-              Indicators tracking key policy issues. This can be also used for donor specific thematic classifications.
-              '''
-  'collaboration-type':
-    fixedDataType:true
-    helpText: '''
-              Identifier to show the type of collaboration. For official donors, shows if the activity is bilateral; earmarked multilateral; core multilateral; core contributions to NGOs; core contributions to PPPs; or multilateral outflow. Allows for additional types that might apply to foundations and NGOs. 
-              '''
-  'default-flow-type':
-    fixedDataType:true
-    helpText: '''
-              Identifier to show the classification of the flow. For official donors if the activity is Official Development Assistance (ODA), or Other Official Flows (OOF) [non-concessional but developmental, i.e. excluding export credits]. Allows for any types that might apply to foundations and NGOs. Default flow type can be overridden by flow type on any specific transaction within the activity.
-              '''
-  'default-finance-type':
-    fixedDataType:true
-    helpText: '''
-              Identifier to show the financing mechanism of the aid activity (e.g. grant, loan, capital subscription, export credit, debt relief, equity). Default finance type can be overridden by finance type on any specific transaction within the activity.
-              '''
-  'default-aid-type':
-    fixedDataType:true
-    helpText: '''
-              Identifier to show the type of assistance provided. For official donors broad categories are budget support, pooled funds, project-type interventions, experts, scholarships, debt relief, administrative costs). Allows for any types that might apply to private donors. Default aid type can be overridden by aid type on any specific transaction within the activity.
-              '''
-  'default-tied-status':
-    fixedDataType:true
-    helpText: '''
-              Amounts by degree of restriction on where procurement of goods or services can take place, classified as untied (open procurement), partially tied (donor and developing countries) and tied (donor or group not including most developing countries). Note that there is both a default for the entire activity, and an optional status for each transaction, for when different contributions to an activity have different tied statuses.
-              '''
-  budget:
-    fixedDataType:true
-    helpText: '''
-              The value of the aid activity's budget for each financial year as in the original project document.
-              '''
-  result:
-    fixedDataType:true
-    helpText: '''
-              A measurable result of aid work.
-              '''
-  transaction:
-    fixedDataType:true
-    helpText: '''
-              Details of each financial transaction by the donor.
-              '''
-  'document-link':
-    fixedDataType:true
-    helpText: '''
-              A categorized link to an external document.
-              '''
-
-  'activity-website':
-    fixedDataType:true
-  'contact-info':
-    fixedDataType:true
-  location:
-    fixedDataType:true
-  conditions:
-    fixedDataType:true
-  'planned-disbursement':
-    fixedDataType:true
-  'related-activity':
-    fixedDataType:true
-  'legacy-data':
-    fixedDataType:true
 
 FIELDS_META =
   label:
