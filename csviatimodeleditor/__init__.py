@@ -50,7 +50,7 @@ class IATIModel(db.Model):
 	self.csv_id = csv_id
 
     def __repr__(self):
-        return self.model_owner, self.id
+        return unicode((self.model_owner, self.id))
 
 class CSVFile(db.Model):
     id = db.Column(Integer, primary_key=True)
@@ -66,7 +66,7 @@ class CSVFile(db.Model):
         self.csv_owner = csv_owner
 
     def __repr__(self):
-        return self.csv_file, self.id
+        return unicode((self.csv_file, self.id))
 
 class User(db.Model):
     id = db.Column(Integer, primary_key=True)
@@ -92,19 +92,20 @@ class User(db.Model):
         return check_password_hash(self.pw_hash, password)
 
     def __repr__(self):
-        return self.username, self.id
+        return unicode((self.username, self.id))
 
 class XMLFile(db.Model):
     id = db.Column(Integer, primary_key=True)
     iati_model_id = db.Column(Integer)
     xml_url = db.Column(UnicodeText)
+    created = db.Column(db.DateTime, default=db.func.now())
 
     def __init__(self, iati_model_id, xml_url):
         self.iati_model_id = iati_model_id
         self.xml_url = xml_url  
 
     def __repr__(self):
-        return self.xml_url, self.id
+        return unicode((self.xml_url, self.id))
 
 def is_logged_in():
     if ('username' in session):
@@ -461,6 +462,12 @@ def model(id='',responsetype=''):
         else:
             flash("Please log in.", 'bad')
             return redirect(url_for('index'))
+
+@app.route('/model/history/<id>', methods=['GET'])
+def model_history(id=''):
+    return render_template('model-history.html',
+        xml_files=XMLFile.query.filter_by(iati_model_id=id),
+        username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
 
 @app.route('/user/')
 @app.route('/user/<id>', methods=['GET', 'POST'])
