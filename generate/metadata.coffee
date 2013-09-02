@@ -317,6 +317,12 @@ DEFAULT_FIELD_SETUP =
             'text':
               datatype: 'column'
               required: false
+            'currency':
+              datatype: 'column'
+              required: false
+            'value-date':
+              datatype: 'column'
+              required: false
       'description':
         datatype: 'compound'
         label: 'Description'
@@ -496,11 +502,17 @@ DEFAULT_FIELD_SETUP =
                     'text':
                       datatype: 'column'
                       required: false
+                    'iso-date':
+                      datatype: 'column'
+                      required: false
               'period-end':
                 datatype: 'compound'
                 label: 'Period End'
                 fields:
                     'text':
+                      datatype: 'column'
+                      required: false
+                    'iso-date':
                       datatype: 'column'
                       required: false
               'target':
@@ -562,6 +574,9 @@ DEFAULT_FIELD_SETUP =
             'text':
               datatype: 'column'
               required: false
+            'iso-date':
+              datatype: 'column'
+              required: false
       'period-end':
         datatype: 'compound'
         label: 'Period End'
@@ -569,11 +584,20 @@ DEFAULT_FIELD_SETUP =
             'text':
               datatype: 'column'
               required: false
+            'iso-date':
+              datatype: 'column'
+              required: false
       'value':
         datatype: 'compound'
         label: 'Value'
         fields:
             'text':
+              datatype: 'column'
+              required: false
+            'currency':
+              datatype: 'column'
+              required: false
+            'value-date':
               datatype: 'column'
               required: false
   'planned-disbursement':
@@ -590,6 +614,9 @@ DEFAULT_FIELD_SETUP =
             'text':
               datatype: 'column'
               required: false
+            'iso-date':
+              datatype: 'column'
+              required: false
       'period-end':
         datatype: 'compound'
         label: 'Period End'
@@ -597,11 +624,20 @@ DEFAULT_FIELD_SETUP =
             'text':
               datatype: 'column'
               required: false
+            'iso-date':
+              datatype: 'column'
+              required: false
       'value':
         datatype: 'compound'
         label: 'Value'
         fields:
             'text':
+              datatype: 'column'
+              required: false
+            'currency':
+              datatype: 'column'
+              required: false
+            'value-date':
               datatype: 'column'
               required: false
   'related-activity':

@@ -25,8 +25,6 @@ DEFAULT_MODEL =
       datatype: 'compound'
       'iati-field': 'iati-identifier'
       label: 'IATI Identifier'
-      fields: 
-        'text': {}
     'title':
       datatype: 'compound'
       'iati-field': 'title'

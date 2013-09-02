@@ -19,7 +19,7 @@ def get_element(element_name, indent='', top=False, doc=False):
         if not top:
             attribute_loop(element, indent)
 
-        ext = element.find("xsd:complexType/xsd:simpleContent/xsd:extension", namespaces=namespaces)
+        ext = element.find("./xsd:complexType/xsd:simpleContent/xsd:extension", namespaces=namespaces)
         if ext is not None:
             if ext.attrib['base'] in ['xsd:anyURI', 'xsd:string']:
                 print_column_info('text', indent)
@@ -73,6 +73,11 @@ def attribute_loop(element, indent=''):
                 print_column_info('code', indent+'  ', True)
             if a['type'] == 'codeType':
                 print_column_info('code', indent+'  ', False)
+            if a['type'] == 'currencyType':
+                print_column_info('currency', indent+'  ', False)
+                print_column_info('value-date', indent+'  ', False)
+            if a['type'] == 'dateType':
+                print_column_info('iso-date', indent+'  ', False)
         else: raise Exception, a['type']
 
     for attribute in element.findall('xsd:complexType/xsd:attribute', namespaces=namespaces):

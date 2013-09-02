@@ -589,6 +589,14 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -837,6 +845,10 @@ DEFAULT_FIELD_SETUP = {
                   'text': {
                     datatype: 'column',
                     required: false
+                  },
+                  'iso-date': {
+                    datatype: 'column',
+                    required: false
                   }
                 }
               },
@@ -845,6 +857,10 @@ DEFAULT_FIELD_SETUP = {
                 label: 'Period End',
                 fields: {
                   'text': {
+                    datatype: 'column',
+                    required: false
+                  },
+                  'iso-date': {
                     datatype: 'column',
                     required: false
                   }
@@ -935,6 +951,10 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -945,6 +965,10 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -953,6 +977,14 @@ DEFAULT_FIELD_SETUP = {
         label: 'Value',
         fields: {
           'text': {
+            datatype: 'column',
+            required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
             datatype: 'column',
             required: false
           }
@@ -975,6 +1007,10 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -985,6 +1021,10 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -993,6 +1033,14 @@ DEFAULT_FIELD_SETUP = {
         label: 'Value',
         fields: {
           'text': {
+            datatype: 'column',
+            required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
             datatype: 'column',
             required: false
           }
@@ -1240,10 +1288,7 @@ DEFAULT_MODEL = {
     'iati-identifier': {
       datatype: 'compound',
       'iati-field': 'iati-identifier',
-      label: 'IATI Identifier',
-      fields: {
-        'text': {}
-      }
+      label: 'IATI Identifier'
     },
     'title': {
       datatype: 'compound',
