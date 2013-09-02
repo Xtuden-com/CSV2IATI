@@ -124,6 +124,204 @@ DEFAULT_MODEL =
             'label': 'Sector code vocabulary'
             'constant': 'DAC'
             'datatype': 'constant'
+    transaction:
+      "datatype": "compound",
+      "iati-field": "transaction",
+      "label": "transaction",
+      "fields": {
+        "ref": {
+          "datatype": "column",
+          "column": "",
+          "alternatives-counter": ""
+        },
+        "value": {
+          "datatype": "compound",
+          "label": "Value",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "currency": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "value-date": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "description": {
+          "datatype": "compound",
+          "label": "Description",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "transaction-type": {
+          "datatype": "compound",
+          "label": "Transaction Type",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "provider-org": {
+          "datatype": "compound",
+          "label": "Provider Org",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "ref": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "provider-activity-id": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "receiver-org": {
+          "datatype": "compound",
+          "label": "Receiver Org",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "ref": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "receiver-activity-id": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "transaction-date": {
+          "datatype": "compound",
+          "label": "Transaction Date",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "iso-date": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "flow-type": {
+          "datatype": "compound",
+          "label": "Flow Type",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "aid-type": {
+          "datatype": "compound",
+          "label": "Aid Type",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "finance-type": {
+          "datatype": "compound",
+          "label": "Finance Type",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "tied-status": {
+          "datatype": "compound",
+          "label": "Tied Status",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        },
+        "disbursement-channel": {
+          "datatype": "compound",
+          "label": "Disbursement Channel",
+          "fields": {
+            "text": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            },
+            "code": {
+              "datatype": "column",
+              "column": "",
+              "alternatives-counter": ""
+            }
+          }
+        }
+      }
+
 
 FIELDS_META =
   label:
