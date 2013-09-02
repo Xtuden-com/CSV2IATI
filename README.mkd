@@ -111,3 +111,8 @@ Reload Apache:
 
 
 Forked from http://github.com/nickstenning/openspending.modeleditor with thanks :)
+
+# License
+
+The CSV-IATI model editor code is released under the MIT license, a copy 
+of which can be found in `LICENSE`.
