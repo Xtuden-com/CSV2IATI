@@ -1618,7 +1618,7 @@ DimensionWidget = (function(_super) {
     };
     data['fields'][name] = {
       'datatype': 'compound',
-      'label': 'User field: ' + name,
+      'label': name,
       'iati_field': name
     };
     row = $.tmpl('tpl_table_recursive', {
@@ -1914,7 +1914,7 @@ DimensionsWidget = (function(_super) {
         break;
       }
     }
-    data['mapping'][name]['label'] = 'User field: ' + name;
+    data['mapping'][name]['label'] = name;
     this.addDimension(name.trim()).deserialize(data);
     return false;
   };
@@ -1931,7 +1931,7 @@ DimensionsWidget = (function(_super) {
     data['mapping'][name] = props;
     iati_field = data['mapping'][name]['iati-field'];
     data['mapping'][name] = DEFAULT_FIELD_SETUP[iati_field];
-    data['mapping'][name]['label'] = 'User field: ' + name;
+    data['mapping'][name]['label'] = name;
     data['mapping'][name]['iati-field'] = iati_field;
     return this.addDimension(name.trim()).deserialize(data);
   };

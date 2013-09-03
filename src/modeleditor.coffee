@@ -255,7 +255,7 @@ class DimensionWidget extends Widget
     data = {'fields':{}}
     data['fields'][name] = {
       'datatype':'compound'
-      'label':'User field: '+name
+      'label':name
       'iati_field':name
     }
     row = $.tmpl 'tpl_table_recursive',
@@ -470,7 +470,7 @@ class DimensionsWidget extends Delegator
         if widget.name == fieldset.data('dimension-name')
             data['mapping'][name] = widget.data
             break
-    data['mapping'][name]['label'] = 'User field: ' + name
+    data['mapping'][name]['label'] = name
     this.addDimension(name.trim()).deserialize(data)
     return false
 
@@ -481,7 +481,7 @@ class DimensionsWidget extends Delegator
     data['mapping'][name] = props
     iati_field = data['mapping'][name]['iati-field']
     data['mapping'][name] = DEFAULT_FIELD_SETUP[iati_field]
-    data['mapping'][name]['label'] = 'User field: ' + name
+    data['mapping'][name]['label'] = name
     data['mapping'][name]['iati-field'] = iati_field
     this.addDimension(name.trim()).deserialize(data)
 
