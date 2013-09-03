@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+<div id="model_page_view">
+  <div class="banner" style="width:100%;color:#365e93;">
+  <h1>Model: <span id="model_title"><a>{{model_name}}</a></span> &raquo; History</h1>
+  </div>
+
+<h2>Conversion History</h2>
+{% for xml_file in xml_files %}
+<a href="{{xml_file.xml_url}}">{{xml_file.xml_url}}</a> {{xml_file.created}}<br/>
+{% endfor %}
+
+<h2>Model History</h2>
+{% for m in model_history %}
+<textarea>{{m.model_content}}</textarea> {{m.created}}<br/>
+{% endfor %}
+
+</div>
+{% endblock %}
