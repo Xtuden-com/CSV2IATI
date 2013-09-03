@@ -21,29 +21,10 @@ SAMPLE_DATA =
 DEFAULT_MODEL =
   organisation: {}
   mapping:
-    'iati-identifier':
-      datatype: 'compound'
-      'iati-field': 'iati-identifier'
-      label: 'IATI Identifier'
-    'title':
-      datatype: 'compound'
-      'iati-field': 'title'
-      label: 'Title'
-      fields:
-        'text': {}
-    'description':
-      datatype: 'compound'
-      'iati-field': 'description'
-      label: 'Description'
-      fields:
-        'text': {}
-    'activity-status':
-      datatype: 'compound'
-      'iati-field':'activity-status'
-      label: 'Activity Status'
-      fields: 
-        'code': {}
-        'text': {}
+    'iati-identifier': {}
+    'title': {}
+    'description': {}
+    'activity-status': {}
     'activity-date-start':
       datatype: 'compound'
       label: 'Activity Start Date'
@@ -64,20 +45,8 @@ DEFAULT_MODEL =
             'datatype': 'constant'
         'iso-date': {}
         'text': {}
-    'recipient-country':
-      datatype: 'compound'
-      'iati-field': 'recipient-country'
-      label: 'Recipient Country'
-      fields:
-        'text': {}
-        'code': {}
-    'recipient-region':
-      datatype: 'compound'
-      'iati-field': 'recipient-region'
-      label: 'Recipient Region'
-      fields:
-        'text': {}
-        'code': {}
+    'recipient-country': {}
+    'recipient-region': {}
     'funding-organisation':
       datatype: 'compound'
       'iati-field': 'participating-org'
@@ -111,217 +80,14 @@ DEFAULT_MODEL =
         'text': {}
         'ref': {}
         'type': {}
-    sectors:
-      datatype: 'compound'
-      label: 'Sectors'
-      'iati-field': 'sector'
-      fields: 
-        'text':
-            'label': 'Name (text) of the sector'
-        'code':
-            'label': 'Code for the sector'
-        'vocabulary':
-            'label': 'Sector code vocabulary'
-            'constant': 'DAC'
-            'datatype': 'constant'
-    transaction:
-      "datatype": "compound",
-      "iati-field": "transaction",
-      "label": "transaction",
-      "fields": {
-        "ref": {
-          "datatype": "column",
-          "column": "",
-          "alternatives-counter": ""
-        },
-        "value": {
-          "datatype": "compound",
-          "label": "Value",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "currency": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "value-date": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "description": {
-          "datatype": "compound",
-          "label": "Description",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "transaction-type": {
-          "datatype": "compound",
-          "label": "Transaction Type",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "code": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "provider-org": {
-          "datatype": "compound",
-          "label": "Provider Org",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "ref": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "provider-activity-id": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "receiver-org": {
-          "datatype": "compound",
-          "label": "Receiver Org",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "ref": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "receiver-activity-id": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "transaction-date": {
-          "datatype": "compound",
-          "label": "Transaction Date",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "iso-date": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "flow-type": {
-          "datatype": "compound",
-          "label": "Flow Type",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "code": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "aid-type": {
-          "datatype": "compound",
-          "label": "Aid Type",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "code": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "finance-type": {
-          "datatype": "compound",
-          "label": "Finance Type",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "code": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "tied-status": {
-          "datatype": "compound",
-          "label": "Tied Status",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "code": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        },
-        "disbursement-channel": {
-          "datatype": "compound",
-          "label": "Disbursement Channel",
-          "fields": {
-            "text": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            },
-            "code": {
-              "datatype": "column",
-              "column": "",
-              "alternatives-counter": ""
-            }
-          }
-        }
-      }
+    sector: {}
+    transaction: {}
 
+for key,value of DEFAULT_MODEL.mapping
+  if $.isEmptyObject(value)
+    $.extend(value, DEFAULT_FIELD_SETUP[key])
+    value['iati-field'] = key
+    
 
 FIELDS_META =
   label:
