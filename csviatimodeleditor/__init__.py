@@ -52,6 +52,20 @@ class IATIModel(db.Model):
     def __repr__(self):
         return unicode((self.model_owner, self.id))
 
+class IATIModelHistory(db.Model):
+    id = db.Column(Integer, primary_key=True)
+    iati_model_id = db.Column(Integer)
+    created = db.Column(db.DateTime, default=db.func.now())
+    model_content = db.Column(UnicodeText)
+
+    def __init__(self, iati_model_id, model_content):
+        self.iati_model_id = iati_model_id
+        self.model_content = model_content
+
+    def __repr__(self):
+        return ((self.iati_model_id, self.id))
+
+
 class CSVFile(db.Model):
     id = db.Column(Integer, primary_key=True)
     csv_headers = db.Column(UnicodeText)
@@ -106,6 +120,7 @@ class XMLFile(db.Model):
 
     def __repr__(self):
         return unicode((self.xml_url, self.id))
+
 
 def is_logged_in():
     if ('username' in session):
@@ -449,6 +464,8 @@ def model(id='',responsetype=''):
                 if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
                     getmodel.model_content = request.form['model']
                     db.session.add(getmodel)
+                    model_history = IATIModelHistory(id, request.form['model'])
+                    db.session.add(model_history)
                     db.session.commit()
                     return redirect(url_for('model', id=id))
                 else:
@@ -467,6 +484,7 @@ def model(id='',responsetype=''):
 def model_history(id=''):
     return render_template('model-history.html',
         xml_files=XMLFile.query.filter_by(iati_model_id=id),
+        model_history=IATIModelHistory.query.filter_by(iati_model_id=id),
         username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
 
 @app.route('/user/')
