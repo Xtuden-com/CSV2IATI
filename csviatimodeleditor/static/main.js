@@ -1514,12 +1514,9 @@ DimensionWidget = (function(_super) {
     '.add_nested_el click': 'onAddNestedElClick',
     '.field_add_alternative click': 'onAddAlternativeClick',
     '.field_add_transform click': 'onAddTransformClick',
-    '.field_add_transform_transaction click': 'onAddTransformClickTransaction',
     '.field_remove_transform click': 'onRemoveTransformClick',
     '.field_switch_constant click': 'onFieldSwitchConstantClick',
     '.field_switch_column click': 'onFieldSwitchColumnClick',
-    '.field_switch_constant_transaction click': 'onFieldSwitchConstantClickTransaction',
-    '.field_switch_column_transaction click': 'onFieldSwitchColumnClickTransaction',
     '.field_rm click': 'onFieldRemoveClick',
     '.delete_dimension click': 'onDeleteDimensionClick',
     '.delete_tdatafield click': 'onDeleteTDataFieldClick',
@@ -1531,8 +1528,6 @@ DimensionWidget = (function(_super) {
     this.formFieldRequired2 = __bind(this.formFieldRequired2, this);
 
     this.formFieldRequired = __bind(this.formFieldRequired, this);
-
-    this.formFieldTransactionPrefix = __bind(this.formFieldTransactionPrefix, this);
 
     this.formFieldPrefix = __bind(this.formFieldPrefix, this);
 
@@ -1576,16 +1571,6 @@ DimensionWidget = (function(_super) {
     return "mapping[" + this.name + "][fields]";
   };
 
-  DimensionWidget.prototype.formFieldTransactionPrefix = function(fieldName, transaction_field, transaction_part) {
-    if (transaction_field == null) {
-      transaction_field = '';
-    }
-    if (transaction_part == null) {
-      transaction_part = '';
-    }
-    return "mapping[" + this.name + "][tdatafields][" + transaction_field + "][fields][" + fieldName + "]";
-  };
-
   DimensionWidget.prototype.formFieldRequired = function(fieldName, fieldParent) {
     var _ref1;
     if (fieldParent) {
@@ -1596,35 +1581,19 @@ DimensionWidget = (function(_super) {
   };
 
   DimensionWidget.prototype.formFieldRequired2 = function(fieldName, fieldParent, transactionField) {
-    var _ref1, _ref2, _ref3, _ref4;
-    if (transactionField) {
-      if (fieldParent) {
-        if (DEFAULT_FIELD_SETUP[fieldParent]) {
-          if (DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField] && DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]) {
-            return ((_ref1 = DEFAULT_FIELD_SETUP[fieldParent]['tdatafields'][transactionField]['fields'][fieldName]) != null ? _ref1['required'] : void 0) || false;
-          } else {
-            return false;
-          }
+    var _ref1, _ref2;
+    if (fieldParent) {
+      if (DEFAULT_FIELD_SETUP[fieldParent]) {
+        if (DEFAULT_FIELD_SETUP[fieldParent]['fields'] && DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) {
+          return ((_ref1 = DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) != null ? _ref1['required'] : void 0) || false;
         } else {
           return false;
         }
       } else {
-        return ((_ref2 = FIELDS_META[fieldName]) != null ? _ref2['required'] : void 0) || false;
+        return false;
       }
     } else {
-      if (fieldParent) {
-        if (DEFAULT_FIELD_SETUP[fieldParent]) {
-          if (DEFAULT_FIELD_SETUP[fieldParent]['fields'] && DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) {
-            return ((_ref3 = DEFAULT_FIELD_SETUP[fieldParent]['fields'][fieldName]) != null ? _ref3['required'] : void 0) || false;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      } else {
-        return ((_ref4 = FIELDS_META[fieldName]) != null ? _ref4['required'] : void 0) || false;
-      }
+      return ((_ref2 = FIELDS_META[fieldName]) != null ? _ref2['required'] : void 0) || false;
     }
   };
 
@@ -1771,17 +1740,6 @@ DimensionWidget = (function(_super) {
     return false;
   };
 
-  DimensionWidget.prototype.onAddTransformClickTransaction = function(e) {
-    var curDimension, curDimensionPart, curRow, prefix;
-    curRow = $(e.currentTarget).parents('tr').first();
-    curDimension = $(e.currentTarget).parents('fieldset').first();
-    curDimensionPart = $(e.currentTarget).parents('fieldset');
-    prefix = this.formFieldTransactionPrefix(curRow.data('field-name'), curDimensionPart.data('transaction-field-type'), curDimension.data('dimension-name'));
-    curRow.after("<tr><td><input name=\"" + prefix + "[text-transform-type]\" value=\"\" /></td></tr>");
-    this.element.parents('form').first().change();
-    return false;
-  };
-
   DimensionWidget.prototype.onRemoveTransformClick = function(e) {
     var curRow;
     curRow = $(e.currentTarget).parents('tr').first();
@@ -1813,32 +1771,6 @@ DimensionWidget = (function(_super) {
     return false;
   };
 
-  DimensionWidget.prototype.onFieldSwitchConstantClickTransaction = function(e) {
-    var curDimension, curDimensionPart, curRow, iatiField, newrow;
-    curRow = $(e.currentTarget).parents('tr').first();
-    curDimensionPart = $(e.currentTarget).parents('fieldset');
-    curDimension = $(e.currentTarget).parents('fieldset').first();
-    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
-    newrow = this._makeFieldRowTransaction(curRow.data('field-name'), curDimensionPart.data('transaction-field-type'), curDimension.data('dimension-name'), iatiField, true);
-    curRow.replaceWith(newrow);
-    this.element.trigger('fillColumnsRequest', [newrow.find('select.column')]);
-    this.element.parents('form').first().change();
-    return false;
-  };
-
-  DimensionWidget.prototype.onFieldSwitchColumnClickTransaction = function(e) {
-    var curDimension, curDimensionPart, curRow, iatiField, newrow;
-    curRow = $(e.currentTarget).parents('tr').first();
-    curDimensionPart = $(e.currentTarget).parents('fieldset');
-    curDimension = $(e.currentTarget).parents('fieldset').first();
-    iatiField = $(e.currentTarget).parents('fieldset').first().find('.iatifield').val();
-    newrow = this._makeFieldRowTransaction(curRow.data('field-name'), curDimensionPart.data('transaction-field-type'), curDimension.data('dimension-name'), iatiField, false);
-    curRow.replaceWith(newrow);
-    this.element.trigger('fillColumnsRequest', [newrow.find('select.column')]);
-    this.element.parents('form').first().change();
-    return false;
-  };
-
   DimensionWidget.prototype.promptAddDimensionNamed = function(props, thename) {
     return false;
   };
@@ -1860,24 +1792,6 @@ DimensionWidget = (function(_super) {
       'prefix': prefix,
       'level': level,
       'required': this.formFieldRequired,
-      field: {}
-    });
-  };
-
-  DimensionWidget.prototype._makeFieldRowTransaction = function(fieldname, transaction_field, dimension_name, iatiField, constant) {
-    var tplName;
-    if (constant == null) {
-      constant = false;
-    }
-    tplName = constant ? 'tpl_dimension_field_const' : 'tpl_dimension_field';
-    return $.tmpl(tplName, {
-      'fieldName': fieldname,
-      'transaction_field': transaction_field,
-      'transaction_part': dimension_name,
-      'prefix': this.formFieldTransactionPrefix,
-      'required': this.formFieldRequired,
-      'transaction': 'yes',
-      'iatiField': iatiField,
       field: {}
     });
   };
