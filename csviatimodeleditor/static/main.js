@@ -1970,6 +1970,20 @@ DimensionsWidget = (function(_super) {
     return _results;
   };
 
+  DimensionsWidget.prototype.createName = function(name) {
+    var names;
+    names = this.widgets.map(function(x) {
+      return x.name;
+    });
+    while (true) {
+      if (__indexOf.call(names, name) >= 0) {
+        name += '~';
+      } else {
+        return name;
+      }
+    }
+  };
+
   DimensionsWidget.prototype.onCopyDimensionClick = function(e) {
     var data, fieldset, name, widget, _i, _len, _ref1;
     fieldset = $(e.currentTarget).parents('fieldset').first();
@@ -1993,7 +2007,7 @@ DimensionsWidget = (function(_super) {
 
   DimensionsWidget.prototype.promptAddDimension = function(props) {
     var data, iati_field, name;
-    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):");
+    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):", this.createName(props['iati-field']));
     if (!name) {
       return false;
     }

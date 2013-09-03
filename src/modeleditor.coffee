@@ -517,6 +517,15 @@ class DimensionsWidget extends Delegator
     for name, obj of dims
       this.addDimension(name).deserialize(data)
 
+
+  createName: (name) ->
+    names = @widgets.map((x) -> x.name)
+    while true
+      if name in names
+        name += '~'
+      else
+        return name
+
   onCopyDimensionClick: (e) ->
     fieldset = $(e.currentTarget).parents('fieldset').first()
     name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):")
@@ -531,7 +540,7 @@ class DimensionsWidget extends Delegator
     return false
 
   promptAddDimension: (props) ->
-    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):")
+    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):", @createName(props['iati-field']))
     return false unless name
     data = {'mapping': {}}
     data['mapping'][name] = props
