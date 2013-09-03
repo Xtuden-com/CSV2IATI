@@ -13,8 +13,9 @@ for m in IATIModel.query.all():
                 v['datatype'] = 'compound'
                 v['fields'] = v['tdatafields']
                 del v['tdatafields']
-                v['fields']['transaction-type'] = v['fields']['transaction_type']
-                del v['fields']['transaction_type']
+                if 'transaction_type' in v['fields']:
+                  v['fields']['transaction-type'] = v['fields']['transaction_type']
+                  del v['fields']['transaction_type']
                 for k,field in v['fields'].items():
                     assert k == field['iati-field']
                     del field['iati-field']
