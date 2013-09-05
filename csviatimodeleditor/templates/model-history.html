@@ -10,10 +10,12 @@
 <a href="{{xml_file.xml_url}}">{{xml_file.xml_url}}</a> {{xml_file.created}}<br/>
 {% endfor %}
 
+<div style="visibility:hidden">
 <h2>Model History</h2>
 {% for m in model_history %}
 <textarea>{{m.model_content}}</textarea> {{m.created}}<br/>
 {% endfor %}
+</div>
 
 </div>
 {% endblock %}

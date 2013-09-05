@@ -60,8 +60,6 @@
           </li>
           <li><a href='#'><span>3</span> Convert</a></li>
         </ul>
-        <br/>
-        (<a href="{%endraw%}{{ url_for('model_history',id=id) }}{%raw%}">History</a>)
       </div>
       <div class='forms'>
         <form action='#'>
@@ -222,8 +220,12 @@
             <h2>Convert</h2>
             <p>If you're ready to convert, hit "Convert" below.</p>
             <p>Please remember to ensure you've saved your model first. Any changes made to the model since saving will not be retained.</p>
+
             <span class="save_model_spacer">&nbsp;</span>
             <span class="model_convert_button"><p><a href="{%endraw%}{{url_for('model_convert',id=id)}}{%raw%}">Convert</a></p></span>
+
+            <br/><br/><br/>
+            <p><a href="{%endraw%}{{ url_for('model_history',id=id) }}{%raw%}">View conversion history</a></p>
           </div>
         </form>
       </div> <!-- /.forms -->
