@@ -1,3 +1,7 @@
+# Migration
+
+Transactions are now handled differently, so if any models from the old version will need to be migrated before they work.
+
 # New Features
 
 ## Virtual fields
@@ -6,7 +10,7 @@ Any field with a name beginning `virtual_` will not be outputted into the xml. T
 
 ## Alternatives
 
-If you wish to use some other column/constant if a given field is blank, you can add an alternative. You can add as many alternatives as needed, but hey will only be used if all preceding options are blank.
+If you wish to use some other column/constant if a given field is blank, you can add an alternative. You can add as many alternatives as needed, but they will only be used if all preceding options are blank.
 
 Currently you must delete all alternatives for a field before you can delete the field itself.
 
@@ -41,3 +45,29 @@ This takes untied and partialtied columns and produces the Tied Status code requ
 ## Using both Alternatives and Transforms
 
 Currently transforms on a field are applied first, then if this is blank alternatives are checked. Alternatives may have their own transforms.
+
+
+
+## History
+
+In the conversion panel, there is a veiw conversion history link, which lists previous conversion times and links to the associated XML files.
+
+
+## New IATI fields availible
+
+This includes nested elements such as budget etc. Transactions also use this new format (see migration notes above), and will look slightly different.
+
+
+## Post conversion links
+
+There are now Preview/Validate/Split links after an XML file has been converted.
+
+
+## Ajaxy save button
+
+This means that when the save button is pressed, you will not lose your position on the page.
+
+## Dimensions can be copied
+
+Simply click the copy dimension button, and enter a name for the new dimension.
+
