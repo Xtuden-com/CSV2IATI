@@ -15,16 +15,6 @@ def get_element(element_name, indent='', top=False, doc=False):
         element = tree2.find("//xsd:element[@name='{0}']".format(element_name), namespaces=namespaces)
     if element is None: return
 
-    if not doc:
-        if not top:
-            attribute_loop(element, indent)
-
-        ext = element.find("./xsd:complexType/xsd:simpleContent/xsd:extension", namespaces=namespaces)
-        if ext is not None:
-            if ext.attrib['base'] in ['xsd:anyURI', 'xsd:string']:
-                print_column_info('text', indent)
-            else: raise Exception, ext.attrib['base']
-
     if doc:
         print "  '{0}':".format(element_name)
         print "    fixedDataType:true"
@@ -33,7 +23,7 @@ def get_element(element_name, indent='', top=False, doc=False):
         print "              '''"
 
     if not doc or top:
-        element_loop(element, indent, doc)
+        element_loop(element, indent, doc, top=top)
 
 
 def print_column_info(name, indent='', required=False):
@@ -42,20 +32,30 @@ def print_column_info(name, indent='', required=False):
     if required: print indent+"  required: true"
     else: print indent+"  required: false"
 
-def element_loop(top, indent='', doc=False):
+def element_loop(element, indent='', doc=False, top=False):
+    if not doc:
+        if not top:
+            attribute_loop(element, indent)
+
+        ext = element.find("./xsd:complexType/xsd:simpleContent/xsd:extension", namespaces=namespaces)
+        if ext is not None:
+            if ext.attrib['base'] in ['xsd:anyURI', 'xsd:string', 'xsd:decimal']:
+                print_column_info('text', indent)
+            else: raise Exception, ext.attrib['base']
+
     def print_info(name):
         print indent+"'{0}':".format(name)
         print indent+"  datatype: 'compound'"
         print indent+"  label: '{0}'".format(string.capwords(name.replace('-', ' ')))
         print indent+"  fields:"
-    for element in ( top.findall('xsd:complexType/xsd:choice/xsd:element', namespaces=namespaces)
-        + top.findall("xsd:complexType/xsd:all/xsd:element", namespaces=namespaces) ):
-        a = element.attrib
+    for child in ( element.findall('xsd:complexType/xsd:choice/xsd:element', namespaces=namespaces)
+        + element.findall("xsd:complexType/xsd:all/xsd:element", namespaces=namespaces) ):
+        a = child.attrib
         if 'name' in a:
             if not doc:
                 print_info(a['name'])
-                attribute_loop(element, indent+'    ')
-            element_loop(element, indent+'    ',doc=doc)
+                attribute_loop(child, indent+'    ')
+            element_loop(child, indent+'    ',doc=doc)
         else:
             if not doc:
                 print_info(a['ref'])
@@ -67,7 +67,7 @@ def attribute_loop(element, indent=''):
         
     a = element.attrib
     if 'type' in a:
-        if a['type'] in ['plainType','textType','codeType','codeReqType','currencyType','dateType']:
+        if a['type'] in ['plainType','textType','codeType','codeReqType','currencyType','dateType','xsd:anyURI','xsd:decimal']:
             print_column_info('text', indent+'  ')
             if a['type'] == 'codeReqType':
                 print_column_info('code', indent+'  ', True)

@@ -198,6 +198,20 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
+  'activity-scope': {
+    datatype: 'compound',
+    label: 'Activity Scope',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: false
+      }
+    }
+  },
   'recipient-country': {
     datatype: 'compound',
     label: 'Recipient Country',
@@ -225,6 +239,10 @@ DEFAULT_FIELD_SETUP = {
         required: false
       },
       'code': {
+        datatype: 'column',
+        required: false
+      },
+      'vocabulary': {
         datatype: 'column',
         required: false
       },
@@ -388,10 +406,18 @@ DEFAULT_FIELD_SETUP = {
     datatype: 'compound',
     label: 'Contact Info',
     fields: {
+      'type': {
+        datatype: 'column',
+        required: false
+      },
       'organisation': {
         datatype: 'compound',
         label: 'Organisation',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -405,6 +431,24 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      },
+      'job-title': {
+        datatype: 'compound',
+        label: 'Job Title',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -412,6 +456,10 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Telephone',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -425,6 +473,10 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -432,6 +484,24 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Mailing Address',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      },
+      'website': {
+        datatype: 'compound',
+        label: 'Website',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -495,6 +565,14 @@ DEFAULT_FIELD_SETUP = {
           'code': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
           }
         }
       },
@@ -502,6 +580,10 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Name',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -515,6 +597,10 @@ DEFAULT_FIELD_SETUP = {
           'text': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -522,6 +608,22 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Administrative',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'country': {
+            datatype: 'column',
+            required: false
+          },
+          'adm1': {
+            datatype: 'column',
+            required: false
+          },
+          'adm2': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -555,6 +657,18 @@ DEFAULT_FIELD_SETUP = {
           'precision': {
             datatype: 'column',
             required: false
+          },
+          'latitude': {
+            datatype: 'column',
+            required: true
+          },
+          'longitude': {
+            datatype: 'column',
+            required: true
+          },
+          'precision': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -569,8 +683,26 @@ DEFAULT_FIELD_SETUP = {
           'gazetteer-ref': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'gazetteer-ref': {
+            datatype: 'column',
+            required: true
           }
         }
+      }
+    }
+  },
+  'capital-spend': {
+    datatype: 'compound',
+    label: 'Capital Spend',
+    fields: {
+      'percentage': {
+        datatype: 'column',
+        required: true
       }
     }
   },
@@ -597,6 +729,18 @@ DEFAULT_FIELD_SETUP = {
           'value-date': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -604,6 +748,10 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Description',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -621,6 +769,14 @@ DEFAULT_FIELD_SETUP = {
           'code': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
           }
         }
       },
@@ -628,6 +784,18 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Provider Org',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'ref': {
+            datatype: 'column',
+            required: false
+          },
+          'provider-activity-id': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -657,6 +825,18 @@ DEFAULT_FIELD_SETUP = {
           'receiver-activity-id': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'ref': {
+            datatype: 'column',
+            required: false
+          },
+          'receiver-activity-id': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -664,6 +844,14 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Transaction Date',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: true
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -685,6 +873,14 @@ DEFAULT_FIELD_SETUP = {
           'code': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
           }
         }
       },
@@ -692,6 +888,14 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Aid Type',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -713,6 +917,14 @@ DEFAULT_FIELD_SETUP = {
           'code': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
           }
         }
       },
@@ -727,6 +939,14 @@ DEFAULT_FIELD_SETUP = {
           'code': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
           }
         }
       },
@@ -734,6 +954,14 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Disbursement Channel',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -790,6 +1018,14 @@ DEFAULT_FIELD_SETUP = {
             datatype: 'column',
             required: false
           },
+          'measure': {
+            datatype: 'column',
+            required: true
+          },
+          'ascending': {
+            datatype: 'column',
+            required: false
+          },
           'title': {
             datatype: 'compound',
             label: 'Title',
@@ -814,6 +1050,14 @@ DEFAULT_FIELD_SETUP = {
             datatype: 'compound',
             label: 'Baseline',
             fields: {
+              'year': {
+                datatype: 'column',
+                required: true
+              },
+              'value': {
+                datatype: 'column',
+                required: true
+              },
               'year': {
                 datatype: 'column',
                 required: true
@@ -849,6 +1093,14 @@ DEFAULT_FIELD_SETUP = {
                   'iso-date': {
                     datatype: 'column',
                     required: false
+                  },
+                  'text': {
+                    datatype: 'column',
+                    required: false
+                  },
+                  'iso-date': {
+                    datatype: 'column',
+                    required: false
                   }
                 }
               },
@@ -863,6 +1115,14 @@ DEFAULT_FIELD_SETUP = {
                   'iso-date': {
                     datatype: 'column',
                     required: false
+                  },
+                  'text': {
+                    datatype: 'column',
+                    required: false
+                  },
+                  'iso-date': {
+                    datatype: 'column',
+                    required: false
                   }
                 }
               },
@@ -870,6 +1130,10 @@ DEFAULT_FIELD_SETUP = {
                 datatype: 'compound',
                 label: 'Target',
                 fields: {
+                  'value': {
+                    datatype: 'column',
+                    required: true
+                  },
                   'value': {
                     datatype: 'column',
                     required: true
@@ -890,6 +1154,10 @@ DEFAULT_FIELD_SETUP = {
                 datatype: 'compound',
                 label: 'Actual',
                 fields: {
+                  'value': {
+                    datatype: 'column',
+                    required: true
+                  },
                   'value': {
                     datatype: 'column',
                     required: true
@@ -931,6 +1199,14 @@ DEFAULT_FIELD_SETUP = {
           'type': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'type': {
+            datatype: 'column',
+            required: true
           }
         }
       }
@@ -955,6 +1231,14 @@ DEFAULT_FIELD_SETUP = {
           'iso-date': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -969,6 +1253,14 @@ DEFAULT_FIELD_SETUP = {
           'iso-date': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -976,6 +1268,18 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Value',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -1011,6 +1315,14 @@ DEFAULT_FIELD_SETUP = {
           'iso-date': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
           }
         }
       },
@@ -1018,6 +1330,14 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Period End',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -1043,6 +1363,72 @@ DEFAULT_FIELD_SETUP = {
           'value-date': {
             datatype: 'column',
             required: false
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      }
+    }
+  },
+  'country-budget-items': {
+    datatype: 'compound',
+    label: 'Country Budget Items',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'vocabulary': {
+        datatype: 'column',
+        required: true
+      },
+      'budget-item': {
+        datatype: 'compound',
+        label: 'Budget Item',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          },
+          'percentage': {
+            datatype: 'column',
+            required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          },
+          'percentage': {
+            datatype: 'column',
+            required: true
+          },
+          'description': {
+            datatype: 'compound',
+            label: 'Description',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              }
+            }
           }
         }
       }
@@ -1099,6 +1485,14 @@ DEFAULT_FIELD_SETUP = {
           'code': {
             datatype: 'column',
             required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
           }
         }
       },
@@ -1106,6 +1500,14 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'compound',
         label: 'Language',
         fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: false
+          },
           'text': {
             datatype: 'column',
             required: false
@@ -1139,6 +1541,310 @@ DEFAULT_FIELD_SETUP = {
         required: false
       }
     }
+  },
+  'crs-add': {
+    datatype: 'compound',
+    label: 'Crs Add',
+    fields: {
+      'aidtype-flag': {
+        datatype: 'compound',
+        label: 'Aidtype Flag',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          },
+          'significance': {
+            datatype: 'column',
+            required: true
+          },
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          },
+          'significance': {
+            datatype: 'column',
+            required: true
+          }
+        }
+      },
+      'loan-terms': {
+        datatype: 'compound',
+        label: 'Loan Terms',
+        fields: {
+          'rate-1': {
+            datatype: 'column',
+            required: false
+          },
+          'rate-2': {
+            datatype: 'column',
+            required: false
+          },
+          'rate-1': {
+            datatype: 'column',
+            required: false
+          },
+          'rate-2': {
+            datatype: 'column',
+            required: false
+          },
+          'repayment-type': {
+            datatype: 'compound',
+            label: 'Repayment Type',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'code': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'code': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'repayment-plan': {
+            datatype: 'compound',
+            label: 'Repayment Plan',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'code': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'code': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'commitment-date': {
+            datatype: 'compound',
+            label: 'Commitment Date',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'iso-date': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'iso-date': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'repayment-first-date': {
+            datatype: 'compound',
+            label: 'Repayment First Date',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'iso-date': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'iso-date': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'repayment-final-date': {
+            datatype: 'compound',
+            label: 'Repayment Final Date',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'iso-date': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'iso-date': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          }
+        }
+      },
+      'loan-status': {
+        datatype: 'compound',
+        label: 'Loan Status',
+        fields: {
+          'year': {
+            datatype: 'column',
+            required: true
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: true
+          },
+          'year': {
+            datatype: 'column',
+            required: true
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: true
+          },
+          'repayment-type': {
+            datatype: 'compound',
+            label: 'Repayment Type',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'code': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'code': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'interest-received': {
+            datatype: 'compound',
+            label: 'Interest Received',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'principal-outstanding': {
+            datatype: 'compound',
+            label: 'Principal Outstanding',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'principal-arrears': {
+            datatype: 'compound',
+            label: 'Principal Arrears',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          },
+          'interest-arrears': {
+            datatype: 'compound',
+            label: 'Interest Arrears',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              },
+              'text': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  'fss': {
+    datatype: 'compound',
+    label: 'Fss',
+    fields: {
+      'extraction-date': {
+        datatype: 'column',
+        required: true
+      },
+      'priority': {
+        datatype: 'column',
+        required: false
+      },
+      'phaseout-year': {
+        datatype: 'column',
+        required: false
+      },
+      'forecast': {
+        datatype: 'compound',
+        label: 'Forecast',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      }
+    }
   }
 };
 
@@ -1153,11 +1859,15 @@ DIMENSION_META = {
   },
   'reporting-org': {
     fixedDataType: true,
-    helpText: '\n  The organisation issuing a report (not necessarily involved in\n  the organisation or activity being described).  May be a\n  donor, fund, agency, etc.  Specifying the @identifier and\n  @role attributes is strongly recommended.  May contain the\n  organisation name as content.\n\n  For the value of the @type attribute, see\n  http://iatistandard.org/codelists/organisation-type\n\n  For the value of the @ref attribute, see the list of\n  officially-registered organizations at\n  http://iatistandard.org/codelists/organisation\n'
+    helpText: '\n  The organisation issuing the report. May be a primary source \n  (reporting on its own activity as donor, implementing agency, \n  etc) or a secondary source (reporting on the activities of \n  another organisation). \n  \n  Specifying the @ref and @role attributes is strongly \n  recommended. May contain the organisation name as content. \n  \n  For the value of the @type attribute, \n  see http://iatistandard.org/codelists/organisation-type. \n  \n  For guidance on constructing the value of the @ref attribute, \n  see http://iatistandard.org/org-ref\n'
   },
   'participating-org': {
     fixedDataType: true,
     helpText: '\n  An organisation (including the reporting organisation)\n  involved with the activity.  May be a donor, fund, agency,\n  etc.  Specifying the @identifier and @role attributes is\n  strongly recommended.  May contain the organisation name as\n  content.\n\n  For the value of the @type attribute, see\n  http://iatistandard.org/codelists/organisation-type\n\n  For the value of the @ref attribute, see the list of\n  officially-registered organizations at\n  http://iatistandard.org/codelists/organisation\n'
+  },
+  'activity-scope': {
+    fixedDataType: true,
+    helpText: '\n  What geographical area does the activity encompass?\n  eg. Global, Regional, Multi-National, National, Multiple\n  (sub-national) administrative areas, etc\n'
   },
   'recipient-country': {
     fixedDataType: true,
@@ -1185,11 +1895,11 @@ DIMENSION_META = {
   },
   'iati-identifier': {
     fixedDataType: true,
-    helpText: '\n  IATI identifier\n\n  This element contains the official IATI identifier for an\n  entity (activity or organisation).  It must appear only once\n  in the XML file, and is guaranteed unique across all entities\n  of the same type (there will never be two organisations or\n  activities with the same IATI identifier).\n'
+    helpText: '\n  A globally unique identifier for this activity. This should be\n  in the form of the IATI Organisation Identifier (for the\n  reporting organisation) concatenated to that organisation\'s\n  activity identifier. (NB. Two or more reporting organisations\n  may publish information on the same activity. To\n  cross-reference these reports the other-identifier element\n  should be used.)\n'
   },
   'other-identifier': {
     fixedDataType: true,
-    helpText: '\n  An alternative, non-IATI identifier for the activity.  This\n  identifier is not guaranteed to be unique or persistent (it\n  depends on the owner organisation\'s policies, not IATI\'s).\n'
+    helpText: '\n  An alternative, non-IATI identifier for the activity.  This\n  identifier is not guaranteed to be unique or persistent (it\n  depends on the owner organisation\'s policies, not IATI\'s).\n\n  If other-identifier is present then either @owner-ref or\n  @owner-name must be present\n'
   },
   'title': {
     fixedDataType: true,
@@ -1201,11 +1911,11 @@ DIMENSION_META = {
   },
   'sector': {
     fixedDataType: true,
-    helpText: '\n  Sector code and name.  For the value of the @code attribute,\n  see http://iatistandard.org/codelists/sector\n'
+    helpText: '\n  Sector code and name.  For the value of the @code attribute,\n  see http://iatistandard.org/codelists/sector\n\n  Either the @code attribute or descriptive text content must be\n  present.\n'
   },
   'activity-date': {
     fixedDataType: true,
-    helpText: '\n  Planned starting date for the activity in ISO 8601 date\n  format, e.g. "2010-10-01".  For the value of the @type\n  attribute, see\n  http://iatistandard.org/codelists/activity_date_type\n'
+    helpText: '\n  The planned and actual start and completion dates of the \n  activity. Start dates may reflect either the commencement of \n  funding, planning or physical activity. End dates should, \n  wherever possible, reflect the ending of physical activity. \n  Dates should be in ISO 8601 date YYYY-MM-DD format, e.g. \n  2010-10-01. \n  \n  For the value of the @type attribute, see\n  http://iatistandard.org/codelists/activity_date_type\n\n  The text content may contain a general date text (e.g. 2011Q1)\n  for recording less specific dates such as month, quarter, or\n  year.\n'
   },
   'activity-status': {
     fixedDataType: true,
@@ -1213,7 +1923,7 @@ DIMENSION_META = {
   },
   'contact-info': {
     fixedDataType: true,
-    helpText: '\n  Contact information for the project.  Specify whatever is\n  available.\n'
+    helpText: '\n  Contact information for the project.  Specify whatever is\n  available.  You may repeat this element for each contact\n  person.\n'
   },
   'default-tied-status': {
     fixedDataType: true,
@@ -1226,6 +1936,10 @@ DIMENSION_META = {
   'location': {
     fixedDataType: true,
     helpText: '\n  A geographical location.\n'
+  },
+  'capital-spend': {
+    fixedDataType: true,
+    helpText: '\n  The percentage of the total commitment that is for capital\n  spending\n'
   },
   'transaction': {
     fixedDataType: true,
@@ -1247,6 +1961,10 @@ DIMENSION_META = {
     fixedDataType: true,
     helpText: '\n'
   },
+  'country-budget-items': {
+    fixedDataType: true,
+    helpText: '\n  Recipient country budget items.\n\n  This item encodes the alignment of activities with both the\n  functional and administrative classifications used in the\n  recipient country\'s Chart of Accounts. This applies to both\n  on- and off-budget activities.\n'
+  },
   'related-activity': {
     fixedDataType: true,
     helpText: '\n  XX.XX Related Activity\n\n  Another IATI activity related to this one.  The \'type\'\n  attribute describes the type of relationship (e.g. parent,\n  sibling).  This does not need to be used to express funding\n  relationships, since those are covered in individual\n  transactions.\n\n  For the value of the @type attribute, see\n  http://iatistandard.org/codelists/related_activity_type\n'
@@ -1258,6 +1976,14 @@ DIMENSION_META = {
   'legacy-data': {
     fixedDataType: true,
     helpText: '\n  Hold a single name=value pair of legacy data.  This element is\n  *not* for adding new data types; instead, it holds the\n  original (non-IATI) value or code for an existing data type.\n'
+  },
+  'crs-add': {
+    fixedDataType: true,
+    helpText: '\n  Additional items specific to CRS++ reporting.\n'
+  },
+  'fss': {
+    fixedDataType: true,
+    helpText: '\n  This section allows entry of data required for the OECD\n  DAC Forward Spending Survey at an activity level.\n'
   }
 };
 

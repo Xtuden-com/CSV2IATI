@@ -5,7 +5,7 @@ SQLAlchemy==0.7.5
 Werkzeug==0.8.3
 chardet==1.0.1
 configparser==3.2.0r3
-distribute==0.6.19
+setuptools>=0.7
 ordereddict==1.1
 unittest2==0.5.1
 wsgiref==0.1.2
