@@ -506,14 +506,20 @@ def user(id=''):
             elif request.method == 'POST':
                 id = request.form['id']
             	u = User.query.filter_by(id=id).first_or_404()
-                if (('admin' in request.form) and ('admin' in session)):
-                    u.admin = '1'
-                else:
-                    u.admin = '0'
                 if 'admin' in session:
                     admin = True
                 else:
                     admin = False
+
+                if (('admin' in request.form) and admin):
+                    u.admin = '1'
+                else:
+                    u.admin = '0'
+                if 'password' in request.form:
+                    password = escape(request.form['password'])
+                    if password != '':
+                        u.set_password(password)
+
                 
                 username = escape(request.form['username'])
                 if username != u.username:
