@@ -2613,7 +2613,7 @@ DimensionsWidget = (function(_super) {
   DimensionsWidget.prototype.onCopyDimensionClick = function(e) {
     var data, fieldset, name, widget, _i, _len, _ref1;
     fieldset = $(e.currentTarget).parents('fieldset').first();
-    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):");
+    name = prompt("Give a unique name for your copy of this dimension (letters and numbers, no spaces):");
     data = {
       'mapping': {}
     };

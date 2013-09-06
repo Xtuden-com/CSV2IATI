@@ -419,6 +419,12 @@
         {{if meta.fixedDataType}}
         <input type='hidden' name='mapping[${name}][datatype]' value='${data.datatype}'>
         {{/if}}
+
+        <div style="position:relative; top: -20px">
+        <a href='#' class='delete_dimension'><span title="Delete this dimension" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+        <a href='#' class='copy_dimension'><span title="Copy this dimension" class="ui-icon ui-icon-copy iconfloat_right">&nbsp;</span></a>
+        </div>
+
         <legend>${data.label}</legend>
         {{if meta.helpText}}<p>{{html meta.helpText}}</p>{{/if}}
         <span class="dataSample"></span>
@@ -468,8 +474,6 @@
             </tbody>
           </table>
         {{/if}}
-        <p><a class='delete_dimension' href='#'>Delete this dimension</a></p>
-        <p><a class='copy_dimension' href='#'>Copy this dimension</a></p>
       </script>
     </div> <!-- /.modeleditor -->
   </div> <!-- /.content -->

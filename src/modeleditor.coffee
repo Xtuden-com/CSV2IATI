@@ -469,7 +469,7 @@ class DimensionsWidget extends Delegator
 
   onCopyDimensionClick: (e) ->
     fieldset = $(e.currentTarget).parents('fieldset').first()
-    name = prompt("Give a unique name for your new dimension (letters and numbers, no spaces):")
+    name = prompt("Give a unique name for your copy of this dimension (letters and numbers, no spaces):")
     data = {'mapping': {}}
     data['mapping'][name] = {}
     for widget in @widgets
