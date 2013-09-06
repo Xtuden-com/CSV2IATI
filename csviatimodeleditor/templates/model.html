@@ -295,8 +295,12 @@
               </td>
               <td>
                 <div>
-                  <a title="Switch this field's data type to a fixed value (the same value for all rows in your data)" href='#' class='field_switch_constant'><span class="ui-icon ui-icon-pencil iconfloat_left">&nbsp;</span>to fixed value</a>
+                  <select class='field_switch_constant'>
+                    <option value="column" selected>Column</option>
+                    <option value="fixed">Fixed</option>
+                  </select>
                 </div>
+                <div style="display: none" class="advanced">
                 <div>
                 {{if field['text-transform-type'] !== undefined}}
                   <a href='#' class='field_remove_transform'>
@@ -318,16 +322,16 @@
                   </a>
                   </div>
                 {{/if}}
+              </div>
               </td>
+              <td>
                 {{if required(fieldName, iatiField) == true}}
-              <td>
                 <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
-              </td>
                 {{else}}
-              <td>
+                <a href='#' class='show_advanced'><span title="Toggle advanced options" href='#' class='ui-icon ui-icon-wrench iconfloat_left'>&nbsp;</span></a>
                 <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
-              </td>                
                 {{/if}}
+              </td>
         </tr>
           {{if iatiField != '_alternative' }}
             <input type="hidden" name="${prefix}[${fieldName}][alternatives-counter]" class="alternativesCounter" />
@@ -354,7 +358,10 @@
               </td>
               <td><input type='text' name='${prefix}[${fieldName}][constant]'></td>
               <td>
-                <a title="Switch this field's data type to a column in your data" href='#' class='field_switch_column'><span class="ui-icon ui-icon-carat-2-e-w iconfloat_left">&nbsp;</span>to column in data</a>
+                <select class='field_switch_column'>
+                  <option value="column">Column</option>
+                  <option value="fixed" selected>Fixed</option>
+                </select>
               </td>
                 {{if required(fieldName, iatiField) == true}}
               <td>
@@ -522,7 +529,7 @@
         return iati_to_write;
       });
       $('.iati_field_add').html(function() {
-        var iati_to_write = '<option value="">Add a new field</option>';
+        var iati_to_write = '<option value="">Add a new element</option>';
         $.each(iati_data, function(index, value) {
             iati_to_write = iati_to_write + '<option value="' + value + '">' + value + '</option>';
         });

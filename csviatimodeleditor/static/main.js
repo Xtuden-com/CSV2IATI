@@ -2241,13 +2241,14 @@ DimensionWidget = (function(_super) {
     '.field_add_alternative click': 'onAddAlternativeClick',
     '.field_add_transform click': 'onAddTransformClick',
     '.field_remove_transform click': 'onRemoveTransformClick',
-    '.field_switch_constant click': 'onFieldSwitchConstantClick',
-    '.field_switch_column click': 'onFieldSwitchColumnClick',
+    '.field_switch_constant change': 'onFieldSwitchConstantClick',
+    '.field_switch_column change': 'onFieldSwitchColumnClick',
     '.field_rm click': 'onFieldRemoveClick',
     '.delete_dimension click': 'onDeleteDimensionClick',
     '.delete_tdatafield click': 'onDeleteTDataFieldClick',
     '.iatifield change': 'onIATIFieldChange',
-    '.column change': 'onColumnChange'
+    '.column change': 'onColumnChange',
+    '.show_advanced click': 'onShowAdvanced'
   };
 
   function DimensionWidget(name, container, options) {
@@ -2494,6 +2495,13 @@ DimensionWidget = (function(_super) {
     curRow.replaceWith(row);
     this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
     this.element.parents('form').first().change();
+    return false;
+  };
+
+  DimensionWidget.prototype.onShowAdvanced = function(e) {
+    var curRow;
+    curRow = $(e.currentTarget).parents('tr').first();
+    curRow.find('.advanced').toggle();
     return false;
   };
 

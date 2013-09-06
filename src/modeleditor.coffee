@@ -178,13 +178,14 @@ class DimensionWidget extends Widget
     '.field_add_alternative click': 'onAddAlternativeClick'
     '.field_add_transform click': 'onAddTransformClick'
     '.field_remove_transform click': 'onRemoveTransformClick'
-    '.field_switch_constant click': 'onFieldSwitchConstantClick'
-    '.field_switch_column click': 'onFieldSwitchColumnClick'
+    '.field_switch_constant change': 'onFieldSwitchConstantClick'
+    '.field_switch_column change': 'onFieldSwitchColumnClick'
     '.field_rm click': 'onFieldRemoveClick'
     '.delete_dimension click': 'onDeleteDimensionClick'
     '.delete_tdatafield click': 'onDeleteTDataFieldClick'
     '.iatifield change' : 'onIATIFieldChange'
     '.column change' : 'onColumnChange'
+    '.show_advanced click': 'onShowAdvanced'
 
   constructor: (name, container, options) ->
     @name = name
@@ -374,6 +375,11 @@ class DimensionWidget extends Widget
     curRow.replaceWith(row)
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
     @element.parents('form').first().change()
+    return false
+
+  onShowAdvanced: (e) ->
+    curRow = $(e.currentTarget).parents('tr').first()
+    curRow.find('.advanced').toggle()
     return false
 
   promptAddDimensionNamed: (props, thename) ->
