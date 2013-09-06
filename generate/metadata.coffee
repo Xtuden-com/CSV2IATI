@@ -1255,11 +1255,12 @@ DIMENSION_META =
         recommended. May contain the organisation name as content. 
         
         For the value of the @type attribute, 
-        see http://iatistandard.org/codelists/organisation-type. 
+        see <a href="http://iatistandard.org/codelists/organisation-type.">http://iatistandard.org/codelists/organisation-type.</a> 
         
         For guidance on constructing the value of the @ref attribute, 
-        see http://iatistandard.org/org-ref
-      
+        see <a href="http://iatistandard.org/org-ref
+">http://iatistandard.org/org-ref
+</a>      
               '''
   'participating-org':
     fixedDataType:true
@@ -1272,12 +1273,15 @@ DIMENSION_META =
         content.
 
         For the value of the @type attribute, see
-        http://iatistandard.org/codelists/organisation-type
+        <a href="http://iatistandard.org/codelists/organisation-type
 
-        For the value of the @ref attribute, see the list of
+">http://iatistandard.org/codelists/organisation-type
+
+</a>        For the value of the @ref attribute, see the list of
         officially-registered organizations at
-        http://iatistandard.org/codelists/organisation
-      
+        <a href="http://iatistandard.org/codelists/organisation
+">http://iatistandard.org/codelists/organisation
+</a>      
               '''
   'activity-scope':
     fixedDataType:true
@@ -1299,8 +1303,9 @@ DIMENSION_META =
         geographical location, use the location element.
 
         For the value of the @code attribute, see
-        http://iatistandard.org/codelists/country
-      
+        <a href="http://iatistandard.org/codelists/country
+">http://iatistandard.org/codelists/country
+</a>      
               '''
   'recipient-region':
     fixedDataType:true
@@ -1314,8 +1319,9 @@ DIMENSION_META =
         use the location element.
 
         For the value of the @code attribute, see
-        http://iatistandard.org/codelists/region
-      
+        <a href="http://iatistandard.org/codelists/region
+">http://iatistandard.org/codelists/region
+</a>      
               '''
   'collaboration-type':
     fixedDataType:true
@@ -1325,8 +1331,9 @@ DIMENSION_META =
         disbursements, e.g. "bilateral" or "multilateral".
 
         For the value of the @code attribute, see
-        http://iatistandard.org/codelists/collaboration_type
-      
+        <a href="http://iatistandard.org/codelists/collaboration_type
+">http://iatistandard.org/codelists/collaboration_type
+</a>      
               '''
   'default-flow-type':
     fixedDataType:true
@@ -1336,8 +1343,9 @@ DIMENSION_META =
         Assistance (ODA).  Type types will be defined by IATI.
 
         For the value of the @code attribute, see
-        http://iatistandard.org/codelists/flow_type
-      
+        <a href="http://iatistandard.org/codelists/flow_type
+">http://iatistandard.org/codelists/flow_type
+</a>      
               '''
   'default-aid-type':
     fixedDataType:true
@@ -1349,8 +1357,9 @@ DIMENSION_META =
         individual transaction level.
 
         For the value of the @code attribute, see
-        http://iatistandard.org/codelists/aid_type
-      
+        <a href="http://iatistandard.org/codelists/aid_type
+">http://iatistandard.org/codelists/aid_type
+</a>      
               '''
   'default-finance-type':
     fixedDataType:true
@@ -1362,8 +1371,9 @@ DIMENSION_META =
         transactions.
 
         For the value of the @code attribute, see
-        http://iatistandard.org/codelists/finance_type
-      
+        <a href="http://iatistandard.org/codelists/finance_type
+">http://iatistandard.org/codelists/finance_type
+</a>      
               '''
   'iati-identifier':
     fixedDataType:true
@@ -1410,9 +1420,11 @@ DIMENSION_META =
     helpText: '''
 
         Sector code and name.  For the value of the @code attribute,
-        see http://iatistandard.org/codelists/sector
+        see <a href="http://iatistandard.org/codelists/sector
 
-        Either the @code attribute or descriptive text content must be
+">http://iatistandard.org/codelists/sector
+
+</a>        Either the @code attribute or descriptive text content must be
         present.
       
               '''
@@ -1428,9 +1440,11 @@ DIMENSION_META =
         2010-10-01. 
         
         For the value of the @type attribute, see
-        http://iatistandard.org/codelists/activity_date_type
+        <a href="http://iatistandard.org/codelists/activity_date_type
 
-        The text content may contain a general date text (e.g. 2011Q1)
+">http://iatistandard.org/codelists/activity_date_type
+
+</a>        The text content may contain a general date text (e.g. 2011Q1)
         for recording less specific dates such as month, quarter, or
         year.
       
@@ -1441,8 +1455,9 @@ DIMENSION_META =
 
         The current status of the project (e.g. "planned"), using a
         list defined by IATI.  For the value of the @code attribute,
-        see http://iatistandard.org/codelists/activity_status
-      
+        see <a href="http://iatistandard.org/codelists/activity_status
+">http://iatistandard.org/codelists/activity_status
+</a>      
               '''
   'contact-info':
     fixedDataType:true
@@ -1461,8 +1476,9 @@ DIMENSION_META =
         using a code list created by IATI.  The content is free text
         that can optionally provide more detail.  For the value of the
         @code attribute, see
-        http://iatistandard.org/codelists/tied_status
-      
+        <a href="http://iatistandard.org/codelists/tied_status
+">http://iatistandard.org/codelists/tied_status
+</a>      
               '''
   'policy-marker':
     fixedDataType:true
@@ -1474,8 +1490,9 @@ DIMENSION_META =
         attribute can also help to segment the markers into separate
         vocabularies.  This element can be repeated for each policy
         marker.  For the value of the @code attribute, see
-        http://iatistandard.org/codelists/policy_marker
-      
+        <a href="http://iatistandard.org/codelists/policy_marker
+">http://iatistandard.org/codelists/policy_marker
+</a>      
               '''
   'location':
     fixedDataType:true
@@ -1555,8 +1572,9 @@ DIMENSION_META =
         transactions.
 
         For the value of the @type attribute, see
-        http://iatistandard.org/codelists/related_activity_type
-      
+        <a href="http://iatistandard.org/codelists/related_activity_type
+">http://iatistandard.org/codelists/related_activity_type
+</a>      
               '''
   'document-link':
     fixedDataType:true

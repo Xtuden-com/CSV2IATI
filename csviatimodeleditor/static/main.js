@@ -1859,11 +1859,11 @@ DIMENSION_META = {
   },
   'reporting-org': {
     fixedDataType: true,
-    helpText: '\n  The organisation issuing the report. May be a primary source \n  (reporting on its own activity as donor, implementing agency, \n  etc) or a secondary source (reporting on the activities of \n  another organisation). \n  \n  Specifying the @ref and @role attributes is strongly \n  recommended. May contain the organisation name as content. \n  \n  For the value of the @type attribute, \n  see http://iatistandard.org/codelists/organisation-type. \n  \n  For guidance on constructing the value of the @ref attribute, \n  see http://iatistandard.org/org-ref\n'
+    helpText: '\nThe organisation issuing the report. May be a primary source \n(reporting on its own activity as donor, implementing agency, \netc) or a secondary source (reporting on the activities of \nanother organisation). \n\nSpecifying the @ref and @role attributes is strongly \nrecommended. May contain the organisation name as content. \n\nFor the value of the @type attribute, \nsee <a href="http://iatistandard.org/codelists/organisation-type.">http://iatistandard.org/codelists/organisation-type.</a> \n\nFor guidance on constructing the value of the @ref attribute, \nsee <a href="http://iatistandard.org/org-ref\n">http://iatistandard.org/org-ref\n</a>      '
   },
   'participating-org': {
     fixedDataType: true,
-    helpText: '\n  An organisation (including the reporting organisation)\n  involved with the activity.  May be a donor, fund, agency,\n  etc.  Specifying the @identifier and @role attributes is\n  strongly recommended.  May contain the organisation name as\n  content.\n\n  For the value of the @type attribute, see\n  http://iatistandard.org/codelists/organisation-type\n\n  For the value of the @ref attribute, see the list of\n  officially-registered organizations at\n  http://iatistandard.org/codelists/organisation\n'
+    helpText: '\nAn organisation (including the reporting organisation)\ninvolved with the activity.  May be a donor, fund, agency,\netc.  Specifying the @identifier and @role attributes is\nstrongly recommended.  May contain the organisation name as\ncontent.\n\nFor the value of the @type attribute, see\n<a href="http://iatistandard.org/codelists/organisation-type\n\n">http://iatistandard.org/codelists/organisation-type\n\n</a>        For the value of the @ref attribute, see the list of\nofficially-registered organizations at\n<a href="http://iatistandard.org/codelists/organisation\n">http://iatistandard.org/codelists/organisation\n</a>      '
   },
   'activity-scope': {
     fixedDataType: true,
@@ -1871,27 +1871,27 @@ DIMENSION_META = {
   },
   'recipient-country': {
     fixedDataType: true,
-    helpText: '\n  A partner country that will benefit from this activity.  This\n  element is primarily for administrative and geopolitical\n  purposes.  If a specific country is not known, the activity\n  report can use the recipient-region element instead. For\n  geographical location, use the location element.\n\n  For the value of the @code attribute, see\n  http://iatistandard.org/codelists/country\n'
+    helpText: '\nA partner country that will benefit from this activity.  This\nelement is primarily for administrative and geopolitical\npurposes.  If a specific country is not known, the activity\nreport can use the recipient-region element instead. For\ngeographical location, use the location element.\n\nFor the value of the @code attribute, see\n<a href="http://iatistandard.org/codelists/country\n">http://iatistandard.org/codelists/country\n</a>      '
   },
   'recipient-region': {
     fixedDataType: true,
-    helpText: '\n  A geopolitical region (above the country level) that will\n  benefit from this activity.  This element is primarily for\n  administrative and geopolitical purposes.  If the specific\n  country/-ies are known, the activity report can use the\n  recipient-country element instead. For geographical location,\n  use the location element.\n\n  For the value of the @code attribute, see\n  http://iatistandard.org/codelists/region\n'
+    helpText: '\nA geopolitical region (above the country level) that will\nbenefit from this activity.  This element is primarily for\nadministrative and geopolitical purposes.  If the specific\ncountry/-ies are known, the activity report can use the\nrecipient-country element instead. For geographical location,\nuse the location element.\n\nFor the value of the @code attribute, see\n<a href="http://iatistandard.org/codelists/region\n">http://iatistandard.org/codelists/region\n</a>      '
   },
   'collaboration-type': {
     fixedDataType: true,
-    helpText: '\n  The type of collaboration involved in the project\'s\n  disbursements, e.g. "bilateral" or "multilateral".\n\n  For the value of the @code attribute, see\n  http://iatistandard.org/codelists/collaboration_type\n'
+    helpText: '\nThe type of collaboration involved in the project\'s\ndisbursements, e.g. "bilateral" or "multilateral".\n\nFor the value of the @code attribute, see\n<a href="http://iatistandard.org/codelists/collaboration_type\n">http://iatistandard.org/codelists/collaboration_type\n</a>      '
   },
   'default-flow-type': {
     fixedDataType: true,
-    helpText: '\n  The type of assistance provided, e.g. Official Development\n  Assistance (ODA).  Type types will be defined by IATI.\n\n  For the value of the @code attribute, see\n  http://iatistandard.org/codelists/flow_type\n'
+    helpText: '\nThe type of assistance provided, e.g. Official Development\nAssistance (ODA).  Type types will be defined by IATI.\n\nFor the value of the @code attribute, see\n<a href="http://iatistandard.org/codelists/flow_type\n">http://iatistandard.org/codelists/flow_type\n</a>      '
   },
   'default-aid-type': {
     fixedDataType: true,
-    helpText: '\n  The type of aid being supplied (budget support, debt relief,\n  etc.).  This element specifies a default for all the\n  activity\'s financial transactions; it can be overridden at the\n  individual transaction level.\n\n  For the value of the @code attribute, see\n  http://iatistandard.org/codelists/aid_type\n'
+    helpText: '\nThe type of aid being supplied (budget support, debt relief,\netc.).  This element specifies a default for all the\nactivity\'s financial transactions; it can be overridden at the\nindividual transaction level.\n\nFor the value of the @code attribute, see\n<a href="http://iatistandard.org/codelists/aid_type\n">http://iatistandard.org/codelists/aid_type\n</a>      '
   },
   'default-finance-type': {
     fixedDataType: true,
-    helpText: '\n  The type of finance (e.g. debt relief). The types will be\n  defined by IATI.  This the default value for all transactions\n  in the activity report; it can be overridded by individual\n  transactions.\n\n  For the value of the @code attribute, see\n  http://iatistandard.org/codelists/finance_type\n'
+    helpText: '\nThe type of finance (e.g. debt relief). The types will be\ndefined by IATI.  This the default value for all transactions\nin the activity report; it can be overridded by individual\ntransactions.\n\nFor the value of the @code attribute, see\n<a href="http://iatistandard.org/codelists/finance_type\n">http://iatistandard.org/codelists/finance_type\n</a>      '
   },
   'iati-identifier': {
     fixedDataType: true,
@@ -1911,15 +1911,15 @@ DIMENSION_META = {
   },
   'sector': {
     fixedDataType: true,
-    helpText: '\n  Sector code and name.  For the value of the @code attribute,\n  see http://iatistandard.org/codelists/sector\n\n  Either the @code attribute or descriptive text content must be\n  present.\n'
+    helpText: '\n  Sector code and name.  For the value of the @code attribute,\n  see <a href="http://iatistandard.org/codelists/sector\n\n">http://iatistandard.org/codelists/sector\n\n</a>        Either the @code attribute or descriptive text content must be\n  present.\n'
   },
   'activity-date': {
     fixedDataType: true,
-    helpText: '\n  The planned and actual start and completion dates of the \n  activity. Start dates may reflect either the commencement of \n  funding, planning or physical activity. End dates should, \n  wherever possible, reflect the ending of physical activity. \n  Dates should be in ISO 8601 date YYYY-MM-DD format, e.g. \n  2010-10-01. \n  \n  For the value of the @type attribute, see\n  http://iatistandard.org/codelists/activity_date_type\n\n  The text content may contain a general date text (e.g. 2011Q1)\n  for recording less specific dates such as month, quarter, or\n  year.\n'
+    helpText: '\n  The planned and actual start and completion dates of the \n  activity. Start dates may reflect either the commencement of \n  funding, planning or physical activity. End dates should, \n  wherever possible, reflect the ending of physical activity. \n  Dates should be in ISO 8601 date YYYY-MM-DD format, e.g. \n  2010-10-01. \n  \n  For the value of the @type attribute, see\n  <a href="http://iatistandard.org/codelists/activity_date_type\n\n">http://iatistandard.org/codelists/activity_date_type\n\n</a>        The text content may contain a general date text (e.g. 2011Q1)\n  for recording less specific dates such as month, quarter, or\n  year.\n'
   },
   'activity-status': {
     fixedDataType: true,
-    helpText: '\n  The current status of the project (e.g. "planned"), using a\n  list defined by IATI.  For the value of the @code attribute,\n  see http://iatistandard.org/codelists/activity_status\n'
+    helpText: '\nThe current status of the project (e.g. "planned"), using a\nlist defined by IATI.  For the value of the @code attribute,\nsee <a href="http://iatistandard.org/codelists/activity_status\n">http://iatistandard.org/codelists/activity_status\n</a>      '
   },
   'contact-info': {
     fixedDataType: true,
@@ -1927,11 +1927,11 @@ DIMENSION_META = {
   },
   'default-tied-status': {
     fixedDataType: true,
-    helpText: '\n  Specify whether the aid is untied, tied, or partially tied,\n  using a code list created by IATI.  The content is free text\n  that can optionally provide more detail.  For the value of the\n  @code attribute, see\n  http://iatistandard.org/codelists/tied_status\n'
+    helpText: '\nSpecify whether the aid is untied, tied, or partially tied,\nusing a code list created by IATI.  The content is free text\nthat can optionally provide more detail.  For the value of the\n@code attribute, see\n<a href="http://iatistandard.org/codelists/tied_status\n">http://iatistandard.org/codelists/tied_status\n</a>      '
   },
   'policy-marker': {
     fixedDataType: true,
-    helpText: '\n  A policy or theme addressed by the activity.  A text\n  description of the theme appears in the content, and a formal\n  identifier appears in the @ref attribute.  The @vocabulary\n  attribute can also help to segment the markers into separate\n  vocabularies.  This element can be repeated for each policy\n  marker.  For the value of the @code attribute, see\n  http://iatistandard.org/codelists/policy_marker\n'
+    helpText: '\nA policy or theme addressed by the activity.  A text\ndescription of the theme appears in the content, and a formal\nidentifier appears in the @ref attribute.  The @vocabulary\nattribute can also help to segment the markers into separate\nvocabularies.  This element can be repeated for each policy\nmarker.  For the value of the @code attribute, see\n<a href="http://iatistandard.org/codelists/policy_marker\n">http://iatistandard.org/codelists/policy_marker\n</a>      '
   },
   'location': {
     fixedDataType: true,
@@ -1967,7 +1967,7 @@ DIMENSION_META = {
   },
   'related-activity': {
     fixedDataType: true,
-    helpText: '\n  XX.XX Related Activity\n\n  Another IATI activity related to this one.  The \'type\'\n  attribute describes the type of relationship (e.g. parent,\n  sibling).  This does not need to be used to express funding\n  relationships, since those are covered in individual\n  transactions.\n\n  For the value of the @type attribute, see\n  http://iatistandard.org/codelists/related_activity_type\n'
+    helpText: '\nXX.XX Related Activity\n\nAnother IATI activity related to this one.  The \'type\'\nattribute describes the type of relationship (e.g. parent,\nsibling).  This does not need to be used to express funding\nrelationships, since those are covered in individual\ntransactions.\n\nFor the value of the @type attribute, see\n<a href="http://iatistandard.org/codelists/related_activity_type\n">http://iatistandard.org/codelists/related_activity_type\n</a>      '
   },
   'document-link': {
     fixedDataType: true,

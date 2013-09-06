@@ -8,6 +8,13 @@ namespaces = {
     'xsd': 'http://www.w3.org/2001/XMLSchema'
 }
 
+import re
+
+def htmlize(s):
+    return re.sub(r'(https?://[^ ]*)',
+                  r'<a href="\1">\1</a>',
+                  s)
+
 
 def get_element(element_name, indent='', top=False, doc=False):
     element = tree.find("//xsd:element[@name='{0}']".format(element_name), namespaces=namespaces)
@@ -19,7 +26,7 @@ def get_element(element_name, indent='', top=False, doc=False):
         print "  '{0}':".format(element_name)
         print "    fixedDataType:true"
         print "    helpText: '''"
-        print element.find(".//xsd:documentation", namespaces=namespaces).text
+        print htmlize(element.find(".//xsd:documentation", namespaces=namespaces).text)
         print "              '''"
 
     if not doc or top:
