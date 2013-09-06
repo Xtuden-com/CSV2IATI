@@ -6,19 +6,6 @@ DEFAULT_FIELD_SETUP =
       'text':
         datatype: 'column'
         required: false
-  'reporting-org':
-    datatype: 'compound'
-    label: 'Reporting Org'
-    fields:
-      'text':
-        datatype: 'column'
-        required: false
-      'ref':
-        datatype: 'column'
-        required: true
-      'type':
-        datatype: 'column'
-        required: false
   'participating-org':
     datatype: 'compound'
     label: 'Participating Org'
@@ -1240,25 +1227,6 @@ DIMENSION_META =
         A link to a web site providing more information about the aid
         activity.  Multiple versions of the link may appear for
         different languages.
-      </p>
-              '''
-  'reporting-org':
-    fixedDataType:true
-    helpText: '''
-<p>
-        The organisation issuing the report. May be a primary source 
-        (reporting on its own activity as donor, implementing agency, 
-        etc) or a secondary source (reporting on the activities of 
-        another organisation). 
-        
-        Specifying the @ref and @role attributes is strongly 
-        recommended. May contain the organisation name as content. 
-        
-        For the value of the @type attribute, 
-        see <a href="http://iatistandard.org/codelists/organisation-type." target="_blank">http://iatistandard.org/codelists/organisation-type.</a> 
-        
-        For guidance on constructing the value of the @ref attribute, 
-        see <a href="http://iatistandard.org/org-ref" target="_blank">http://iatistandard.org/org-ref</a>
       </p>
               '''
   'participating-org':

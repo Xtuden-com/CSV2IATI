@@ -8,6 +8,10 @@ namespaces = {
     'xsd': 'http://www.w3.org/2001/XMLSchema'
 }
 
+# Ignore reporting org, because that information will come from the oranisation
+# tab in the modeleditor
+blacklisted_elements = ['reporting-org']
+
 import re
 
 def htmlize(s):
@@ -64,9 +68,10 @@ def element_loop(element, indent='', doc=False, top=False):
                 attribute_loop(child, indent+'    ')
             element_loop(child, indent+'    ',doc=doc)
         else:
-            if not doc:
-                print_info(a['ref'])
-            get_element(a['ref'], indent+'    ',doc=doc)
+            if not a['ref'] in blacklisted_elements:
+                if not doc:
+                    print_info(a['ref'])
+                get_element(a['ref'], indent+'    ',doc=doc)
 
 def attribute_loop(element, indent=''):
     if element.find("xsd:complexType[@mixed='true']", namespaces=namespaces) is not None:

@@ -158,24 +158,6 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
-  'reporting-org': {
-    datatype: 'compound',
-    label: 'Reporting Org',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'ref': {
-        datatype: 'column',
-        required: true
-      },
-      'type': {
-        datatype: 'column',
-        required: false
-      }
-    }
-  },
   'participating-org': {
     datatype: 'compound',
     label: 'Participating Org',
@@ -1856,10 +1838,6 @@ DIMENSION_META = {
   'activity-website': {
     fixedDataType: true,
     helpText: '<p>\n        A link to a web site providing more information about the aid\n        activity.  Multiple versions of the link may appear for\n        different languages.\n      </p>'
-  },
-  'reporting-org': {
-    fixedDataType: true,
-    helpText: '<p>\n        The organisation issuing the report. May be a primary source \n        (reporting on its own activity as donor, implementing agency, \n        etc) or a secondary source (reporting on the activities of \n        another organisation). \n        \n        Specifying the @ref and @role attributes is strongly \n        recommended. May contain the organisation name as content. \n        \n        For the value of the @type attribute, \n        see <a href="http://iatistandard.org/codelists/organisation-type." target="_blank">http://iatistandard.org/codelists/organisation-type.</a> \n        \n        For guidance on constructing the value of the @ref attribute, \n        see <a href="http://iatistandard.org/org-ref" target="_blank">http://iatistandard.org/org-ref</a>\n      </p>'
   },
   'participating-org': {
     fixedDataType: true,
