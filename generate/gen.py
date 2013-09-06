@@ -11,9 +11,9 @@ namespaces = {
 import re
 
 def htmlize(s):
-    return re.sub(r'(https?://[^ ]*)',
-                  r'<a href="\1">\1</a>',
-                  s)
+    return '<p>'+re.sub('\n\n', '\n</p><p>\n', re.sub(r'(https?://[^ \t\r\n]*)',
+                  r'<a href="\1" target="_blank">\1</a>',
+                  s))+'</p>'
 
 
 def get_element(element_name, indent='', top=False, doc=False):
