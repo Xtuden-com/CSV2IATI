@@ -3,6 +3,36 @@
 ## Version 2.0
 Transactions are now handled differently, so if any models from the old version will need to be migrated before they work.
 
+### Various UI improvements
+Including:
+
+* Ajax save button - This means that when the save button is pressed, you will not lose your position on the page.
+* Copy/delete dimension are now icons in the top right of a dimension
+* External URLs now open in a new window/tab
+* Switching between column and fixed value is now a dropdown
+
+### Admins can now reset passwords
+
+### History
+
+In the conversion panel, there is a view conversion history link, which lists previous conversion times and links to the associated XML files.
+
+### List of IATI elements generated from schema
+
+This means many new elements are supported, along with new descriptions pulled from the schema's inline documentation.
+
+### Support for nested elements
+
+Eg. Budget. Transactions also use this new format (see migration notes above), and will look slightly different.
+
+### Post conversion links
+
+There are now Preview/Validate links after an XML file has been converted.
+
+### Dimensions can be copied
+
+Simply click the copy dimension button, and enter a name for the new dimension.
+
 ### Virtual fields
 
 Any field with a name beginning `virtual_` will not be outputted into the xml. This is useful for the Field Before/After transform.
@@ -45,28 +75,4 @@ This takes untied and partialtied columns and produces the Tied Status code requ
 
 Currently transforms on a field are applied first, then if this is blank alternatives are checked. Alternatives may have their own transforms.
 
-
-
-### History
-
-In the conversion panel, there is a veiw conversion history link, which lists previous conversion times and links to the associated XML files.
-
-
-### New IATI fields availible
-
-This includes nested elements such as budget etc. Transactions also use this new format (see migration notes above), and will look slightly different.
-
-
-### Post conversion links
-
-There are now Preview/Validate/Split links after an XML file has been converted.
-
-
-### Ajaxy save button
-
-This means that when the save button is pressed, you will not lose your position on the page.
-
-### Dimensions can be copied
-
-Simply click the copy dimension button, and enter a name for the new dimension.
 
