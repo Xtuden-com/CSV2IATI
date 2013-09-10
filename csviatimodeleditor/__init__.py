@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response
-from flaskext.sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, UnicodeText, Date, DateTime, Float, Boolean
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
@@ -376,7 +376,7 @@ def model_convert(id=id):
                 if getmodel.model_content is not None:
                     import urllib
                     import urllib2
-                    url = CONVERSION_API_SERVER + '/json'
+                    url = CONVERSION_API_SERVER + 'json'
                     values = {'csv_url' : url_for('csv_file',id=getmodel.id,filename=getcsvfile.csv_file,_external=True),
                               'model_url' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
 
@@ -384,8 +384,10 @@ def model_convert(id=id):
                     req = urllib2.Request(url, data)
                     xml_url = ''
                     try:
+                        print url
                         response = urllib2.urlopen(req)
                         the_page_json = response.read()
+                        #print the_page_json
                         the_page = json.loads(the_page_json)
                         if "error" in the_page:
                             output = the_page["error"]
