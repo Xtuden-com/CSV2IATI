@@ -856,16 +856,6 @@ DEFAULT_FIELD_SETUP =
           'value-date':
             datatype: 'column'
             required: true
-          'repayment-type':
-            datatype: 'compound'
-            label: 'Repayment Type'
-            fields:
-                'text':
-                  datatype: 'column'
-                  required: false
-                'code':
-                  datatype: 'column'
-                  required: false
           'interest-received':
             datatype: 'compound'
             label: 'Interest Received'
