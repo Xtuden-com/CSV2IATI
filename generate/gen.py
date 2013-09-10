@@ -65,7 +65,6 @@ def element_loop(element, indent='', doc=False, top=False):
         if 'name' in a:
             if not doc:
                 print_info(a['name'])
-                attribute_loop(child, indent+'    ')
             element_loop(child, indent+'    ',doc=doc)
         else:
             if not a['ref'] in blacklisted_elements:
@@ -92,7 +91,10 @@ def attribute_loop(element, indent=''):
                 print_column_info('iso-date', indent+'  ', False)
         else: raise Exception, a['type']
 
-    for attribute in element.findall('xsd:complexType/xsd:attribute', namespaces=namespaces):
+    for attribute in (
+        element.findall('xsd:complexType/xsd:attribute', namespaces=namespaces) +
+        element.findall('xsd:complexType/xsd:simpleContent/xsd:extension/xsd:attribute', namespaces=namespaces)
+        ):
         print_column_info( attribute.get('ref') or attribute.get('name'), indent, attribute.get('use') == 'required' )
 
 print "DEFAULT_FIELD_SETUP ="
