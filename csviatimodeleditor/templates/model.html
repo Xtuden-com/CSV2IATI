@@ -27,7 +27,8 @@
   <p><span id="save_model" class="save_model save_model_spacer">&nbsp;</span></p>
 {% raw %}
   </div>
-  <div id="right_pane" style="float:right;width:20%;position:fixed;left:78%;">
+  <div id="right_pane_wrapper" style="float:right;width:20%;left:78%;">
+  <div id="right_pane">
   <p><span id="save_model" class="save_model"><a>Save model</a></span></p>
       <div id="editor_mode">
         <p><b>Editor mode:</b><a class="basic fieldsbuttons fieldsbuttons-selected" href="#">Basic</a> <a class="advanced fieldsbuttons" href="#">Advanced</a></p>
@@ -48,8 +49,10 @@
         </form>
       </div>
   </div>
+  </div>
   <div class='content' style='width: 78%'>
     <div id='m1' class='modeleditor'>
+      <div style="position:absolute">
       <div class='steps'>
         <ul>
           <li><a href='#' target='_blank'><span>1</span> Organisation information</a></li>
@@ -60,6 +63,7 @@
           </li>
           <li><a href='#'><span>3</span> Convert</a></li>
         </ul>
+      </div>
       </div>
       <div class='forms'>
         <form action='#'>
@@ -568,36 +572,12 @@
         $('#right_pane_container').slideUp();
         $('#editor_mode a.basic').addClass('fieldsbuttons-selected');
         $('#editor_mode a.advanced').removeClass('fieldsbuttons-selected');
-        $('#right_pane').animate({
-          width: '20%',
-          left:'78%'
-        }, 500, function() {
-          // Animation complete.
-        });
-
-        $('.content').animate({
-          width: '78%'
-        }, 500, function() {
-          // Animation complete.
-        });
     });
 
     $('#editor_mode a.advanced').click(function() {
         $('#right_pane_container').slideDown();
         $('#editor_mode a.basic').removeClass('fieldsbuttons-selected');
         $('#editor_mode a.advanced').addClass('fieldsbuttons-selected');  
-        $('#right_pane').animate({
-          width: '28%',
-          left:'70%'
-        }, 500, function() {
-          // Animation complete.
-        });    
-
-        $('.content').animate({
-          width: '70%'
-        }, 500, function() {
-          // Animation complete.
-        });
     });
     $('#csvdata_edit').click(function() {
 	$('#csvdata_options').animate({
@@ -613,6 +593,8 @@
 	  // Animation complete.
 	});
     });
+    $(".steps").sticky({topSpacing:0});
+    $("#right_pane").sticky({topSpacing:0, getWidthFrom:'#right_pane_wrapper'});
     })
   </script>
   

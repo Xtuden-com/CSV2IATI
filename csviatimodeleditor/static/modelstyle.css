@@ -78,14 +78,11 @@ table td:first-child {
   visibility: hidden;
 }
 #right_pane {
-  max-height:50%;
   overflow:auto;
 }
 
 .modeleditor .steps {
-  position:fixed;
   width: 15em;
-  max-height:50%;
   overflow:auto;
 }
 .modeleditor .modeltoggle {

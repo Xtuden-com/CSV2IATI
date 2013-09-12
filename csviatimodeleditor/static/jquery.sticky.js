@@ -17,7 +17,7 @@
       className: 'is-sticky',
       wrapperClassName: 'sticky-wrapper',
       center: false,
-      getWidthFrom: ''
+      getWidthFrom: undefined
     },
     $window = $(window),
     $document = $(document),
@@ -38,7 +38,8 @@
           if (s.currentTop !== null) {
             s.stickyElement
               .css('position', '')
-              .css('top', '');
+              .css('top', '')
+              .css('height','');
             s.stickyElement.parent().removeClass(s.className);
             s.currentTop = null;
           }
@@ -54,8 +55,8 @@
           if (s.currentTop != newTop) {
             s.stickyElement
               .css('position', 'fixed')
-              .css('top', newTop);
-
+              .css('top', newTop)
+              .css('height','100%');
             if (typeof s.getWidthFrom !== 'undefined') {
               s.stickyElement.css('width', $(s.getWidthFrom).width());
             }
