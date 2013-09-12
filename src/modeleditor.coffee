@@ -625,21 +625,25 @@ class ModelEditor extends Delegator
     $('#columns ul').addClass('hideunavailable')
     $('#columns .allbtn').removeClass('fieldsbuttons-selected')
     $('#columns .availablebtn').addClass('fieldsbuttons-selected')
+    false
 
   onColumnsAllClick: (e) ->
     $('#columns ul').removeClass('hideunavailable')
     $('#columns .availablebtn').removeClass('fieldsbuttons-selected')
     $('#columns .allbtn').addClass('fieldsbuttons-selected')
+    false
 
   onIATIFieldsAvailableClick: (e) ->
     $('#iatifields ul').addClass('hideunavailable')
     $('#iatifields .allbtn').removeClass('fieldsbuttons-selected')
     $('#iatifields .availablebtn').addClass('fieldsbuttons-selected')
+    false
 
   onIATIFieldsAllClick: (e) ->
     $('#iatifields ul').removeClass('hideunavailable')
     $('#iatifields .availablebtn').removeClass('fieldsbuttons-selected')
     $('#iatifields .allbtn').addClass('fieldsbuttons-selected')
+    false
     
   onDoFieldSelectors: (e) ->
     $('#' + e + 's ul li code').each ->

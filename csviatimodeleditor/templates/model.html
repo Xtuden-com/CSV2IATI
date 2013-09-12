@@ -5,30 +5,12 @@
 <div id="model_page_view">
   <div class="banner" style="width:100%;color:#365e93;">
   <h1>Model: <span id="model_title"><a>{{model_name}}</a></span> &raquo; Tell us about your data</h1>
-<span id="model_csv_info">
-<p><code>Source data: <a href="{{url_for('csv_file',id=id,filename=csv_file)}}">Download</a> <a id="csvdata_edit" href="#" class="csvdata_closed">Change...</a></code><br />
-<div id="csvdata_options"><ul>{% for csvfile in all_csv_files %}
-{% if (csvfile.id == csv_id) %}
-<li class="csvfile_opt csvfile_current">{{ csvfile.csv_file }} <i>(selected)</i></li>
-{% else %}
-<li class="csvfile_opt"><a href="{{url_for('model_change_csv',id=id,csv_id=csvfile.id)}}">{{ csvfile.csv_file }}</a></li>
-{% endif %}
-{% endfor %}
-<li class="csvfile_opt"><a href="#" id="csvdata_newfile">Upload new file</a></li>
-<span id="csvdata_newfile_upload_form">
-<form id="csvdata_newfile_upload" method="post" enctype="multipart/form-data" action="{{url_for('model_change_csv',id=id)}}">
-<input type="file" name="newcsvfile"/>
-<input type="submit" value="Upload"/>
-</form>
-</span>
-</ul></div>
-<code title="Detected character encoding">Encoding: {{csv_encoding}}</code></sup><br />
-<code title="Model creation date">Created: {{model_created}}</code></p></span>
   <p><span id="save_model" class="save_model save_model_spacer">&nbsp;</span></p>
 {% raw %}
   </div>
   <div id="right_pane_wrapper" style="float:right;width:20%;left:78%;">
   <div id="right_pane">
+  <br />
   <p><span id="save_model" class="save_model"><a>Save model</a></span></p>
       <div id="editor_mode">
         <p><b>Editor mode:</b><a class="basic fieldsbuttons fieldsbuttons-selected" href="#">Basic</a> <a class="advanced fieldsbuttons" href="#">Advanced</a></p>
@@ -48,6 +30,32 @@
         <textarea id="debug" name="model" style='display:none;'>{%endraw%}{{model_content}}{%raw%}</textarea>
         </form>
       </div>
+
+
+{% endraw %}
+<br />
+<span id="model_csv_info">
+<div id="csvdata"><code>Source data:
+    <a href="{{url_for('csv_file',id=id,filename=csv_file)}}">Download</a><br />
+    <a href="#" id="csvdata_newfile">Upload new file</a>
+        <form id="csvdata_newfile_upload" method="post" enctype="multipart/form-data" action="{{url_for('model_change_csv',id=id)}}">
+        <input type="file" name="newcsvfile"/>
+        <input type="submit" value="Upload"/>
+        </form>
+    <br /><a id="csvdata_edit" href="#" class="csvdata_closed">Use previously uploaded file</a></code>
+<div id="csvdata_options"><ul>{% for csvfile in all_csv_files %}
+{% if (csvfile.id == csv_id) %}
+<li class="csvfile_opt csvfile_current">{{ csvfile.csv_file }} <i>(selected)</i></li>
+{% else %}
+<li class="csvfile_opt"><a href="{{url_for('model_change_csv',id=id,csv_id=csvfile.id)}}">{{ csvfile.csv_file }}</a></li>
+{% endif %}
+{% endfor %}
+</ul></div></div>
+<br />
+<code title="Detected character encoding">Encoding: {{csv_encoding}}</code></sup><br />
+<code title="Model creation date">Created: {{model_created}}</code></span>
+{% raw %}
+
   </div>
   </div>
   <div class='content' style='width: 78%'>
@@ -572,12 +580,14 @@
         $('#right_pane_container').slideUp();
         $('#editor_mode a.basic').addClass('fieldsbuttons-selected');
         $('#editor_mode a.advanced').removeClass('fieldsbuttons-selected');
+        return false;
     });
 
     $('#editor_mode a.advanced').click(function() {
         $('#right_pane_container').slideDown();
         $('#editor_mode a.basic').removeClass('fieldsbuttons-selected');
         $('#editor_mode a.advanced').addClass('fieldsbuttons-selected');  
+        return false;
     });
     $('#csvdata_edit').click(function() {
 	$('#csvdata_options').animate({
@@ -585,13 +595,15 @@
         }, 500, function() {
           // Animation complete.
         });
+        return false;
     });
     $('#csvdata_newfile').click(function() {
-	$('#csvdata_newfile_upload_form').animate({
+	$('#csvdata_newfile_upload').animate({
 	  height: 'toggle'
 	}, 500, function () {
 	  // Animation complete.
 	});
+        return false;
     });
     $(".steps").sticky({topSpacing:0});
     $("#right_pane").sticky({topSpacing:0, getWidthFrom:'#right_pane_wrapper'});

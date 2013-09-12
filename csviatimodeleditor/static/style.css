@@ -504,14 +504,16 @@ li {
 .csvfile_current {
     color:green;
 }
+#csvdata {
+    background-color:#eeeeee;
+}
 #csvdata_options {
     display:none;
     background-color:#eeeeee;
     padding-left:8px;
-    max-height:100px;
-    overflow:auto;
+    overflow-y: auto;
 }
-#csvdata_newfile_upload_form {
+#csvdata_newfile_upload {
     display:none;
 }
 .frontpage_icon {

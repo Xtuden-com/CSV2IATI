@@ -2427,25 +2427,29 @@ ModelEditor = (function(_super) {
   ModelEditor.prototype.onColumnsAvailableClick = function(e) {
     $('#columns ul').addClass('hideunavailable');
     $('#columns .allbtn').removeClass('fieldsbuttons-selected');
-    return $('#columns .availablebtn').addClass('fieldsbuttons-selected');
+    $('#columns .availablebtn').addClass('fieldsbuttons-selected');
+    return false;
   };
 
   ModelEditor.prototype.onColumnsAllClick = function(e) {
     $('#columns ul').removeClass('hideunavailable');
     $('#columns .availablebtn').removeClass('fieldsbuttons-selected');
-    return $('#columns .allbtn').addClass('fieldsbuttons-selected');
+    $('#columns .allbtn').addClass('fieldsbuttons-selected');
+    return false;
   };
 
   ModelEditor.prototype.onIATIFieldsAvailableClick = function(e) {
     $('#iatifields ul').addClass('hideunavailable');
     $('#iatifields .allbtn').removeClass('fieldsbuttons-selected');
-    return $('#iatifields .availablebtn').addClass('fieldsbuttons-selected');
+    $('#iatifields .availablebtn').addClass('fieldsbuttons-selected');
+    return false;
   };
 
   ModelEditor.prototype.onIATIFieldsAllClick = function(e) {
     $('#iatifields ul').removeClass('hideunavailable');
     $('#iatifields .availablebtn').removeClass('fieldsbuttons-selected');
-    return $('#iatifields .allbtn').addClass('fieldsbuttons-selected');
+    $('#iatifields .allbtn').addClass('fieldsbuttons-selected');
+    return false;
   };
 
   ModelEditor.prototype.onDoFieldSelectors = function(e) {

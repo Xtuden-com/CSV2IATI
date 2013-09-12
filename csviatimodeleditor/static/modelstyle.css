@@ -201,9 +201,6 @@ a.fieldsbuttons:hover, a.fieldsbuttons-selected {
 .banner h1 {
   float:left;
 }
-#model_csv_info {
-    float:right;
-}
 h1 #model_title a {
   border:1px solid #ffffff;
 }
