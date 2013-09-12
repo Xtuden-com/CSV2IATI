@@ -297,53 +297,59 @@ def model_change_csv(id=id, csv_id=''):
             something = request.files['newcsvfile'].stream
             filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
             csv_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
-            the_csv = csv.DictReader(reopen_for_headers)
-            columnnames = the_csv.fieldnames
-            reopen_for_headers.close()
-            reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
-            errors = False
-            
-            if not columnnames:
-                flash('Could not detect column names from your data. Maybe your file is empty?', 'bad persist')
-                errors = True
-            else:
-                columnnumber = 0
-                goodheaders = 0
-                for column in columnnames:
-                    columnnumber = columnnumber +1
-                    if ('\n' in column):
-                        flash('Warning: You have a new line in a column (found the following in column '+str(columnnumber)+': ' + column + '). This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
-                    if (column == ''):
-                        flash('Warning: Found an empty header in the first row of column ' + str(columnnumber) + '. This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
-                    else:
-                        goodheaders = goodheaders +1
-                if (goodheaders == 0):
-                    flash('Error: The headers in your data appear to be blank. Please check that you have headers in the first row of your data.', 'bad persist')
+
+            if ((csv_file) and (allowed_file(csv_file.filename))):
+                reopen_for_headers=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
+                the_csv = csv.DictReader(reopen_for_headers)
+                columnnames = the_csv.fieldnames
+                reopen_for_headers.close()
+                reopen_for_decoding=(open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rU'))
+                errors = False
+                
+                if not columnnames:
+                    flash('Could not detect column names from your data. Maybe your file is empty?', 'bad persist')
                     errors = True
+                else:
+                    columnnumber = 0
+                    goodheaders = 0
+                    for column in columnnames:
+                        columnnumber = columnnumber +1
+                        if ('\n' in column):
+                            flash('Warning: You have a new line in a column (found the following in column '+str(columnnumber)+': ' + column + '). This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                        if (column == ''):
+                            flash('Warning: Found an empty header in the first row of column ' + str(columnnumber) + '. This may cause errors on conversion, so it\'s recommended that you correct it in your source data.', 'bad persist')
+                        else:
+                            goodheaders = goodheaders +1
+                    if (goodheaders == 0):
+                        flash('Error: The headers in your data appear to be blank. Please check that you have headers in the first row of your data.', 'bad persist')
+                        errors = True
 
-            if errors:                
-                return redirect(url_for('model', id=id))
-                    
-            result = chardet.detect(reopen_for_decoding.read())
-            csv_encoding = result['encoding']
-            
-            csv_headers = json.dumps(columnnames,encoding=csv_encoding)
+                if errors:                
+                    return redirect(url_for('model', id=id))
+                        
+                result = chardet.detect(reopen_for_decoding.read())
+                csv_encoding = result['encoding']
+                
+                csv_headers = json.dumps(columnnames,encoding=csv_encoding)
 
-            #csv_headers = ', '.join('"%s"' % unicode(header,csv_encoding) for header in columnnames)
-            if csv_file and allowed_file(csv_file.filename):
-                user_id = session['user_id']
-                newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
-                db.session.add(newcsvfile)
-                db.session.commit()
-                getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-                getmodel.csv_id = newcsvfile.id
-                db.session.add(getmodel)
-                db.session.commit()
-                flash('Uploaded new CSV file', 'good')
-                return redirect(url_for('model', id=id))
+                #csv_headers = ', '.join('"%s"' % unicode(header,csv_encoding) for header in columnnames)
+                if csv_file and allowed_file(csv_file.filename):
+                    user_id = session['user_id']
+                    newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
+                    db.session.add(newcsvfile)
+                    db.session.commit()
+                    getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+                    getmodel.csv_id = newcsvfile.id
+                    db.session.add(getmodel)
+                    db.session.commit()
+                    flash('Uploaded new CSV file', 'good')
+                    return redirect(url_for('model', id=id))
+                else:
+                    flash('Could not upload your file.')
             else:
-                flash('Could not upload your file.')
+                flash('Please supply a file in the CSV format.', 'bad persist')
+                return redirect(url_for('model', id=id))
+
         else:
             #otherwise, just change it...
             if (id and csv_id):
