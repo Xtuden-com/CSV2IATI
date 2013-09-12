@@ -26,6 +26,19 @@
 <dd>
 <input type="text" id="model_name" name="model_name" />
 </dd>
+{% if admin %}
+<dt>
+<label for="user">User:</label>
+</dt>
+<dd>
+<select id="model_owner" name="model_owner">
+    <option value="">(myself)</option>
+{% for model in models %}
+    <option value="{{model.user_id}}">{{model.username}}</option>
+{% endfor %}
+</select>
+</dd>
+{% endif %}
 <dt>
 <label for="upload_browser">Data file (CSV format):</label>
 </dt>

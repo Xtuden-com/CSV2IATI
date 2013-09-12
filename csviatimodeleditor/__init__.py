@@ -215,6 +215,10 @@ def create_model():
         if (request.method == 'POST'):
             errors = False
             model_name = request.form['model_name']
+            if ('admin' in session) and request.form['model_owner']:
+                user_id = request.form['model_owner']
+            else:
+                user_id = session['user_id']
             csv_file = request.files['file']
             something = request.files['file'].stream
             filename = secure_filename(os.path.splitext(csv_file.filename)[0]) + str(int(time.time())) + '.csv'
@@ -252,7 +256,6 @@ def create_model():
                 csv_encoding = result['encoding']
                 # csv headers are being converted into the csv encoding here. Need to ensure that the conversion API is also reading the headers according to this character encoding.
                 csv_headers = json.dumps(columnnames,encoding=csv_encoding)
-                user_id = session['user_id']
                 newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
                 db.session.add(newcsvfile)
                 db.session.commit()
