@@ -1,5 +1,6 @@
 from lxml import etree as ET
 import string
+import order
 
 tree = ET.parse("./iati-activities-schema.xsd")
 tree2 = ET.parse("./iati-common.xsd")
@@ -59,8 +60,11 @@ def element_loop(element, indent='', doc=False, top=False):
         print indent+"  datatype: 'compound'"
         print indent+"  label: '{0}'".format(string.capwords(name.replace('-', ' ')))
         print indent+"  fields:"
-    for child in ( element.findall('xsd:complexType/xsd:choice/xsd:element', namespaces=namespaces)
-        + element.findall("xsd:complexType/xsd:all/xsd:element", namespaces=namespaces) ):
+    children = ( element.findall('xsd:complexType/xsd:choice/xsd:element', namespaces=namespaces)
+        + element.findall("xsd:complexType/xsd:all/xsd:element", namespaces=namespaces) )
+    if top:
+        children = sorted(children, key=lambda x: order.key(x.attrib['ref']))
+    for child in children:
         a = child.attrib
         if 'name' in a:
             if not doc:

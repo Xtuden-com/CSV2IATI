@@ -147,148 +147,6 @@ $.fn.serializeObject = function() {
 };
 
 DEFAULT_FIELD_SETUP = {
-  'activity-website': {
-    datatype: 'compound',
-    label: 'Activity Website',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      }
-    }
-  },
-  'participating-org': {
-    datatype: 'compound',
-    label: 'Participating Org',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'ref': {
-        datatype: 'column',
-        required: false
-      },
-      'type': {
-        datatype: 'column',
-        required: false
-      },
-      'role': {
-        datatype: 'column',
-        required: true
-      }
-    }
-  },
-  'activity-scope': {
-    datatype: 'compound',
-    label: 'Activity Scope',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
-        datatype: 'column',
-        required: false
-      }
-    }
-  },
-  'recipient-country': {
-    datatype: 'compound',
-    label: 'Recipient Country',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
-        datatype: 'column',
-        required: true
-      },
-      'percentage': {
-        datatype: 'column',
-        required: false
-      }
-    }
-  },
-  'recipient-region': {
-    datatype: 'compound',
-    label: 'Recipient Region',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
-        datatype: 'column',
-        required: false
-      },
-      'vocabulary': {
-        datatype: 'column',
-        required: false
-      },
-      'percentage': {
-        datatype: 'column',
-        required: false
-      }
-    }
-  },
-  'collaboration-type': {
-    datatype: 'compound',
-    label: 'Collaboration Type',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
-        datatype: 'column',
-        required: true
-      }
-    }
-  },
-  'default-flow-type': {
-    datatype: 'compound',
-    label: 'Default Flow Type',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
-        datatype: 'column',
-        required: true
-      }
-    }
-  },
-  'default-aid-type': {
-    datatype: 'compound',
-    label: 'Default Aid Type',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
-        datatype: 'column',
-        required: true
-      }
-    }
-  },
-  'default-finance-type': {
-    datatype: 'compound',
-    label: 'Default Finance Type',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
-        datatype: 'column',
-        required: true
-      }
-    }
-  },
   'iati-identifier': {
     datatype: 'compound',
     label: 'Iati Identifier',
@@ -317,6 +175,16 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
+  'activity-website': {
+    datatype: 'compound',
+    label: 'Activity Website',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      }
+    }
+  },
   'title': {
     datatype: 'compound',
     label: 'Title',
@@ -337,23 +205,15 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
-  'sector': {
+  'activity-status': {
     datatype: 'compound',
-    label: 'Sector',
+    label: 'Activity Status',
     fields: {
       'text': {
         datatype: 'column',
         required: false
       },
       'code': {
-        datatype: 'column',
-        required: false
-      },
-      'vocabulary': {
-        datatype: 'column',
-        required: false
-      },
-      'percentage': {
         datatype: 'column',
         required: false
       }
@@ -372,20 +232,6 @@ DEFAULT_FIELD_SETUP = {
         required: false
       },
       'text': {
-        datatype: 'column',
-        required: false
-      }
-    }
-  },
-  'activity-status': {
-    datatype: 'compound',
-    label: 'Activity Status',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'code': {
         datatype: 'column',
         required: false
       }
@@ -471,9 +317,45 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
-  'default-tied-status': {
+  'participating-org': {
     datatype: 'compound',
-    label: 'Default Tied Status',
+    label: 'Participating Org',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'ref': {
+        datatype: 'column',
+        required: false
+      },
+      'type': {
+        datatype: 'column',
+        required: false
+      },
+      'role': {
+        datatype: 'column',
+        required: true
+      }
+    }
+  },
+  'activity-scope': {
+    datatype: 'compound',
+    label: 'Activity Scope',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: false
+      }
+    }
+  },
+  'recipient-country': {
+    datatype: 'compound',
+    label: 'Recipient Country',
     fields: {
       'text': {
         datatype: 'column',
@@ -482,12 +364,16 @@ DEFAULT_FIELD_SETUP = {
       'code': {
         datatype: 'column',
         required: true
+      },
+      'percentage': {
+        datatype: 'column',
+        required: false
       }
     }
   },
-  'policy-marker': {
+  'recipient-region': {
     datatype: 'compound',
-    label: 'Policy Marker',
+    label: 'Recipient Region',
     fields: {
       'text': {
         datatype: 'column',
@@ -501,7 +387,7 @@ DEFAULT_FIELD_SETUP = {
         datatype: 'column',
         required: false
       },
-      'significance': {
+      'percentage': {
         datatype: 'column',
         required: false
       }
@@ -600,6 +486,274 @@ DEFAULT_FIELD_SETUP = {
           'gazetteer-ref': {
             datatype: 'column',
             required: true
+          }
+        }
+      }
+    }
+  },
+  'sector': {
+    datatype: 'compound',
+    label: 'Sector',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: false
+      },
+      'vocabulary': {
+        datatype: 'column',
+        required: false
+      },
+      'percentage': {
+        datatype: 'column',
+        required: false
+      }
+    }
+  },
+  'country-budget-items': {
+    datatype: 'compound',
+    label: 'Country Budget Items',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'vocabulary': {
+        datatype: 'column',
+        required: true
+      },
+      'budget-item': {
+        datatype: 'compound',
+        label: 'Budget Item',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          },
+          'percentage': {
+            datatype: 'column',
+            required: true
+          },
+          'description': {
+            datatype: 'compound',
+            label: 'Description',
+            fields: {
+              'text': {
+                datatype: 'column',
+                required: false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  'policy-marker': {
+    datatype: 'compound',
+    label: 'Policy Marker',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: false
+      },
+      'vocabulary': {
+        datatype: 'column',
+        required: false
+      },
+      'significance': {
+        datatype: 'column',
+        required: false
+      }
+    }
+  },
+  'collaboration-type': {
+    datatype: 'compound',
+    label: 'Collaboration Type',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: true
+      }
+    }
+  },
+  'default-finance-type': {
+    datatype: 'compound',
+    label: 'Default Finance Type',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: true
+      }
+    }
+  },
+  'default-flow-type': {
+    datatype: 'compound',
+    label: 'Default Flow Type',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: true
+      }
+    }
+  },
+  'default-aid-type': {
+    datatype: 'compound',
+    label: 'Default Aid Type',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: true
+      }
+    }
+  },
+  'default-tied-status': {
+    datatype: 'compound',
+    label: 'Default Tied Status',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'code': {
+        datatype: 'column',
+        required: true
+      }
+    }
+  },
+  'budget': {
+    datatype: 'compound',
+    label: 'Budget',
+    fields: {
+      'type': {
+        datatype: 'column',
+        required: false
+      },
+      'period-start': {
+        datatype: 'compound',
+        label: 'Period Start',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      },
+      'period-end': {
+        datatype: 'compound',
+        label: 'Period End',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      },
+      'value': {
+        datatype: 'compound',
+        label: 'Value',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      }
+    }
+  },
+  'planned-disbursement': {
+    datatype: 'compound',
+    label: 'Planned Disbursement',
+    fields: {
+      'updated': {
+        datatype: 'column',
+        required: false
+      },
+      'period-start': {
+        datatype: 'compound',
+        label: 'Period Start',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      },
+      'period-end': {
+        datatype: 'compound',
+        label: 'Period End',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'iso-date': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      },
+      'value': {
+        datatype: 'compound',
+        label: 'Value',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'currency': {
+            datatype: 'column',
+            required: false
+          },
+          'value-date': {
+            datatype: 'column',
+            required: false
           }
         }
       }
@@ -787,6 +941,100 @@ DEFAULT_FIELD_SETUP = {
       }
     }
   },
+  'document-link': {
+    datatype: 'compound',
+    label: 'Document Link',
+    fields: {
+      'url': {
+        datatype: 'column',
+        required: true
+      },
+      'format': {
+        datatype: 'column',
+        required: false
+      },
+      'title': {
+        datatype: 'compound',
+        label: 'Title',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      },
+      'category': {
+        datatype: 'compound',
+        label: 'Category',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: true
+          }
+        }
+      },
+      'language': {
+        datatype: 'compound',
+        label: 'Language',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'code': {
+            datatype: 'column',
+            required: false
+          }
+        }
+      }
+    }
+  },
+  'related-activity': {
+    datatype: 'compound',
+    label: 'Related Activity',
+    fields: {
+      'text': {
+        datatype: 'column',
+        required: false
+      },
+      'ref': {
+        datatype: 'column',
+        required: true
+      },
+      'type': {
+        datatype: 'column',
+        required: true
+      }
+    }
+  },
+  'conditions': {
+    datatype: 'compound',
+    label: 'Conditions',
+    fields: {
+      'attached': {
+        datatype: 'column',
+        required: true
+      },
+      'condition': {
+        datatype: 'compound',
+        label: 'Condition',
+        fields: {
+          'text': {
+            datatype: 'column',
+            required: false
+          },
+          'type': {
+            datatype: 'column',
+            required: true
+          }
+        }
+      }
+    }
+  },
   'result': {
     datatype: 'compound',
     label: 'Result',
@@ -948,254 +1196,6 @@ DEFAULT_FIELD_SETUP = {
                 }
               }
             }
-          }
-        }
-      }
-    }
-  },
-  'conditions': {
-    datatype: 'compound',
-    label: 'Conditions',
-    fields: {
-      'attached': {
-        datatype: 'column',
-        required: true
-      },
-      'condition': {
-        datatype: 'compound',
-        label: 'Condition',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'type': {
-            datatype: 'column',
-            required: true
-          }
-        }
-      }
-    }
-  },
-  'budget': {
-    datatype: 'compound',
-    label: 'Budget',
-    fields: {
-      'type': {
-        datatype: 'column',
-        required: false
-      },
-      'period-start': {
-        datatype: 'compound',
-        label: 'Period Start',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'iso-date': {
-            datatype: 'column',
-            required: false
-          }
-        }
-      },
-      'period-end': {
-        datatype: 'compound',
-        label: 'Period End',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'iso-date': {
-            datatype: 'column',
-            required: false
-          }
-        }
-      },
-      'value': {
-        datatype: 'compound',
-        label: 'Value',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'currency': {
-            datatype: 'column',
-            required: false
-          },
-          'value-date': {
-            datatype: 'column',
-            required: false
-          }
-        }
-      }
-    }
-  },
-  'planned-disbursement': {
-    datatype: 'compound',
-    label: 'Planned Disbursement',
-    fields: {
-      'updated': {
-        datatype: 'column',
-        required: false
-      },
-      'period-start': {
-        datatype: 'compound',
-        label: 'Period Start',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'iso-date': {
-            datatype: 'column',
-            required: false
-          }
-        }
-      },
-      'period-end': {
-        datatype: 'compound',
-        label: 'Period End',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'iso-date': {
-            datatype: 'column',
-            required: false
-          }
-        }
-      },
-      'value': {
-        datatype: 'compound',
-        label: 'Value',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'currency': {
-            datatype: 'column',
-            required: false
-          },
-          'value-date': {
-            datatype: 'column',
-            required: false
-          }
-        }
-      }
-    }
-  },
-  'country-budget-items': {
-    datatype: 'compound',
-    label: 'Country Budget Items',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'vocabulary': {
-        datatype: 'column',
-        required: true
-      },
-      'budget-item': {
-        datatype: 'compound',
-        label: 'Budget Item',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'code': {
-            datatype: 'column',
-            required: true
-          },
-          'percentage': {
-            datatype: 'column',
-            required: true
-          },
-          'description': {
-            datatype: 'compound',
-            label: 'Description',
-            fields: {
-              'text': {
-                datatype: 'column',
-                required: false
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  'related-activity': {
-    datatype: 'compound',
-    label: 'Related Activity',
-    fields: {
-      'text': {
-        datatype: 'column',
-        required: false
-      },
-      'ref': {
-        datatype: 'column',
-        required: true
-      },
-      'type': {
-        datatype: 'column',
-        required: true
-      }
-    }
-  },
-  'document-link': {
-    datatype: 'compound',
-    label: 'Document Link',
-    fields: {
-      'url': {
-        datatype: 'column',
-        required: true
-      },
-      'format': {
-        datatype: 'column',
-        required: false
-      },
-      'title': {
-        datatype: 'compound',
-        label: 'Title',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          }
-        }
-      },
-      'category': {
-        datatype: 'compound',
-        label: 'Category',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'code': {
-            datatype: 'column',
-            required: true
-          }
-        }
-      },
-      'language': {
-        datatype: 'compound',
-        label: 'Language',
-        fields: {
-          'text': {
-            datatype: 'column',
-            required: false
-          },
-          'code': {
-            datatype: 'column',
-            required: false
           }
         }
       }
@@ -1436,9 +1436,37 @@ DIMENSION_META = {
     fixedDataType: true,
     helpText: '<p>\n        Top-level element for a single IATI activity report.\n      </p>'
   },
+  'iati-identifier': {
+    fixedDataType: true,
+    helpText: '<p>\n        A globally unique identifier for this activity. This should be\n        in the form of the IATI Organisation Identifier (for the\n        reporting organisation) concatenated to that organisation\'s\n        activity identifier. (NB. Two or more reporting organisations\n        may publish information on the same activity. To\n        cross-reference these reports the other-identifier element\n        should be used.)\n      </p>'
+  },
+  'other-identifier': {
+    fixedDataType: true,
+    helpText: '<p>\n        An alternative, non-IATI identifier for the activity.  This\n        identifier is not guaranteed to be unique or persistent (it\n        depends on the owner organisation\'s policies, not IATI\'s).\n</p><p>\n        If other-identifier is present then either @owner-ref or\n        @owner-name must be present\n      </p>'
+  },
   'activity-website': {
     fixedDataType: true,
     helpText: '<p>\n        A link to a web site providing more information about the aid\n        activity.  Multiple versions of the link may appear for\n        different languages.\n      </p>'
+  },
+  'title': {
+    fixedDataType: true,
+    helpText: '<p>\n        A short, human-readable title.  May be repeated for different\n        languages.\n      </p>'
+  },
+  'description': {
+    fixedDataType: true,
+    helpText: '<p>\n              A human-readable description of the transaction.\n            </p>'
+  },
+  'activity-status': {
+    fixedDataType: true,
+    helpText: '<p>\n        The current status of the project (e.g. "planned"), using a\n        list defined by IATI.  For the value of the @code attribute,\n        see <a href="http://iatistandard.org/codelists/activity_status" target="_blank">http://iatistandard.org/codelists/activity_status</a>\n      </p>'
+  },
+  'activity-date': {
+    fixedDataType: true,
+    helpText: '<p>\n        The planned and actual start and completion dates of the \n        activity. Start dates may reflect either the commencement of \n        funding, planning or physical activity. End dates should, \n        wherever possible, reflect the ending of physical activity. \n        Dates should be in ISO 8601 date YYYY-MM-DD format, e.g. \n        2010-10-01. \n        \n        For the value of the @type attribute, see\n        <a href="http://iatistandard.org/codelists/activity_date_type" target="_blank">http://iatistandard.org/codelists/activity_date_type</a>\n</p><p>\n        The text content may contain a general date text (e.g. 2011Q1)\n        for recording less specific dates such as month, quarter, or\n        year.\n      </p>'
+  },
+  'contact-info': {
+    fixedDataType: true,
+    helpText: '<p>\n        Contact information for the project.  Specify whatever is\n        available.  You may repeat this element for each contact\n        person.\n      </p>'
   },
   'participating-org': {
     fixedDataType: true,
@@ -1456,9 +1484,29 @@ DIMENSION_META = {
     fixedDataType: true,
     helpText: '<p>\n        A geopolitical region (above the country level) that will\n        benefit from this activity.  This element is primarily for\n        administrative and geopolitical purposes.  If the specific\n        country/-ies are known, the activity report can use the\n        recipient-country element instead. For geographical location,\n        use the location element.\n</p><p>\n        For the value of the @code attribute, see\n        <a href="http://iatistandard.org/codelists/region" target="_blank">http://iatistandard.org/codelists/region</a>\n      </p>'
   },
+  'location': {
+    fixedDataType: true,
+    helpText: '<p>\n        A geographical location.\n      </p>'
+  },
+  'sector': {
+    fixedDataType: true,
+    helpText: '<p>\n        Sector code and name.  For the value of the @code attribute,\n        see <a href="http://iatistandard.org/codelists/sector" target="_blank">http://iatistandard.org/codelists/sector</a>\n</p><p>\n        Either the @code attribute or descriptive text content must be\n        present.\n      </p>'
+  },
+  'country-budget-items': {
+    fixedDataType: true,
+    helpText: '<p>\n        Recipient country budget items.\n</p><p>\n        This item encodes the alignment of activities with both the\n        functional and administrative classifications used in the\n        recipient country\'s Chart of Accounts. This applies to both\n        on- and off-budget activities.\n      </p>'
+  },
+  'policy-marker': {
+    fixedDataType: true,
+    helpText: '<p>\n        A policy or theme addressed by the activity.  A text\n        description of the theme appears in the content, and a formal\n        identifier appears in the @ref attribute.  The @vocabulary\n        attribute can also help to segment the markers into separate\n        vocabularies.  This element can be repeated for each policy\n        marker.  For the value of the @code attribute, see\n        <a href="http://iatistandard.org/codelists/policy_marker" target="_blank">http://iatistandard.org/codelists/policy_marker</a>\n      </p>'
+  },
   'collaboration-type': {
     fixedDataType: true,
     helpText: '<p>\n        The type of collaboration involved in the project\'s\n        disbursements, e.g. "bilateral" or "multilateral".\n</p><p>\n        For the value of the @code attribute, see\n        <a href="http://iatistandard.org/codelists/collaboration_type" target="_blank">http://iatistandard.org/codelists/collaboration_type</a>\n      </p>'
+  },
+  'default-finance-type': {
+    fixedDataType: true,
+    helpText: '<p>\n        The type of finance (e.g. debt relief). The types will be\n        defined by IATI.  This the default value for all transactions\n        in the activity report; it can be overridded by individual\n        transactions.\n</p><p>\n        For the value of the @code attribute, see\n        <a href="http://iatistandard.org/codelists/finance_type" target="_blank">http://iatistandard.org/codelists/finance_type</a>\n      </p>'
   },
   'default-flow-type': {
     fixedDataType: true,
@@ -1468,69 +1516,9 @@ DIMENSION_META = {
     fixedDataType: true,
     helpText: '<p>\n        The type of aid being supplied (budget support, debt relief,\n        etc.).  This element specifies a default for all the\n        activity\'s financial transactions; it can be overridden at the\n        individual transaction level.\n</p><p>\n        For the value of the @code attribute, see\n        <a href="http://iatistandard.org/codelists/aid_type" target="_blank">http://iatistandard.org/codelists/aid_type</a>\n      </p>'
   },
-  'default-finance-type': {
-    fixedDataType: true,
-    helpText: '<p>\n        The type of finance (e.g. debt relief). The types will be\n        defined by IATI.  This the default value for all transactions\n        in the activity report; it can be overridded by individual\n        transactions.\n</p><p>\n        For the value of the @code attribute, see\n        <a href="http://iatistandard.org/codelists/finance_type" target="_blank">http://iatistandard.org/codelists/finance_type</a>\n      </p>'
-  },
-  'iati-identifier': {
-    fixedDataType: true,
-    helpText: '<p>\n        A globally unique identifier for this activity. This should be\n        in the form of the IATI Organisation Identifier (for the\n        reporting organisation) concatenated to that organisation\'s\n        activity identifier. (NB. Two or more reporting organisations\n        may publish information on the same activity. To\n        cross-reference these reports the other-identifier element\n        should be used.)\n      </p>'
-  },
-  'other-identifier': {
-    fixedDataType: true,
-    helpText: '<p>\n        An alternative, non-IATI identifier for the activity.  This\n        identifier is not guaranteed to be unique or persistent (it\n        depends on the owner organisation\'s policies, not IATI\'s).\n</p><p>\n        If other-identifier is present then either @owner-ref or\n        @owner-name must be present\n      </p>'
-  },
-  'title': {
-    fixedDataType: true,
-    helpText: '<p>\n        A short, human-readable title.  May be repeated for different\n        languages.\n      </p>'
-  },
-  'description': {
-    fixedDataType: true,
-    helpText: '<p>\n              A human-readable description of the transaction.\n            </p>'
-  },
-  'sector': {
-    fixedDataType: true,
-    helpText: '<p>\n        Sector code and name.  For the value of the @code attribute,\n        see <a href="http://iatistandard.org/codelists/sector" target="_blank">http://iatistandard.org/codelists/sector</a>\n</p><p>\n        Either the @code attribute or descriptive text content must be\n        present.\n      </p>'
-  },
-  'activity-date': {
-    fixedDataType: true,
-    helpText: '<p>\n        The planned and actual start and completion dates of the \n        activity. Start dates may reflect either the commencement of \n        funding, planning or physical activity. End dates should, \n        wherever possible, reflect the ending of physical activity. \n        Dates should be in ISO 8601 date YYYY-MM-DD format, e.g. \n        2010-10-01. \n        \n        For the value of the @type attribute, see\n        <a href="http://iatistandard.org/codelists/activity_date_type" target="_blank">http://iatistandard.org/codelists/activity_date_type</a>\n</p><p>\n        The text content may contain a general date text (e.g. 2011Q1)\n        for recording less specific dates such as month, quarter, or\n        year.\n      </p>'
-  },
-  'activity-status': {
-    fixedDataType: true,
-    helpText: '<p>\n        The current status of the project (e.g. "planned"), using a\n        list defined by IATI.  For the value of the @code attribute,\n        see <a href="http://iatistandard.org/codelists/activity_status" target="_blank">http://iatistandard.org/codelists/activity_status</a>\n      </p>'
-  },
-  'contact-info': {
-    fixedDataType: true,
-    helpText: '<p>\n        Contact information for the project.  Specify whatever is\n        available.  You may repeat this element for each contact\n        person.\n      </p>'
-  },
   'default-tied-status': {
     fixedDataType: true,
     helpText: '<p>\n        Specify whether the aid is untied, tied, or partially tied,\n        using a code list created by IATI.  The content is free text\n        that can optionally provide more detail.  For the value of the\n        @code attribute, see\n        <a href="http://iatistandard.org/codelists/tied_status" target="_blank">http://iatistandard.org/codelists/tied_status</a>\n      </p>'
-  },
-  'policy-marker': {
-    fixedDataType: true,
-    helpText: '<p>\n        A policy or theme addressed by the activity.  A text\n        description of the theme appears in the content, and a formal\n        identifier appears in the @ref attribute.  The @vocabulary\n        attribute can also help to segment the markers into separate\n        vocabularies.  This element can be repeated for each policy\n        marker.  For the value of the @code attribute, see\n        <a href="http://iatistandard.org/codelists/policy_marker" target="_blank">http://iatistandard.org/codelists/policy_marker</a>\n      </p>'
-  },
-  'location': {
-    fixedDataType: true,
-    helpText: '<p>\n        A geographical location.\n      </p>'
-  },
-  'capital-spend': {
-    fixedDataType: true,
-    helpText: '<p>\n        The percentage of the total commitment that is for capital\n        spending\n      </p>'
-  },
-  'transaction': {
-    fixedDataType: true,
-    helpText: '<p>\n        Committed or actual money flowing in or out of an aid\n        activity.The @ref attribute allows uniquely identifying a\n        transaction, to match it up with the corresponding in- or\n        outflow in a different activity.\n      </p>'
-  },
-  'result': {
-    fixedDataType: true,
-    helpText: '<p>\n        A measurable result of aid work.\n      </p>'
-  },
-  'conditions': {
-    fixedDataType: true,
-    helpText: '<p>\n        Conditions attached to the activity.\n      </p>'
   },
   'budget': {
     fixedDataType: true,
@@ -1540,17 +1528,29 @@ DIMENSION_META = {
     fixedDataType: true,
     helpText: '<p>\n      </p>'
   },
-  'country-budget-items': {
+  'capital-spend': {
     fixedDataType: true,
-    helpText: '<p>\n        Recipient country budget items.\n</p><p>\n        This item encodes the alignment of activities with both the\n        functional and administrative classifications used in the\n        recipient country\'s Chart of Accounts. This applies to both\n        on- and off-budget activities.\n      </p>'
+    helpText: '<p>\n        The percentage of the total commitment that is for capital\n        spending\n      </p>'
+  },
+  'transaction': {
+    fixedDataType: true,
+    helpText: '<p>\n        Committed or actual money flowing in or out of an aid\n        activity.The @ref attribute allows uniquely identifying a\n        transaction, to match it up with the corresponding in- or\n        outflow in a different activity.\n      </p>'
+  },
+  'document-link': {
+    fixedDataType: true,
+    helpText: '<p>\n        A categorized link to an external document.\n      </p>'
   },
   'related-activity': {
     fixedDataType: true,
     helpText: '<p>\n        XX.XX Related Activity\n</p><p>\n        Another IATI activity related to this one.  The \'type\'\n        attribute describes the type of relationship (e.g. parent,\n        sibling).  This does not need to be used to express funding\n        relationships, since those are covered in individual\n        transactions.\n</p><p>\n        For the value of the @type attribute, see\n        <a href="http://iatistandard.org/codelists/related_activity_type" target="_blank">http://iatistandard.org/codelists/related_activity_type</a>\n      </p>'
   },
-  'document-link': {
+  'conditions': {
     fixedDataType: true,
-    helpText: '<p>\n        A categorized link to an external document.\n      </p>'
+    helpText: '<p>\n        Conditions attached to the activity.\n      </p>'
+  },
+  'result': {
+    fixedDataType: true,
+    helpText: '<p>\n        A measurable result of aid work.\n      </p>'
   },
   'legacy-data': {
     fixedDataType: true,
