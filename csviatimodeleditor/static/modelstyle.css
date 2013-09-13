@@ -70,13 +70,6 @@ table td:first-child {
   background: transparent url(../img/dlbg.png) repeat-y 15em top;
 }
 
-.modeleditor:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
 #right_pane {
   overflow:auto;
 }
@@ -261,4 +254,7 @@ h1 #model_title input {
   border-style: solid;
   border-color: #365e93;
   border-width: 1px;
+}
+#credits,#clearer {
+  display:none;
 }
