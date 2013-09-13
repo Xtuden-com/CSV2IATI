@@ -11,7 +11,10 @@ Including:
 * External URLs now open in a new window/tab
 * Switching between column and fixed value is now a dropdown
 
-### Admins can now reset passwords
+### New admin features
+
+* Password reset
+* Create a model under any user
 
 ### History
 
