@@ -1814,8 +1814,7 @@ DimensionWidget = (function(_super) {
   __extends(DimensionWidget, _super);
 
   DimensionWidget.prototype.events = {
-    '.add_field click': 'onAddFieldClick',
-    '.add_nested_el click': 'onAddNestedElClick',
+    '.add_field change': 'onAddFieldClick',
     '.field_add_alternative click': 'onAddAlternativeClick',
     '.field_add_transform click': 'onAddTransformClick',
     '.field_remove_transform click': 'onRemoveTransformClick',
@@ -1846,6 +1845,7 @@ DimensionWidget = (function(_super) {
     this.data = ((_ref3 = data['mapping']) != null ? _ref3[this.name] : void 0) || {};
     this.iati_field = ((_ref4 = data['mapping']) != null ? _ref4[this.name]['iati-field'] : void 0) || '';
     this.meta = DIMENSION_META[this.iati_field] || {};
+    this.default_fields = (DEFAULT_FIELD_SETUP != null ? DEFAULT_FIELD_SETUP[this.iati_field] : void 0) || {};
     if (this.data.datatype !== 'value' && !('fields' in this.data)) {
       this.data.fields = {
         'label': {
@@ -1901,8 +1901,15 @@ DimensionWidget = (function(_super) {
 
   DimensionWidget.prototype.onAddFieldClick = function(e) {
     var curRow, name, row;
+    name = e.currentTarget.value;
+    if (name === '') {
+      return false;
+    } else if (name === 'customnested') {
+      this.onAddNestedElClick(e);
+    } else if (name === 'custom') {
+      name = prompt("Field name:").trim();
+    }
     curRow = $(e.currentTarget).parents('tr').first();
-    name = prompt("Field name:").trim();
     row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'));
     row.insertBefore(curRow);
     this.element.trigger('fillColumnsRequest', [row.find('select.column')]);

@@ -410,20 +410,32 @@
                 <input type='hidden' name='${prefix}[${n}][label]' value='${f.label}'>
               </td>
             </tr>
-              {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'prefix2':prefix2+f.label+'/', 'level':level+1, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
-            <tr data-prefix='${prefix+'['+n+'][fields]'}' data-level='${level+1}'>
-              <td colspan="4" style="border-left: ${(level+1)*2}px solid #365e93">
-                <span><a class='add_field' href='#'>Add a field</a></span>
-                <span><a class='add_nested_el' href='#'>Add a nested element</a></span>
-              </td>
-
-            </tr>
+              {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'prefix2':prefix2+f.label+'/', 'level':level+1, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field, 'default_fields':default_fields.fields[n]}) '#tpl_table_recursive'}} 
           {{else f.datatype === 'constant'}}
             {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'level':level, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
           {{else}}
             {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'level':level, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field'}}
           {{/if}}
         {{/each}}
+        <tr data-prefix='${prefix}' data-level='${level}'>
+          <td colspan="4" style="border-left: ${level*2}px solid #365e93">
+                <select class='add_field'>
+                  <option>Add Attribute/Element</option>
+                  <option></option>
+                {{each(n,f) default_fields.fields}}
+                  {{if n in data.fields }}
+                    <option value="${n}" disabled>${n}</option>
+                  {{else}}
+                    <option value="${n}">${n}</option>
+                  {{/if}}
+                {{/each}}
+                  <option></option>
+                  <option value="custom">Custom</option>
+                  <option value="customnested">Custom (Nested)</option>
+                </select>
+          </td>
+
+        </tr>
       </script>
       <!-- Dimension template -->
       <script id='tpl_dimension' type='text/x-jquery-tmpl'>
@@ -476,13 +488,7 @@
               </tr>
             </thead>
             <tbody>
-              {{tmpl({'data': data, 'meta': meta, 'prefix':'mapping['+name+'][fields]', 'prefix2':'', 'level':0, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field}) '#tpl_table_recursive'}} 
-            <tr data-prefix='mapping[${name}][fields]' data-level='0'>
-              <td colspan="4">
-                <span><a class='add_field' href='#'>Add a field</a></span>
-                <span><a class='add_nested_el' href='#'>Add a nested element</a></span>
-              </td>
-            </tr>
+              {{tmpl({'data': data, 'meta': meta, 'prefix':'mapping['+name+'][fields]', 'prefix2':'', 'level':0, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field, 'default_fields':default_fields}) '#tpl_table_recursive'}} 
             </tbody>
           </table>
         {{/if}}

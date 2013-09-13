@@ -173,8 +173,8 @@ class UniqueKeyWidget extends Widget
 
 class DimensionWidget extends Widget
   events:
-    '.add_field click': 'onAddFieldClick'
-    '.add_nested_el click': 'onAddNestedElClick'
+    '.add_field change': 'onAddFieldClick'
+    #'.add_nested_el click': 'onAddNestedElClick'
     '.field_add_alternative click': 'onAddAlternativeClick'
     '.field_add_transform click': 'onAddTransformClick'
     '.field_remove_transform click': 'onRemoveTransformClick'
@@ -203,7 +203,10 @@ class DimensionWidget extends Widget
     # Meta needs to be for the relevant iati-field 
     @iati_field = data['mapping']?[@name]['iati-field'] or ''
     @meta = DIMENSION_META[@iati_field] or {}
-    
+   
+    # Default fields
+    @default_fields = DEFAULT_FIELD_SETUP?[@iati_field] or {}
+
     # Prepopulate field-less non-value dimensions with a label field
     if @data.datatype isnt 'value' and 'fields' not of @data
       @data.fields = {'label': {'datatype': 'string'}}
@@ -241,8 +244,14 @@ class DimensionWidget extends Widget
       FIELDS_META[fieldName]?['required'] or false
 
   onAddFieldClick: (e) ->
+    name = e.currentTarget.value
+    if name == ''
+      return false
+    else if name == 'customnested'
+      @onAddNestedElClick(e)
+    else if name == 'custom'
+      name = prompt("Field name:").trim()
     curRow = $(e.currentTarget).parents('tr').first()
-    name = prompt("Field name:").trim()
     row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'))
     row.insertBefore(curRow)
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
