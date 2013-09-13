@@ -158,7 +158,10 @@ def index():
         user_id = session['user_id']
         models = IATIModel.query.filter_by(model_owner=unicode(user_id))
         if 'admin' in session:
-            all_users = User.query.all()
+            class MasterAdmin(object):
+                id = '0'
+                username = 'Master admin user'
+            all_users = [ MasterAdmin() ] + User.query.all()
             all_models = []
             for user in all_users:
                 this_user_data = []
