@@ -3,7 +3,9 @@
 <h1>Dashboard</h1>
 <p>&nbsp;</p>
 <div class="clearer"> </div>
-<div id="login_register_forms_container">
+<div id="login_register_forms_container2">
+
+<div class="bigbox">
 <fieldset>
 <legend>Your existing models</legend>
 <ul class="model_ul">
@@ -14,6 +16,27 @@
 {% endfor %}
 </ul>
 </fieldset>
+
+{% if admin %}
+<fieldset>
+<legend>All models</legend>
+<ul>
+{% for model in models %}
+<li><a href="{{url_for('user', id=model.user_id)}}"><span class="ui-icon ui-icon-person iconfloat_left">&nbsp;</span>{{model.username}}</a></li>
+<ul>
+{%for this_user_models in model.user_models%}
+    <li><a href="{{url_for('model', id=this_user_models.id)}}"><span class="ui-icon ui-icon-folder-open iconfloat_left">&nbsp;</span>{{this_user_models.model_name}}</a></li>
+{% else %}
+    <li>This user has not created any models yet.</li>
+{% endfor %}
+</ul>
+{%endfor%}
+</ul>
+</fieldset>
+{% endif %}
+</div>
+
+<div class="bigbox">
 <fieldset>
 <legend>Create new model</legend>
 <p>In order to convert your data to the IATI Standard, you need to create a "model" which explains how your data relates to the Standard.</p>
@@ -62,24 +85,8 @@
 <h2>User guide</h2>
 <p>You can <a href="http://wiki.iatistandard.org/_media/tools/csv_conversion_tool/iati_conversion_tool.docx">download a brief user guide</a>, which explains in more detail how you can use the tool and how your data should be formatted.</p>
 </fieldset>
-{% if admin %}
-<div class="clearer">&nbsp;</div>
-<fieldset>
-<legend>All models</legend>
-<ul>
-{% for model in models %}
-<li><a href="{{url_for('user', id=model.user_id)}}"><span class="ui-icon ui-icon-person iconfloat_left">&nbsp;</span>{{model.username}}</a></li>
-<ul>
-{%for this_user_models in model.user_models%}
-    <li><a href="{{url_for('model', id=this_user_models.id)}}"><span class="ui-icon ui-icon-folder-open iconfloat_left">&nbsp;</span>{{this_user_models.model_name}}</a></li>
-{% else %}
-    <li>This user has not created any models yet.</li>
-{% endfor %}
-</ul>
-{%endfor%}
-</ul>
-</fieldset>
-{% endif %}
+</div>
+
 </div>
 {%raw%}
 <script>

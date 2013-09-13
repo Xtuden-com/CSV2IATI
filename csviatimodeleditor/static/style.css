@@ -244,16 +244,23 @@ fieldset {
     float:left;
     width:45%;
 }
-#login_register_forms_container fieldset p {
+#login_register_forms_container2 fieldset {
+    margin-bottom: 20px;
+}
+.bigbox {
+    float:left;
+    width:45%;
+}
+#login_register_forms_container fieldset p, #login_register_forms_container2 fieldset p  {
     padding:2px;
 }
-#login_register_forms_container ul.model_ul li {
+#login_register_forms_container ul.model_ul li, #login_register_forms_container2 ul.model_ul li  {
     list-style-type:none;
 }
-#login_register_forms_container ul.model_ul {
+#login_register_forms_container ul.model_ul, #login_register_forms_container2 ul.model_ul  {
     padding-left:0px;
 }
-#login_register_forms_container ul ul {
+#login_register_forms_container ul ul, #login_register_forms_container2 ul ul  {
     padding-left:15px;
 }
 legend {
@@ -307,7 +314,7 @@ form dl {
 #clearer {
     clear:both;
 }
-#login_register_forms_container {
+#login_register_forms_container, #login_register_forms_container2 {
     margin: 0px auto 0px auto;
     width:90%;
 }
