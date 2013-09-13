@@ -504,8 +504,12 @@ li {
 .csvfile_current {
     color:green;
 }
-#csvdata {
+.right_block {
     background-color:#eeeeee;
+    padding: 4px;
+}
+.right_block code {
+    padding: 0;
 }
 #csvdata_options {
     display:none;

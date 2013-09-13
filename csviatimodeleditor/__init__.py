@@ -47,7 +47,7 @@ class IATIModel(db.Model):
         self.model_name = model_name
         self.model_owner = model_owner
         self.model_created = datetime.utcnow()
-	self.csv_id = csv_id
+        self.csv_id = csv_id
 
     def __repr__(self):
         return unicode((self.model_owner, self.id))
@@ -158,10 +158,11 @@ def index():
         user_id = session['user_id']
         models = IATIModel.query.filter_by(model_owner=unicode(user_id))
         if 'admin' in session:
-            class MasterAdmin(object):
-                id = '0'
-                username = 'Master admin user'
-            all_users = [ MasterAdmin() ] + User.query.all()
+            class FakeUser(object):
+                def __init__(self,id,username):
+                    self.id = id
+                    self.username = username
+            all_users = [ FakeUser('0', 'Master admin user') ] + User.query.all() + [ FakeUser('-1', 'Deleted models') ]
             all_models = []
             for user in all_users:
                 this_user_data = []
@@ -282,7 +283,7 @@ def create_model():
 def csv_file(id='',filename=''):
     if (id and filename):
         getmodel = IATIModel.query.filter_by(id=id).first_or_404()
-	getcsv = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
+        getcsv = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
         if (filename==(getcsv.csv_file)):
             thepath=os.path.join(app.config['UPLOAD_FOLDER'], getcsv.csv_file)
             thefile = (open(thepath, 'r')).read()
@@ -384,7 +385,7 @@ def model_convert(id=id):
         if (id):        
             getmodel = IATIModel.query.filter_by(id=id).first_or_404()
             if getmodel is not None:
-	        getcsvfile = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
+                getcsvfile = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
                 if getmodel.model_content is not None:
                     import urllib
                     import urllib2
@@ -475,12 +476,20 @@ def model(id='',responsetype=''):
             elif request.method == 'POST':
                 getmodel = IATIModel.query.filter_by(id=id).first_or_404()
                 if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
-                    getmodel.model_content = request.form['model']
+                    if 'model' in request.form:
+                        getmodel.model_content = request.form['model']
+                        model_history = IATIModelHistory(id, request.form['model'])
+                        db.session.add(model_history)
+                    if 'model_name' in request.form:
+                        getmodel.model_name = request.form['model_name']
+                    if 'delete' in request.form:
+                        getmodel.model_owner = '-1'
                     db.session.add(getmodel)
-                    model_history = IATIModelHistory(id, request.form['model'])
-                    db.session.add(model_history)
                     db.session.commit()
-                    return redirect(url_for('model', id=id))
+                    if 'delete' in request.form:
+                        return redirect(url_for('index'))
+                    else:
+                        return redirect(url_for('model', id=id))
                 else:
                     return "You don't have permission to edit that model.", 403
         else:
