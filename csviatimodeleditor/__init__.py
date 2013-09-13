@@ -43,11 +43,9 @@ class IATIModel(db.Model):
     csv_id = db.Column(UnicodeText)
     model_created = db.Column(Date)
     
-    def __init__(self, model_name, model_owner, csv_id): 
-        self.model_name = model_name
-        self.model_owner = model_owner
+    def __init__(self, **kwargs): 
+        super(IATIModel,self).__init__(**kwargs)
         self.model_created = datetime.utcnow()
-        self.csv_id = csv_id
 
     def __repr__(self):
         return unicode((self.model_owner, self.id))
@@ -263,7 +261,7 @@ def create_model():
                 newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
                 db.session.add(newcsvfile)
                 db.session.commit()
-                newmodel = IATIModel(model_name, user_id, newcsvfile.id)
+                newmodel = IATIModel(model_name=model_name, model_owner=user_id, csv_id=newcsvfile.id)
                 db.session.add(newmodel)
                 db.session.commit()
                 flash('Created your model', 'good')
@@ -469,7 +467,11 @@ def model(id='',responsetype=''):
                         model_content_real = getmodel.model_content
                     else:
                         model_content_real = ''
-                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),all_csv_files=getallcsv,username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
+                    if 'admin' in session:
+                        all_users = User.query.all()
+                    else:
+                        all_users = None
+                    return render_template('model.html', id=id, model_name=getmodel.model_name, model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),all_csv_files=getallcsv,username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in(), all_users=all_users, model_owner=int(getmodel.model_owner))
                 else:
                     flash("You don't have permission to edit that model.", 'bad')
                     return redirect(url_for('index'))
@@ -484,6 +486,10 @@ def model(id='',responsetype=''):
                         getmodel.model_name = request.form['model_name']
                     if 'delete' in request.form:
                         getmodel.model_owner = '-1'
+                    if 'admin' in session and 'model_owner' in request.form:
+                        getmodel.model_owner = request.form['model_owner']
+                    if 'admin' in session and 'copy' in request.form:
+                        getmodel = IATIModel(**dict([ (c.name,getattr(getmodel,c.name)) for c in getmodel.__table__.c  if c.name != 'id' ]))
                     db.session.add(getmodel)
                     db.session.commit()
                     if 'delete' in request.form:

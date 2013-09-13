@@ -36,15 +36,46 @@
 <br />
 
 <div class="right_block"><code>
+
 <a href="#" id="rename_model">Rename model</a>
 <form id="rename_model_form" style="display:none" method="post">
 <input type="text" name="model_name" value="{{model_name}}" />
 <input type="submit" value="Change" />
 </form><br/>
+
 <a href="#" id="delete_model">Delete model</a>
 <form id="delete_model_form" style="display:none" method="post">
 <input type="text" name="delete" />
-</form>
+</form><br/>
+
+{% if admin %}
+
+<a href="#" id="move_model">Move to another user</a>
+<form id="move_model_form" style="display:none" method="post">
+<label for="model_owner">User:</label>
+<select name="model_owner">
+{% for user in all_users %}
+    {% if user.id != model_owner %}
+      <option value="{{user.id}}">{{user.username}}</option>
+    {% endif %}
+{% endfor %}
+</select>
+<input type="submit" value="Move" />
+</form><br/>
+
+<a href="#" id="copy_model">Copy to another user</a>
+<form id="copy_model_form" style="display:none" method="post">
+<label for="model_owner">User:</label>
+<select name="model_owner">
+{% for user in all_users %}
+    <option value="{{user.id}}" {% if user.id == model_owner %}selected{% endif %}>{{user.username}}</option>
+{% endfor %}
+</select>
+<input type="submit" name="copy" value="Copy" />
+</form><br/>
+
+{% endif %}
+
 </code></div>
 
 <br />
@@ -632,6 +663,14 @@
     $('#delete_model').click(function() {
         if (confirm('Are you sure you want to delete this model?'))
             $('#delete_model_form').submit();
+        return false;
+    });
+    $('#move_model').click(function() {
+        $('#move_model_form').toggle();
+        return false;
+    });
+    $('#copy_model').click(function() {
+        $('#copy_model_form').toggle();
         return false;
     });
     $(".steps").sticky({topSpacing:0});
