@@ -24,7 +24,10 @@
 	<li>Hello, {{user_name}}.</li>
 	<li><a href="{{url_for('index')}}">Dashboard</a></li>
 	<li><a href="{{url_for('user', id=user_id)}}">Edit your profile</a></li>
-	{% if admin %}<li><a href="{{url_for('user')}}">Edit other users</a></li>{%endif%}
+	{% if admin %}
+        <li><a href="{{url_for('user')}}">Edit other users</a></li>
+        <li><a href="{{url_for('user')}}">BLah</a></li>
+        {%endif%}
 	<li><a href="{{url_for('logout')}}">Logout</a></li>
 </ul>
 </div>
