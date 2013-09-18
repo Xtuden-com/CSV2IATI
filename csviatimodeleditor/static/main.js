@@ -2414,6 +2414,7 @@ ModelEditor = (function(_super) {
 
   ModelEditor.prototype.onHideDebugClick = function(e) {
     $('#model_data').hide();
+    return false;
   };
 
   ModelEditor.prototype.onFormChange = function(e) {

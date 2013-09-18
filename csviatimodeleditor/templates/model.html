@@ -12,19 +12,7 @@
   <div id="right_pane">
   <br />
   <p><span id="save_model" class="save_model"><a>Save model</a></span></p>
-      <div id="editor_mode">
-        <p><b>Editor mode:</b><a class="basic fieldsbuttons fieldsbuttons-selected" href="#">Basic</a> <a class="advanced fieldsbuttons" href="#">Advanced</a></p>
-      </div>
       <div id="right_pane_container">
-        <div id="columns">
-          <p><b>Columns in your data</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
-          <ul>
-          </ul>
-        </div>
-        <div id="iatifields">
-          <p><b>IATI fields</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
-          <ul></ul>
-        </div>
       </div>
 
 
@@ -73,12 +61,6 @@
 {% endif %}
 
 <a href="#" id="showdebug">Show JSON</a>
-<form action="{{url_for('model',id=id)}}" method="post" name="model_data" id="model_data" style="position:fixed; top:40px; bottom:40px; left:40px; right:40px; display:none; z-index: 1">
-  <a href="#" id="hidedebug">
-    <span class="ui-icon ui-icon-circle-close" style="float:right; position:fixed; right: 20px; top: 20px">&nbsp;</span>
-  </a>
-  <textarea id="debug" name="model" style="width:100%; height:100%;">{{model_content}}</textarea>
-</form>
 
 </code></div>
 
@@ -544,10 +526,18 @@
       </script>
     </div> <!-- /.modeleditor -->
   </div> <!-- /.content -->
+
+  {%endraw%}
+  <form action="{{url_for('model',id=id)}}" method="post" name="model_data" id="model_data" style="position:fixed; top:40px; bottom:40px; left:40px; right:40px; display:none; z-index: 2">
+    <a href="#" id="hidedebug">
+      <span class="ui-icon ui-icon-circle-close" style="float:right; position:fixed; right: 20px; top: 20px">&nbsp;</span>
+    </a>
+    <textarea id="debug" name="model" style="width:100%; height:100%;">{{model_content}}</textarea>
+  </form>
+
   <!--
   <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js'></script>
   <script src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'></script>-->
-  {%endraw%}
   <script src='{{ url_for('static', filename='main.js') }}'></script>
   {%raw%}
   <script>
@@ -595,7 +585,7 @@
       $('#iatifields ul').html(function() {
         var iati_to_write = '';
         $.each(iati_data, function(index, value) {
-            iati_to_write = iati_to_write + '<li><code class="available">' + value + '</code></li>';
+            iati_to_write = iati_to_write + '<li><code class="available"><a href="#">' + value + '</a></code></li>';
         });
         return iati_to_write;
       });
@@ -631,19 +621,6 @@
       $('.modeleditor form').first().change();
 
 
-    $('#editor_mode a.basic').click(function() {
-        $('#right_pane_container').slideUp();
-        $('#editor_mode a.basic').addClass('fieldsbuttons-selected');
-        $('#editor_mode a.advanced').removeClass('fieldsbuttons-selected');
-        return false;
-    });
-
-    $('#editor_mode a.advanced').click(function() {
-        $('#right_pane_container').slideDown();
-        $('#editor_mode a.basic').removeClass('fieldsbuttons-selected');
-        $('#editor_mode a.advanced').addClass('fieldsbuttons-selected');  
-        return false;
-    });
     $('#csvdata_edit').click(function() {
 	$('#csvdata_options').animate({
           height: 'toggle'

@@ -34,35 +34,6 @@ table td {
 table td:first-child {
   border: none;
 }
-#right_pane_container {
-  display:none;
-}
-#columns ul li, #iatifields ul li {
-  list-style-type:none;
-  margin:1px;
-}
-#columns ul li code, #iatifields ul li code {
-  text-decoration:none;
-  padding:1px 3px 1px 3px;
-  cursor:default;
-}
-#columns ul.hideunavailable .unavailable {
-  display:none;
-}
-#iatifields ul.hideunavailable .unavailable {
-  display:none;
-}
-#columns .available, #iatifields .available {
-  background-color:green;
-  color:#ffffff;
-}
-#columns .unavailable, #iatifields .unavailable {
-  background-color:red;
-  color:#ffffff;
-}
-#iatifields {
-  margin-bottom:5px;
-}
 .modeleditor {
   *display: inline-block;
   width: 100%;
@@ -77,7 +48,7 @@ table td:first-child {
 .modeleditor .steps {
   width: 15em;
   overflow:auto;
-  z-index: -1;
+  z-index: 1;
 }
 .modeleditor .modeltoggle {
   width: 13em;
@@ -169,23 +140,9 @@ table td:first-child {
   min-height:400px;
 }
 #columns ul, #iatifields ul {
-  max-height:100px;
   overflow:auto;
   margin:0;
   padding:0;
-}
-a.fieldsbuttons {
-  text-decoration:none;
-  background-color:#000000;
-  color:#ffffff;
-  border:1px solid #dddddd;
-  padding:0px 2px 0px 2px;
-  font-size:12px;
-}
-a.fieldsbuttons:hover, a.fieldsbuttons-selected {
-  background-color:#ffffff;
-  color:#000000;
-  border:1px solid #dddddd;
 }
 .testing {
   height:200px;

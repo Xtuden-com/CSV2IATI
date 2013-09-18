@@ -617,7 +617,7 @@ class ModelEditor extends Delegator
 
   onHideDebugClick: (e) ->
     $('#model_data').hide()
-    return
+    return false
 
   onFormChange: (e) ->
     return if @ignoreFormChange
