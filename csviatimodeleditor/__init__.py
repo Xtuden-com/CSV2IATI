@@ -56,12 +56,8 @@ class IATIModelHistory(db.Model):
     created = db.Column(db.DateTime, default=db.func.now())
     model_content = db.Column(UnicodeText)
 
-    def __init__(self, iati_model_id, model_content):
-        self.iati_model_id = iati_model_id
-        self.model_content = model_content
-
     def __repr__(self):
-        return ((self.iati_model_id, self.id))
+        return unicode((self.iati_model_id, self.id))
 
 
 class CSVFile(db.Model):
@@ -70,12 +66,6 @@ class CSVFile(db.Model):
     csv_file = db.Column(UnicodeText)
     csv_encoding = db.Column(UnicodeText)
     csv_owner = db.Column(UnicodeText)
-
-    def __init__(self, csv_file, csv_headers, csv_encoding, csv_owner):
-        self.csv_file = csv_file
-        self.csv_headers = csv_headers
-        self.csv_encoding = csv_encoding
-        self.csv_owner = csv_owner
 
     def __repr__(self):
         return unicode((self.csv_file, self.id))
@@ -89,13 +79,11 @@ class User(db.Model):
     user_created = db.Column(Date)
     pw_hash = db.Column(db.String())
     
-    def __init__(self, username, password, user_name='', email_address='', admin='',user_created=''):
+    def __init__(self, username, password, **kwargs):
+        super(User,self).__init__(**kwargs)
         self.username = username
         self.pw_hash = generate_password_hash(password)
-        self.user_name = user_name
-        self.email_address = email_address
         self.user_created = datetime.utcnow()
-        self.admin = admin
 
     def set_password(self, password):
         self.pw_hash = generate_password_hash(password)
@@ -111,10 +99,6 @@ class XMLFile(db.Model):
     iati_model_id = db.Column(Integer)
     xml_url = db.Column(UnicodeText)
     created = db.Column(db.DateTime, default=db.func.now())
-
-    def __init__(self, iati_model_id, xml_url):
-        self.iati_model_id = iati_model_id
-        self.xml_url = xml_url  
 
     def __repr__(self):
         return unicode((self.xml_url, self.id))
@@ -258,7 +242,8 @@ def create_model():
                 csv_encoding = result['encoding']
                 # csv headers are being converted into the csv encoding here. Need to ensure that the conversion API is also reading the headers according to this character encoding.
                 csv_headers = json.dumps(columnnames,encoding=csv_encoding)
-                newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
+                newcsvfile = CSVFile(csv_file=filename, csv_headers=csv_headers, csv_encoding=csv_encoding, csv_owner=user_id)
+
                 db.session.add(newcsvfile)
                 db.session.commit()
                 newmodel = IATIModel(model_name=model_name, model_owner=user_id, csv_id=newcsvfile.id)
@@ -340,7 +325,7 @@ def model_change_csv(id=id, csv_id=''):
                 #csv_headers = ', '.join('"%s"' % unicode(header,csv_encoding) for header in columnnames)
                 if csv_file and allowed_file(csv_file.filename):
                     user_id = session['user_id']
-                    newcsvfile = CSVFile(filename, csv_headers, csv_encoding, user_id)
+                    newcsvfile = CSVFile(csv_file=filename, csv_headers=csv_headers, csv_encoding=csv_encoding, csv_owner=user_id)
                     db.session.add(newcsvfile)
                     db.session.commit()
                     getmodel = IATIModel.query.filter_by(id=id).first_or_404()
@@ -415,7 +400,7 @@ def model_convert(id=id):
                             flash("The mapping file provided was: " + values["model_file"], "notice persist")
                             return redirect(url_for('index'))
 
-                    xml_file = XMLFile(id, xml_url)
+                    xml_file = XMLFile(iati_model_id=id, xml_url=xml_url)
                     db.session.add(xml_file)
                     db.session.commit()
 
@@ -480,7 +465,7 @@ def model(id='',responsetype=''):
                 if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
                     if 'model' in request.form:
                         getmodel.model_content = request.form['model']
-                        model_history = IATIModelHistory(id, request.form['model'])
+                        model_history = IATIModelHistory(iati_model_id=id, model_content=request.form['model'])
                         db.session.add(model_history)
                     if 'model_name' in request.form:
                         getmodel.model_name = request.form['model_name']
@@ -589,7 +574,7 @@ def register():
         flash("Sorry, that username has already been taken. Please choose another one.", 'bad')
         return redirect(url_for('index'))
     elif (username and password):
-        u = User(username,password,user_name,email_address,admin)
+        u = User(username,password,user_name=user_name,email_address=email_address,admin=admin)
         db.session.add(u)
         db.session.commit()
         
