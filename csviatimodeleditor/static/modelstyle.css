@@ -77,6 +77,7 @@ table td:first-child {
 .modeleditor .steps {
   width: 15em;
   overflow:auto;
+  z-index: -1;
 }
 .modeleditor .modeltoggle {
   width: 13em;

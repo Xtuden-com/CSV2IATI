@@ -537,6 +537,7 @@ class ModelEditor extends Delegator
     '.forms form submit': 'onFormSubmit'
     '.forms form change': 'onFormChange'
     '#showdebug click': 'onShowDebugClick'
+    '#hidedebug click': 'onHideDebugClick'
     '.add_data_field click': 'onAddDataFieldClick'
     'doFieldSelectors' : 'onDoFieldSelectors'
     '#columns .availablebtn click': 'onColumnsAvailableClick'
@@ -599,7 +600,7 @@ class ModelEditor extends Delegator
     return false
 
   onAddDataFieldClick: (e) ->
-    thevar = $(e.currentTarget).text() 
+    thevar = $(e.currentTarget).text()
     for w in @widgets
         w.promptAddDimensionNamed(thevar,{'datatype': 'value','column':thevar,'label':thevar})
     @data = @form.serializeObject()
@@ -607,11 +608,16 @@ class ModelEditor extends Delegator
     $(e.currentTarget).removeClass('add_data_field available').addClass('unavailable')
 
   onShowDebugClick: (e) ->
-    if $('#debug').hasClass('debug-shown')
-      $('#debug').slideUp().removeClass('debug-shown')
-    else
-      $('#debug').slideDown().addClass('debug-shown')
+    $('#model_data').show()
+    $(document).keydown( (event)->
+      if event.which == 27
+        $('#model_data').hide()
+    )
     return false
+
+  onHideDebugClick: (e) ->
+    $('#model_data').hide()
+    return
 
   onFormChange: (e) ->
     return if @ignoreFormChange

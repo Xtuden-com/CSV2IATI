@@ -2312,6 +2312,7 @@ ModelEditor = (function(_super) {
     '.forms form submit': 'onFormSubmit',
     '.forms form change': 'onFormChange',
     '#showdebug click': 'onShowDebugClick',
+    '#hidedebug click': 'onHideDebugClick',
     '.add_data_field click': 'onAddDataFieldClick',
     'doFieldSelectors': 'onDoFieldSelectors',
     '#columns .availablebtn click': 'onColumnsAvailableClick',
@@ -2402,12 +2403,17 @@ ModelEditor = (function(_super) {
   };
 
   ModelEditor.prototype.onShowDebugClick = function(e) {
-    if ($('#debug').hasClass('debug-shown')) {
-      $('#debug').slideUp().removeClass('debug-shown');
-    } else {
-      $('#debug').slideDown().addClass('debug-shown');
-    }
+    $('#model_data').show();
+    $(document).keydown(function(event) {
+      if (event.which === 27) {
+        return $('#model_data').hide();
+      }
+    });
     return false;
+  };
+
+  ModelEditor.prototype.onHideDebugClick = function(e) {
+    $('#model_data').hide();
   };
 
   ModelEditor.prototype.onFormChange = function(e) {

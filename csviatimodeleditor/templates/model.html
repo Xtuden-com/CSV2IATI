@@ -25,10 +25,6 @@
           <p><b>IATI fields</b> <a class="fieldsbuttons fieldsbuttons-selected allbtn" href="#">Show all</a> <a class="fieldsbuttons availablebtn" href="#">Show available</a></p>
           <ul></ul>
         </div>
-        <a href="#" id="showdebug" class="fieldsbuttons">Show model</a>
-        <form action="{%endraw%}{{url_for('model',id=id)}}{%raw%}" method="post" name="model_data" id="model_data">
-        <textarea id="debug" name="model" style='display:none;'>{%endraw%}{{model_content}}{%raw%}</textarea>
-        </form>
       </div>
 
 
@@ -75,6 +71,14 @@
 </form><br/>
 
 {% endif %}
+
+<a href="#" id="showdebug">Show JSON</a>
+<form action="{{url_for('model',id=id)}}" method="post" name="model_data" id="model_data" style="position:fixed; top:40px; bottom:40px; left:40px; right:40px; display:none; z-index: 1">
+  <a href="#" id="hidedebug">
+    <span class="ui-icon ui-icon-circle-close" style="float:right; position:fixed; right: 20px; top: 20px">&nbsp;</span>
+  </a>
+  <textarea id="debug" name="model" style="width:100%; height:100%;">{{model_content}}</textarea>
+</form>
 
 </code></div>
 
