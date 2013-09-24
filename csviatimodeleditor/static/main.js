@@ -1823,7 +1823,6 @@ DimensionWidget = (function(_super) {
     '.field_rm click': 'onFieldRemoveClick',
     '.delete_dimension click': 'onDeleteDimensionClick',
     '.delete_tdatafield click': 'onDeleteTDataFieldClick',
-    '.iatifield change': 'onIATIFieldChange',
     '.column change': 'onColumnChange',
     '.show_advanced click': 'onShowAdvanced'
   };
@@ -2002,24 +2001,12 @@ DimensionWidget = (function(_super) {
     return construct_iatifield;
   };
 
-  DimensionWidget.prototype.onIATIFieldChange = function(e) {
-    var k, row, thisfield, thisfieldsfields, v;
-    this.element.parents('form').first().change();
-    thisfield = $(e.currentTarget).val();
-    this.element.find('tbody tr').remove();
-    thisfieldsfields = DEFAULT_FIELD_SETUP[thisfield]['fields'];
-    for (k in thisfieldsfields) {
-      v = thisfieldsfields[k];
-      row = this._makeFieldRowUpdate(k, thisfield, v['required']);
-      row.appendTo(this.element.find('tbody'));
-      this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
-    }
-    return false;
-  };
-
   DimensionWidget.prototype.onFieldRemoveClick = function(e) {
-    var curRow;
+    var curRow, prefix;
     curRow = $(e.currentTarget).parents('tr').first();
+    prefix = curRow.attr('data-prefix') + '[' + curRow.attr('data-field-name') + ']';
+    $(e.currentTarget).parents('tbody').first().children('[data-prefix^="' + prefix + '"]').remove();
+    $(e.currentTarget).parents('tbody').first().children('[name^="' + prefix + '"]').remove();
     curRow.next('.alternativesCounter').remove();
     curRow.remove();
     this.element.parents('form').first().change();

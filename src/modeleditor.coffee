@@ -183,7 +183,6 @@ class DimensionWidget extends Widget
     '.field_rm click': 'onFieldRemoveClick'
     '.delete_dimension click': 'onDeleteDimensionClick'
     '.delete_tdatafield click': 'onDeleteTDataFieldClick'
-    '.iatifield change' : 'onIATIFieldChange'
     '.column change' : 'onColumnChange'
     '.show_advanced click': 'onShowAdvanced'
 
@@ -310,7 +309,7 @@ class DimensionWidget extends Widget
             if (v['datatype'] == 'constant')
                 textdata = dimension_data[dimension_name]['fields'][k]['constant']
             else
-                textdata = this.dataSample(dimension_data[dimension_name]['fields'][k]['column'])            
+                textdata = this.dataSample(dimension_data[dimension_name]['fields'][k]['column'])
         else
             if (v['datatype'] == 'constant')
                 samplevalue = dimension_data[dimension_name]['fields'][k]['constant']
@@ -323,20 +322,11 @@ class DimensionWidget extends Widget
         construct_iatifield=construct_iatifield + "/>"
     return construct_iatifield
   
-  # This needs to be removed - do not permit IATI Field changes (must delete and add a new dimension)
-  onIATIFieldChange: (e) ->
-    @element.parents('form').first().change()
-    thisfield = $(e.currentTarget).val()
-    @element.find('tbody tr').remove()
-    thisfieldsfields = (DEFAULT_FIELD_SETUP[thisfield]['fields'])
-    for k, v of thisfieldsfields
-      row = this._makeFieldRowUpdate(k, thisfield, v['required'])
-      row.appendTo(@element.find('tbody'))
-      @element.trigger('fillColumnsRequest', [row.find('select.column')])
-    return false
-
   onFieldRemoveClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
+    prefix = curRow.attr('data-prefix')+'['+curRow.attr('data-field-name')+']'
+    $(e.currentTarget).parents('tbody').first().children('[data-prefix^="'+prefix+'"]').remove()
+    $(e.currentTarget).parents('tbody').first().children('[name^="'+prefix+'"]').remove()
     curRow.next('.alternativesCounter').remove()
     curRow.remove()
     @element.parents('form').first().change()
