@@ -67,7 +67,7 @@
 <br />
 <span id="model_csv_info">
 <div class="right_block"><code>Source data:
-    <a href="{{url_for('csv_file',id=id,filename=csv_file)}}">Download</a><br />
+    <a href="{{url_for('csv_file',id=id,filename=csv_file)}}">{{csv_file}}</a><br />
     <a href="#" id="csvdata_newfile">Upload new file</a>
         <form id="csvdata_newfile_upload" method="post" enctype="multipart/form-data" action="{{url_for('model_change_csv',id=id)}}">
         <input type="file" name="newcsvfile"/>
