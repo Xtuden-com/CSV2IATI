@@ -202,7 +202,7 @@
                     be used to construct multiple instances of the field you select above.</p>
                     <p>For example, if you select <code>Multiple sector rows per activity</code>, then each row with the same 
                     <code>iati-identifier</code> will create a new <code>sector</code>, which will be defined by whatever 
-                    you state as the sector in your dimensions mapping.</p>
+                    you state as the sector in your mapping.</p>
                   </dd>
                   <!--
                   <dt><label>Processing order:</label></dt>
@@ -278,7 +278,7 @@
       <!-- Unique keys template -->
       <script id='tpl_unique_keys' type='text/x-jquery-tmpl'>
         {{if keys.length == 0}}
-          <em>No dimensions available yet.</em>
+          <em>No elements available yet.</em>
         {{/if}}
         {{each(i, key) keys}}
           {{if key.used}}
@@ -371,10 +371,10 @@
               </td>
               <td>
                 {{if required(fieldName, iatiField) == true}}
-                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
+                <span title="This attribute is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
                 {{else}}
                 <a href='#' class='show_advanced'><span title="Toggle advanced options" href='#' class='ui-icon ui-icon-wrench iconfloat_left'>&nbsp;</span></a>
-                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span title="Delete this attribute" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
                 {{/if}}
               </td>
         </tr>
@@ -410,11 +410,11 @@
               </td>
                 {{if required(fieldName, iatiField) == true}}
               <td>
-                <span title="This field is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
+                <span title="This attribute is required" class="ui-icon ui-icon-star iconfloat_right">&nbsp;</span>
               </td>
                 {{else}}
               <td>
-                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span title="Delete this attribute" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
               </td>                
                 {{/if}}
               </td>
@@ -438,7 +438,7 @@
             <tr data-prefix='${prefix}' data-field-name='${n}'>
               <td colspan="4" style="border-left: ${(level+1)*2}px solid #365e93; border-top: ${(level+1)*2}px solid #365e93">
                 <input type='hidden' name='${prefix}[${n}][datatype]' value='${f.datatype}'>
-                <a href='#' class='field_rm'><span title="Delete this field" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+                <a href='#' class='field_rm'><span title="Delete this nesed element" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
                 <legend>${prefix2} ${f.label}</legend>
                 <input type='hidden' name='${prefix}[${n}][label]' value='${f.label}'>
               </td>
@@ -484,15 +484,15 @@
         {{/if}}
 
         <div style="position:relative; top: -20px">
-        <a href='#' class='delete_dimension'><span title="Delete this dimension" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
-        <a href='#' class='copy_dimension'><span title="Copy this dimension" class="ui-icon ui-icon-copy iconfloat_right">&nbsp;</span></a>
+        <a href='#' class='delete_dimension'><span title="Delete this element" class="ui-icon ui-icon-trash iconfloat_right">&nbsp;</span></a>
+        <a href='#' class='copy_dimension'><span title="Copy this element" class="ui-icon ui-icon-copy iconfloat_right">&nbsp;</span></a>
         </div>
 
         <legend>${data.label}</legend>
         {{if meta.helpText}}<p>{{html meta.helpText}}</p>{{/if}}
         <span class="dataSample"></span>
         <dl>
-            <dt><label>IATI field name:</label></dt>
+            <dt><label>IATI element name:</label></dt>
             {{if !meta.fixedDataType}}
               <dd><select class='iatifield' name='mapping[${name}][iati-field]'></select></dd>
             {{else}}
