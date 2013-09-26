@@ -46,19 +46,21 @@
 </select>
 <input type="submit" value="Move" />
 </form><br/>
+{% endif %}
 
-<a href="#" id="copy_model">Copy to another user</a>
+<a href="#" id="copy_model">Copy model</a>
 <form id="copy_model_form" style="display:none" method="post">
+{% if admin %}
 <label for="model_owner">User:</label>
 <select name="model_owner">
 {% for user in all_users %}
     <option value="{{user.id}}" {% if user.id == model_owner %}selected{% endif %}>{{user.username}}</option>
 {% endfor %}
 </select>
+{% endif %}
 <input type="submit" name="copy" value="Copy" />
 </form><br/>
 
-{% endif %}
 
 <a href="#" id="showdebug">Show JSON</a>
 

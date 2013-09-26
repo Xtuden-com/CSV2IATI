@@ -473,7 +473,7 @@ def model(id='',responsetype=''):
                         getmodel.model_owner = '-1'
                     if 'admin' in session and 'model_owner' in request.form:
                         getmodel.model_owner = request.form['model_owner']
-                    if 'admin' in session and 'copy' in request.form:
+                    if 'copy' in request.form:
                         getmodel = IATIModel(**dict([ (c.name,getattr(getmodel,c.name)) for c in getmodel.__table__.c  if c.name != 'id' ]))
                     db.session.add(getmodel)
                     db.session.commit()
