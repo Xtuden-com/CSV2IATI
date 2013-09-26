@@ -38,7 +38,7 @@ table td:first-child {
   *display: inline-block;
   width: 100%;
   border: 1px solid #ccc;
-  background: transparent url(../img/dlbg.png) repeat-y 15em top;
+  //background: transparent url(../img/dlbg.png) repeat-y 15em top;
 }
 
 #right_pane {
