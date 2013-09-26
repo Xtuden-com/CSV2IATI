@@ -1904,9 +1904,11 @@ DimensionWidget = (function(_super) {
     if (name === '') {
       return false;
     } else if (name === 'customnested') {
-      this.onAddNestedElClick(e);
+      return this.onAddNestedElClick(e);
     } else if (name === 'custom') {
       name = prompt("Field name:").trim();
+    } else if (name in this.default_fields.fields && this.default_fields.fields[name].datatype === 'compound') {
+      return this.onAddNestedElClick(e);
     }
     curRow = $(e.currentTarget).parents('tr').first();
     row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'));
@@ -1918,17 +1920,26 @@ DimensionWidget = (function(_super) {
   DimensionWidget.prototype.onAddNestedElClick = function(e) {
     var curRow, data, level, name, prefix, row;
     curRow = $(e.currentTarget).parents('tr').first();
-    name = prompt("Element name:").trim();
+    name = e.currentTarget.value;
+    if (name === 'customnested') {
+      name = prompt("Element name:").trim();
+    }
     prefix = curRow.data('prefix');
     level = curRow.data('level');
     data = {
       'fields': {}
     };
-    data['fields'][name] = {
-      'datatype': 'compound',
-      'label': name,
-      'iati_field': name
-    };
+    if (name in this.default_fields.fields) {
+      data['fields'][name] = this.default_fields.fields[name];
+    } else {
+      data['fields'][name] = {
+        'datatype': 'compound',
+        'label': name,
+        'iati_field': name,
+        'fields': {}
+      };
+    }
+    console.log(data.fields[name].fields);
     row = $.tmpl('tpl_table_recursive', {
       'data': data,
       'dimensionName': '',
@@ -1936,10 +1947,12 @@ DimensionWidget = (function(_super) {
       'iati_field': '',
       'prefix': prefix,
       'level': level,
-      'formFieldRequired2': ''
+      'formFieldRequired2': this.formFieldRequired2,
+      'default_fields': this.default_fields
     });
+    console.log(row);
     row.insertBefore(curRow);
-    this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
+    this.element.parents('form').first().change();
     return false;
   };
 

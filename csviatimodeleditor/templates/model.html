@@ -443,7 +443,11 @@
                 <input type='hidden' name='${prefix}[${n}][label]' value='${f.label}'>
               </td>
             </tr>
-              {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'prefix2':prefix2+f.label+'/', 'level':level+1, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field, 'default_fields':default_fields.fields[n]}) '#tpl_table_recursive'}} 
+              {{if default_fields && 'fields' in default_fields}} 
+                {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'prefix2':prefix2+f.label+'/', 'level':level+1, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field, 'default_fields':default_fields.fields[n]}) '#tpl_table_recursive'}} 
+              {{else}}
+                {{tmpl({'data':f, 'prefix':prefix+'['+n+'][fields]', 'prefix2':prefix2+f.label+'/', 'level':level+1, 'name':name, 'formFieldRequired2':formFieldRequired2, 'iati_field':iati_field, 'default_fields':{} }) '#tpl_table_recursive'}} 
+              {{/if}}
           {{else f.datatype === 'constant'}}
             {{tmpl({'fieldName': n, 'field': f, 'prefix':prefix, 'level':level, 'dimensionName':name, 'required': formFieldRequired2, 'iatiField': iati_field}) '#tpl_dimension_field_const'}}
           {{else}}
@@ -455,6 +459,7 @@
                 <select class='add_field'>
                   <option>Add Attribute/Element</option>
                   <option></option>
+                {{if default_fields}}
                 {{each(n,f) default_fields.fields}}
                   {{if n in data.fields }}
                     <option value="${n}" disabled>${n}</option>
@@ -462,6 +467,7 @@
                     <option value="${n}">${n}</option>
                   {{/if}}
                 {{/each}}
+                {{/if}}
                   <option></option>
                   <option value="custom">Custom</option>
                   <option value="customnested">Custom (Nested)</option>

@@ -174,7 +174,6 @@ class UniqueKeyWidget extends Widget
 class DimensionWidget extends Widget
   events:
     '.add_field change': 'onAddFieldClick'
-    #'.add_nested_el click': 'onAddNestedElClick'
     '.field_add_alternative click': 'onAddAlternativeClick'
     '.field_add_transform click': 'onAddTransformClick'
     '.field_remove_transform click': 'onRemoveTransformClick'
@@ -247,9 +246,11 @@ class DimensionWidget extends Widget
     if name == ''
       return false
     else if name == 'customnested'
-      @onAddNestedElClick(e)
+      return @onAddNestedElClick(e)
     else if name == 'custom'
       name = prompt("Field name:").trim()
+    else if name of @default_fields.fields and @default_fields.fields[name].datatype == 'compound'
+      return @onAddNestedElClick(e)
     curRow = $(e.currentTarget).parents('tr').first()
     row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'))
     row.insertBefore(curRow)
@@ -258,25 +259,37 @@ class DimensionWidget extends Widget
   
   onAddNestedElClick: (e) ->
     curRow = $(e.currentTarget).parents('tr').first()
-    name = prompt("Element name:").trim()
+    name = e.currentTarget.value
+    if name =='customnested'
+      name = prompt("Element name:").trim()
     prefix = curRow.data('prefix')
     level = curRow.data('level')
     data = {'fields':{}}
-    data['fields'][name] = {
-      'datatype':'compound'
-      'label':name
-      'iati_field':name
-    }
+    if name of @default_fields.fields
+      data['fields'][name] = @default_fields.fields[name]
+    else
+      data['fields'][name] = {
+        'datatype':'compound'
+        'label':name
+        'iati_field':name
+        'fields': {}
+      }
+    console.log(data.fields[name].fields)
+    #data.fields[name].fields = {}
     row = $.tmpl 'tpl_table_recursive',
-      'data': data 
+      'data': data
       'dimensionName': ''
       'prefix2': ''
       'iati_field': ''
       'prefix': prefix
       'level': level
-      'formFieldRequired2': ''
+      'formFieldRequired2': @formFieldRequired2
+      'default_fields': @default_fields
+    console.log(row)
     row.insertBefore(curRow)
-    @element.trigger('fillColumnsRequest', [row.find('select.column')])
+    #@element.trigger('fillColumnsRequest', [row.find('select.column')])
+    # This involves refreshing the whole dimension, but works
+    @element.parents('form').first().change()
     return false
 
   onDeleteDimensionClick: (e) ->
