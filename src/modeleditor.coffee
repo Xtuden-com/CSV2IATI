@@ -211,7 +211,7 @@ class DimensionWidget extends Widget
 
     @element.html($.tmpl('tpl_dimension', this))
     @element.trigger('fillColumnsRequest', [@element.find('select.column')])
-    @element.trigger('fillIATIfieldsRequest', [@element.find('select.iatifield')])
+    @element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')])
 
     formObj = {'mapping': {}}
     formObj['mapping'][@name] = @data
@@ -274,7 +274,6 @@ class DimensionWidget extends Widget
         'iati_field':name
         'fields': {}
       }
-    console.log(data.fields[name].fields)
     #data.fields[name].fields = {}
     row = $.tmpl 'tpl_table_recursive',
       'data': data
@@ -285,7 +284,6 @@ class DimensionWidget extends Widget
       'level': level
       'formFieldRequired2': @formFieldRequired2
       'default_fields': @default_fields
-    console.log(row)
     row.insertBefore(curRow)
     #@element.trigger('fillColumnsRequest', [row.find('select.column')])
     # This involves refreshing the whole dimension, but works
@@ -543,8 +541,6 @@ class ModelEditor extends Delegator
     '#hidedebug click': 'onHideDebugClick'
     '.add_data_field click': 'onAddDataFieldClick'
     'doFieldSelectors' : 'onDoFieldSelectors'
-    '#columns .availablebtn click': 'onColumnsAvailableClick'
-    '#columns .allbtn click': 'onColumnsAllClick'
     '#iatifields .availablebtn click': 'onIATIFieldsAvailableClick'
     '#iatifields .allbtn click': 'onIATIFieldsAllClick'
 
@@ -573,16 +569,6 @@ class ModelEditor extends Delegator
     # Precompile templates
     @element.find('script[type="text/x-jquery-tmpl"]').each  ->
       $(this).template($(this).attr('id'))
-
-    # Initialize column select boxes
-    @options.columns.unshift('')
-    @element.find('select.iatifield').each ->
-      $(this).trigger('fillColumnsRequest', [this])
-
-    # Initialize iati select boxes
-    @options.iatifields.unshift('')
-    @element.find('select.iatifield').each ->
-      $(this).trigger('fillIATIfieldsRequest', [this])
 
     # Initialize widgets
     for selector, ctor of @widgetTypes
@@ -626,11 +612,6 @@ class ModelEditor extends Delegator
     return if @ignoreFormChange
 
     @data = @form.serializeObject()
-    @form.find('.column').each -> 
-        columnname = ($(this).val())
-        $('#user_columns ul li a').each ->
-            if ($(this).text()) == columnname
-                $(this).removeClass('available').addClass('unavailable')
     
     @element.trigger('doFieldSelectors', 'iatifield')
     @element.trigger('doFieldSelectors', 'column')
@@ -639,41 +620,16 @@ class ModelEditor extends Delegator
     @element.trigger 'modelChange'
     @ignoreFormChange = false
 
-  onColumnsAvailableClick: (e) ->
-    $('#columns ul').addClass('hideunavailable')
-    $('#columns .allbtn').removeClass('fieldsbuttons-selected')
-    $('#columns .availablebtn').addClass('fieldsbuttons-selected')
-    false
-
-  onColumnsAllClick: (e) ->
-    $('#columns ul').removeClass('hideunavailable')
-    $('#columns .availablebtn').removeClass('fieldsbuttons-selected')
-    $('#columns .allbtn').addClass('fieldsbuttons-selected')
-    false
-
-  onIATIFieldsAvailableClick: (e) ->
-    $('#iatifields ul').addClass('hideunavailable')
-    $('#iatifields .allbtn').removeClass('fieldsbuttons-selected')
-    $('#iatifields .availablebtn').addClass('fieldsbuttons-selected')
-    false
-
-  onIATIFieldsAllClick: (e) ->
-    $('#iatifields ul').removeClass('hideunavailable')
-    $('#iatifields .availablebtn').removeClass('fieldsbuttons-selected')
-    $('#iatifields .allbtn').addClass('fieldsbuttons-selected')
-    false
-    
+  # Missnamed now
   onDoFieldSelectors: (e) ->
-    $('#' + e + 's ul li code').each ->
-        if ($(this).hasClass('unavailable'))
-            $(this).removeClass('unavailable')
-            $(this).addClass('available')
-    @form.find('.' + e).each -> 
-        iatiname = ($(this).val())
-        $('#' + e + 's ul li code').each ->
-            if ($(this).text() == iatiname)
-                $(this).removeClass('available')
-                $(this).addClass('unavailable')
+    key = e + 's_used'
+    @options[key] = []
+    used = @options[key]
+    @form.find('.' + e).each ->
+      iatiname = ($(this).val())
+      used.push(iatiname)
+    $.unique(used)
+    used.sort()
 
   onFormSubmit: (e) ->
     # Conversion...
@@ -713,12 +669,21 @@ class ModelEditor extends Delegator
 
 
   onFillColumnsRequest: (elem) ->
+    options = ["<option></option>", "<option disabled>Unused columns:</option>"]
+    options = options.concat(( "<option value='#{x}'>#{x}</option>" for x in @options.columns when x not in @options.columns_used and x!='' ))
+    options.push('<option disabled>Previously used columns:</option>')
+    options = options.concat(( "<option value='#{x}'>#{x}</option>" for x in @options.columns_used when x!='' ))
     $(elem).html(
-      ("<option value='#{x}'>#{x}</option>" for x in @options.columns).join('\n')
+      options.join('\n')
     )
+
   onFillIATIfieldsRequest: (elem) ->
+    options = ["<option>Add a new element</option>", "<option disabled>Unused elements:</option>"]
+    options = options.concat(( "<option value='#{x}'>#{x}</option>" for x in @options.iatifields when x not in @options.iatifields_used and x!='' ))
+    options.push('<option disabled>Previously used elements:</option>')
+    options = options.concat(( "<option value='#{x}'>#{x}</option>" for x in @options.iatifields_used when x!='' ))
     $(elem).html(
-      ("<option value='#{x}'>#{x}</option>" for x in @options.iatifields).join('\n')
+      options.join('\n')
     )
 
 $.plugin 'modelEditor', ModelEditor

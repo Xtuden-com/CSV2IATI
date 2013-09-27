@@ -1854,7 +1854,7 @@ DimensionWidget = (function(_super) {
     }
     this.element.html($.tmpl('tpl_dimension', this));
     this.element.trigger('fillColumnsRequest', [this.element.find('select.column')]);
-    this.element.trigger('fillIATIfieldsRequest', [this.element.find('select.iatifield')]);
+    this.element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')]);
     formObj = {
       'mapping': {}
     };
@@ -1939,7 +1939,6 @@ DimensionWidget = (function(_super) {
         'fields': {}
       };
     }
-    console.log(data.fields[name].fields);
     row = $.tmpl('tpl_table_recursive', {
       'data': data,
       'dimensionName': '',
@@ -1950,7 +1949,6 @@ DimensionWidget = (function(_super) {
       'formFieldRequired2': this.formFieldRequired2,
       'default_fields': this.default_fields
     });
-    console.log(row);
     row.insertBefore(curRow);
     this.element.parents('form').first().change();
     return false;
@@ -2315,8 +2313,6 @@ ModelEditor = (function(_super) {
     '#hidedebug click': 'onHideDebugClick',
     '.add_data_field click': 'onAddDataFieldClick',
     'doFieldSelectors': 'onDoFieldSelectors',
-    '#columns .availablebtn click': 'onColumnsAvailableClick',
-    '#columns .allbtn click': 'onColumnsAllClick',
     '#iatifields .availablebtn click': 'onIATIFieldsAvailableClick',
     '#iatifields .allbtn click': 'onIATIFieldsAllClick'
   };
@@ -2351,14 +2347,6 @@ ModelEditor = (function(_super) {
     }
     this.element.find('script[type="text/x-jquery-tmpl"]').each(function() {
       return $(this).template($(this).attr('id'));
-    });
-    this.options.columns.unshift('');
-    this.element.find('select.iatifield').each(function() {
-      return $(this).trigger('fillColumnsRequest', [this]);
-    });
-    this.options.iatifields.unshift('');
-    this.element.find('select.iatifield').each(function() {
-      return $(this).trigger('fillIATIfieldsRequest', [this]);
     });
     _ref3 = this.widgetTypes;
     for (selector in _ref3) {
@@ -2422,15 +2410,6 @@ ModelEditor = (function(_super) {
       return;
     }
     this.data = this.form.serializeObject();
-    this.form.find('.column').each(function() {
-      var columnname;
-      columnname = $(this).val();
-      return $('#user_columns ul li a').each(function() {
-        if (($(this).text()) === columnname) {
-          return $(this).removeClass('available').addClass('unavailable');
-        }
-      });
-    });
     this.element.trigger('doFieldSelectors', 'iatifield');
     this.element.trigger('doFieldSelectors', 'column');
     this.ignoreFormChange = true;
@@ -2438,51 +2417,18 @@ ModelEditor = (function(_super) {
     return this.ignoreFormChange = false;
   };
 
-  ModelEditor.prototype.onColumnsAvailableClick = function(e) {
-    $('#columns ul').addClass('hideunavailable');
-    $('#columns .allbtn').removeClass('fieldsbuttons-selected');
-    $('#columns .availablebtn').addClass('fieldsbuttons-selected');
-    return false;
-  };
-
-  ModelEditor.prototype.onColumnsAllClick = function(e) {
-    $('#columns ul').removeClass('hideunavailable');
-    $('#columns .availablebtn').removeClass('fieldsbuttons-selected');
-    $('#columns .allbtn').addClass('fieldsbuttons-selected');
-    return false;
-  };
-
-  ModelEditor.prototype.onIATIFieldsAvailableClick = function(e) {
-    $('#iatifields ul').addClass('hideunavailable');
-    $('#iatifields .allbtn').removeClass('fieldsbuttons-selected');
-    $('#iatifields .availablebtn').addClass('fieldsbuttons-selected');
-    return false;
-  };
-
-  ModelEditor.prototype.onIATIFieldsAllClick = function(e) {
-    $('#iatifields ul').removeClass('hideunavailable');
-    $('#iatifields .availablebtn').removeClass('fieldsbuttons-selected');
-    $('#iatifields .allbtn').addClass('fieldsbuttons-selected');
-    return false;
-  };
-
   ModelEditor.prototype.onDoFieldSelectors = function(e) {
-    $('#' + e + 's ul li code').each(function() {
-      if ($(this).hasClass('unavailable')) {
-        $(this).removeClass('unavailable');
-        return $(this).addClass('available');
-      }
-    });
-    return this.form.find('.' + e).each(function() {
+    var used;
+    key = e + 's_used';
+    this.options[key] = [];
+    used = this.options[key];
+    this.form.find('.' + e).each(function() {
       var iatiname;
       iatiname = $(this).val();
-      return $('#' + e + 's ul li code').each(function() {
-        if ($(this).text() === iatiname) {
-          $(this).removeClass('available');
-          return $(this).addClass('unavailable');
-        }
-      });
+      return used.push(iatiname);
     });
+    $.unique(used);
+    return used.sort();
   };
 
   ModelEditor.prototype.onFormSubmit = function(e) {
@@ -2537,31 +2483,65 @@ ModelEditor = (function(_super) {
   };
 
   ModelEditor.prototype.onFillColumnsRequest = function(elem) {
-    var x;
-    return $(elem).html(((function() {
+    var options, x;
+    options = ["<option></option>", "<option disabled>Unused columns:</option>"];
+    options = options.concat((function() {
       var _i, _len, _ref3, _results;
       _ref3 = this.options.columns;
       _results = [];
       for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
         x = _ref3[_i];
-        _results.push("<option value='" + x + "'>" + x + "</option>");
+        if (__indexOf.call(this.options.columns_used, x) < 0 && x !== '') {
+          _results.push("<option value='" + x + "'>" + x + "</option>");
+        }
       }
       return _results;
-    }).call(this)).join('\n'));
+    }).call(this));
+    options.push('<option disabled>Previously used columns:</option>');
+    options = options.concat((function() {
+      var _i, _len, _ref3, _results;
+      _ref3 = this.options.columns_used;
+      _results = [];
+      for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+        x = _ref3[_i];
+        if (x !== '') {
+          _results.push("<option value='" + x + "'>" + x + "</option>");
+        }
+      }
+      return _results;
+    }).call(this));
+    return $(elem).html(options.join('\n'));
   };
 
   ModelEditor.prototype.onFillIATIfieldsRequest = function(elem) {
-    var x;
-    return $(elem).html(((function() {
+    var options, x;
+    options = ["<option>Add a new element</option>", "<option disabled>Unused elements:</option>"];
+    options = options.concat((function() {
       var _i, _len, _ref3, _results;
       _ref3 = this.options.iatifields;
       _results = [];
       for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
         x = _ref3[_i];
-        _results.push("<option value='" + x + "'>" + x + "</option>");
+        if (__indexOf.call(this.options.iatifields_used, x) < 0 && x !== '') {
+          _results.push("<option value='" + x + "'>" + x + "</option>");
+        }
       }
       return _results;
-    }).call(this)).join('\n'));
+    }).call(this));
+    options.push('<option disabled>Previously used elements:</option>');
+    options = options.concat((function() {
+      var _i, _len, _ref3, _results;
+      _ref3 = this.options.iatifields_used;
+      _results = [];
+      for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
+        x = _ref3[_i];
+        if (x !== '') {
+          _results.push("<option value='" + x + "'>" + x + "</option>");
+        }
+      }
+      return _results;
+    }).call(this));
+    return $(elem).html(options.join('\n'));
   };
 
   return ModelEditor;

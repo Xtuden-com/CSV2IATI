@@ -590,27 +590,6 @@
         'iatifields': iati_data,
         'model_data': model_data
       });
-      $('#iatifields ul').html(function() {
-        var iati_to_write = '';
-        $.each(iati_data, function(index, value) {
-            iati_to_write = iati_to_write + '<li><code class="available"><a href="#">' + value + '</a></code></li>';
-        });
-        return iati_to_write;
-      });
-      $('.iati_field_add').html(function() {
-        var iati_to_write = '<option value="">Add a new element</option>';
-        $.each(iati_data, function(index, value) {
-            iati_to_write = iati_to_write + '<option value="' + value + '">' + value + '</option>';
-        });
-        return iati_to_write;
-      });
-      $('#columns ul').html(function() {
-        var columns_to_write = '';
-        $.each(column_data, function(index, value) {
-            columns_to_write = columns_to_write + '<li><code class="available">' + value + '</code></li>';
-        });
-        return columns_to_write;
-      });
       var me = $('#m1').data('modelEditor');
       /*
       $('#model_title a').click(function() {
