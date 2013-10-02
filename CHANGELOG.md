@@ -4,6 +4,8 @@
 
 From this release, this conversion tool is now known as CSV2IATI, to avoid confusion with tools for converting to csv.
 
+This release also marks the migration of the live version of the tool from `http://csvconverter.aidinfolabs.org/` to `http://csv2iati.iatistandard.org/`. User accounts and models have not been migrated due to the large number of inactive users, and changes in the way the model data format is structured. Please contact support@iatistandard.org if you need support with transferring models.
+
 ### Bug Fixes
 
 * All external links should now open in a new tab
