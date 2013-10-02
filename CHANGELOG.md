@@ -9,6 +9,7 @@ This release also marks the migration of the live version of the tool from `http
 ### Bug Fixes
 
 * All external links should now open in a new tab
+* Add XML Declaration to outputted files
 
 ### UI improvements
 
