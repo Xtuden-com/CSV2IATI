@@ -1,18 +1,18 @@
-# CSV-IATI Model Editor testing
+# CSV2IATI Model Editor testing
 
-This repository shows the CSV-IATI Model Editor, which will help you to create a model to map your spreadsheet of aid data to the IATI format.
+This repository shows the CSV2IATI Model Editor, which will help you to create a model to map your spreadsheet of aid data to the IATI format.
 
 # Installation
 
 Clone the repository
 
 
-    $ git clone git://github.com/markbrough/CSV-IATI-Converter.modeleditor.git
+    $ git clone https://github.com/IATI/CSV2IATI.git
 
 Change into the directory and create a virtual environment (``virtualenv``)
 
 
-    $ cd CSV-IATI-Converter.modeleditor
+    $ cd CSV2IATI
     $ virtualenv --no-site-packages ./pyenv
 
 Now activate the environment:
@@ -114,5 +114,5 @@ Forked from http://github.com/nickstenning/openspending.modeleditor with thanks 
 
 # License
 
-The CSV-IATI model editor code is released under the MIT license, a copy 
+The CSV2IATI model editor code is released under the MIT license, a copy 
 of which can be found in `LICENSE`.
