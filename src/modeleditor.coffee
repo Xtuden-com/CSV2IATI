@@ -627,8 +627,8 @@ class ModelEditor extends Delegator
     used = @options[key]
     @form.find('.' + e).each ->
       iatiname = ($(this).val())
-      used.push(iatiname)
-    $.unique(used)
+      if iatiname not in used
+        used.push(iatiname)
     used.sort()
 
   onFormSubmit: (e) ->

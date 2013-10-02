@@ -2425,9 +2425,10 @@ ModelEditor = (function(_super) {
     this.form.find('.' + e).each(function() {
       var iatiname;
       iatiname = $(this).val();
-      return used.push(iatiname);
+      if (__indexOf.call(used, iatiname) < 0) {
+        return used.push(iatiname);
+      }
     });
-    $.unique(used);
     return used.sort();
   };
 
