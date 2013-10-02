@@ -243,15 +243,20 @@ class DimensionWidget extends Widget
 
   onAddFieldClick: (e) ->
     name = e.currentTarget.value
+    curRow = $(e.currentTarget).parents('tr').first()
+    try
+      # FIXME
+      default_fields_fields = eval('this.default_fields'+curRow.attr('data-prefix').replace('mapping['+@name+']','').replace(/\[/g,'["').replace(/\]/g,'"]'))
+    catch
+      default_fields_fields = {}
     if name == ''
       return false
     else if name == 'customnested'
       return @onAddNestedElClick(e)
     else if name == 'custom'
       name = prompt("Field name:").trim()
-    else if name of @default_fields.fields and @default_fields.fields[name].datatype == 'compound'
+    else if name of default_fields_fields and default_fields_fields[name].datatype == 'compound'
       return @onAddNestedElClick(e)
-    curRow = $(e.currentTarget).parents('tr').first()
     row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'))
     row.insertBefore(curRow)
     @element.trigger('fillColumnsRequest', [row.find('select.column')])
@@ -265,8 +270,13 @@ class DimensionWidget extends Widget
     prefix = curRow.data('prefix')
     level = curRow.data('level')
     data = {'fields':{}}
-    if name of @default_fields.fields
-      data['fields'][name] = @default_fields.fields[name]
+    try
+      # FIXME
+      default_fields_fields = eval('this.default_fields'+curRow.attr('data-prefix').replace('mapping['+@name+']','').replace(/\[/g,'["').replace(/\]/g,'"]'))
+    catch
+      default_fields_fields = {}
+    if name of default_fields_fields
+      data['fields'][name] = default_fields_fields[name]
     else
       data['fields'][name] = {
         'datatype':'compound'

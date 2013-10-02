@@ -462,7 +462,7 @@
                   <option></option>
                 {{if default_fields}}
                 {{each(n,f) default_fields.fields}}
-                  {{if n in data.fields }}
+                  {{if data.fields && n in data.fields }}
                     <option value="${n}" disabled>${n}</option>
                   {{else}}
                     <option value="${n}">${n}</option>

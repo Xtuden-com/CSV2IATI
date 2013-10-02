@@ -1899,18 +1899,23 @@ DimensionWidget = (function(_super) {
   };
 
   DimensionWidget.prototype.onAddFieldClick = function(e) {
-    var curRow, name, row;
+    var curRow, default_fields_fields, name, row;
     name = e.currentTarget.value;
+    curRow = $(e.currentTarget).parents('tr').first();
+    try {
+      default_fields_fields = eval('this.default_fields' + curRow.attr('data-prefix').replace('mapping[' + this.name + ']', '').replace(/\[/g, '["').replace(/\]/g, '"]'));
+    } catch (_error) {
+      default_fields_fields = {};
+    }
     if (name === '') {
       return false;
     } else if (name === 'customnested') {
       return this.onAddNestedElClick(e);
     } else if (name === 'custom') {
       name = prompt("Field name:").trim();
-    } else if (name in this.default_fields.fields && this.default_fields.fields[name].datatype === 'compound') {
+    } else if (name in default_fields_fields && default_fields_fields[name].datatype === 'compound') {
       return this.onAddNestedElClick(e);
     }
-    curRow = $(e.currentTarget).parents('tr').first();
     row = this._makeFieldRow(name, curRow.data('prefix'), curRow.data('level'));
     row.insertBefore(curRow);
     this.element.trigger('fillColumnsRequest', [row.find('select.column')]);
@@ -1918,7 +1923,7 @@ DimensionWidget = (function(_super) {
   };
 
   DimensionWidget.prototype.onAddNestedElClick = function(e) {
-    var curRow, data, level, name, prefix, row;
+    var curRow, data, default_fields_fields, level, name, prefix, row;
     curRow = $(e.currentTarget).parents('tr').first();
     name = e.currentTarget.value;
     if (name === 'customnested') {
@@ -1929,8 +1934,13 @@ DimensionWidget = (function(_super) {
     data = {
       'fields': {}
     };
-    if (name in this.default_fields.fields) {
-      data['fields'][name] = this.default_fields.fields[name];
+    try {
+      default_fields_fields = eval('this.default_fields' + curRow.attr('data-prefix').replace('mapping[' + this.name + ']', '').replace(/\[/g, '["').replace(/\]/g, '"]'));
+    } catch (_error) {
+      default_fields_fields = {};
+    }
+    if (name in default_fields_fields) {
+      data['fields'][name] = default_fields_fields[name];
     } else {
       data['fields'][name] = {
         'datatype': 'compound',
