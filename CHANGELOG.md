@@ -1,5 +1,32 @@
 # Changelog
 
+## Version 2.1
+
+From this release, this conversion tool is now known as CSV2IATI, to avoid confusion with tools for converting to csv.
+
+### Bug Fixes
+
+* All external links should now open in a new tab
+
+### UI improvements
+
+* More helpful errors when a file that is not a csv is uploaded
+* Left and right panels in the modeleditor now stick to the top
+* Elements are ordered consistently in outputted XML, and in the add new element dropdown
+* Right hand side panel rearranged - advanced tab has been removed, with it's functionality incorporated into the Add Attribute and Add Element dropdowns
+* Improved show JSON Link
+* Naming of elements/attributes made consistent
+
+### User features 
+* Rename, delete and copy models
+* Change password dialog
+* Add field/Add a nested element links have been replaced with a unified dropdown that is prefilled with the appropriate entries from the schema. 
+
+### Admin features
+
+* All admins can see other admin's models 
+* Move/copy models to another user
+
 ## Version 2.0
 Transactions are now handled differently, so if any models from the old version will need to be migrated before they work.
 
