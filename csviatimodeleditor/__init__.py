@@ -389,7 +389,7 @@ def model_convert(id=id):
                             output = the_page["error"]
                         else:
                             xml_url = the_page["result"]
-                            output = ("<p><a href=\"/model/"+str(getmodel.id)+"\">Back to Model</a><p><p>IATI-XML file saved to <a href=\"" + xml_url  + "\">" + xml_url + "</a></p>" +
+                            output = ("<p><a href=\""+url_for('model', id=getmodel.id)+"\">Back to Model</a><p><p>IATI-XML file saved to <a href=\"" + xml_url  + "\">" + xml_url + "</a></p>" +
                             "<p><a href=\"http://tools.aidinfolabs.org/showmydata/index.php?url="+urllib.quote_plus(xml_url)+"\" target=\"_blank\">Preview</a> " +
                             "<form action=\"http://tools.aidinfolabs.org/validator/\" method=\"post\" target=\"_blank\"><input type=\"hidden\" value=\""+xml_url+"\" name=\"url\"><a href=\"\" onclick=\"parentNode.submit();return false;\">Validate</a></form></p>")
                         # Handle keyerror TODO
