@@ -2,6 +2,10 @@
 
 This repository shows the CSV2IATI Model Editor, which will help you to create a model to map your spreadsheet of aid data to the IATI format.
 
+## User Guide
+
+http://csv2iati.readthedocs.org/en/latest/user_guide.html
+
 ## Installation
 
 Clone the repository
