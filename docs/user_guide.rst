@@ -152,9 +152,7 @@ Upload your data
 ----------------
 
 .. figure:: iati_conversion_tool_html_3a78efda.png
-   :width: 600px
-   :scale: 100
-   :alt: 
+   :scale: 50
 
 #. Log on to http://csv2iati.iatistandard.org
 
@@ -176,9 +174,7 @@ Provide some basic information about your organisation
 ......................................................
 
 .. figure:: iati_conversion_tool_html_7f330693.png
-   :width: 600px
-   :scale: 100
-   :alt: 
+   :scale: 50
 
 #.  Provide the name of your organisation, the unique organisation ID
     according to the IATI Standard, and the type of your organisation.
@@ -211,9 +207,7 @@ Map your data
 -------------
 
 .. figure:: iati_conversion_tool_html_13e89131.png
-   :width: 600px
-   :scale: 100
-   :alt: 
+   :scale: 50
 
 #. From the left-hand side navigation, click on "**2. Mapping**\ ".
 
@@ -254,9 +248,7 @@ Convert your data
 -----------------
 
 .. figure:: iati_conversion_tool_html_d72c78fe.png
-   :width: 600px
-   :scale: 100
-   :alt: 
+   :scale: 50
 
 #. When you're ready to convert your data, first make sure you've saved
    your mapping by clicking the blue "Save model" button on the right
