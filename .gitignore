@@ -16,3 +16,4 @@ csviatimodeleditor/uploads
 csviatimodeleditor/static/uploads
 csviatimodeleditor/icconfig.ini
 *.swp
+docs/_build
