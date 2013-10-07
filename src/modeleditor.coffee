@@ -247,7 +247,7 @@ class DimensionWidget extends Widget
     try
       # FIXME
       default_fields_fields = eval('this.default_fields'+curRow.attr('data-prefix').replace('mapping['+@name+']','').replace(/\[/g,'["').replace(/\]/g,'"]'))
-    catch
+    catch error
       default_fields_fields = {}
     if name == ''
       return false
@@ -273,7 +273,7 @@ class DimensionWidget extends Widget
     try
       # FIXME
       default_fields_fields = eval('this.default_fields'+curRow.attr('data-prefix').replace('mapping['+@name+']','').replace(/\[/g,'["').replace(/\]/g,'"]'))
-    catch
+    catch error
       default_fields_fields = {}
     if name of default_fields_fields
       data['fields'][name] = default_fields_fields[name]
@@ -509,7 +509,9 @@ class DimensionsWidget extends Delegator
     data['mapping'][name] = DEFAULT_FIELD_SETUP[iati_field]
     data['mapping'][name]['label'] = name
     data['mapping'][name]['iati-field'] = iati_field
-    this.addDimension(name.trim()).deserialize(data)
+    w = this.addDimension(name.trim())
+    w.deserialize(data)
+    w.element.get(0).scrollIntoView()
 
   promptAddDimensionNamed: (thename, props) ->
     alert("Column \"" + thename + "\" has been added.")
