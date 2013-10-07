@@ -379,6 +379,7 @@ def model_convert(id=id):
                     data = urllib.urlencode(values)
                     req = urllib2.Request(url, data)
                     xml_url = ''
+                    error = ''
                     try:
                         print url
                         response = urllib2.urlopen(req)
@@ -386,12 +387,9 @@ def model_convert(id=id):
                         #print the_page_json
                         the_page = json.loads(the_page_json)
                         if "error" in the_page:
-                            output = the_page["error"]
+                            error = the_page["error"]
                         else:
                             xml_url = the_page["result"]
-                            output = ("<p><a href=\""+url_for('model', id=getmodel.id)+"\">Back to Model</a><p><p>IATI-XML file saved to <a href=\"" + xml_url  + "\">" + xml_url + "</a></p>" +
-                            "<p><a href=\"http://tools.aidinfolabs.org/showmydata/index.php?url="+urllib.quote_plus(xml_url)+"\" target=\"_blank\">Preview</a> " +
-                            "<form action=\"http://tools.aidinfolabs.org/validator/\" method=\"post\" target=\"_blank\"><input type=\"hidden\" value=\""+xml_url+"\" name=\"url\"><a href=\"\" onclick=\"parentNode.submit();return false;\">Validate</a></form></p>")
                         # Handle keyerror TODO
                     except urllib2.HTTPError, e:
                         if (e.code == 400):
@@ -404,7 +402,9 @@ def model_convert(id=id):
                     db.session.add(xml_file)
                     db.session.commit()
 
-                    return render_template('model-convert.html', output=Markup(output), id=id, model_name=getmodel.model_name,
+
+                    return render_template('model-convert.html', id=id, model_name=getmodel.model_name,
+                            error=error, xml_url=xml_url, xml_url_encoded=urllib.quote_plus(xml_url),
                             #model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,
                             csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),
                             #all_csv_files=getallcsv,
