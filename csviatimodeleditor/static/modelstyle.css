@@ -50,10 +50,6 @@ table td:first-child {
   overflow:auto;
   z-index: 1;
 }
-.modeleditor .modeltoggle {
-  width: 13em;
-  font-style:italic;
-}
 
 .modeleditor .steps ul {
   list-style: none;
@@ -67,7 +63,7 @@ table td:first-child {
   display:block;
 }
 
-.modeleditor .steps ul li, .modeltoggle a {
+.modeleditor .steps ul li {
   cursor: pointer;
   width: 100%;
   margin: 0;
@@ -81,26 +77,23 @@ table td:first-child {
   color:#ffffff;
 }
 
-.modeleditor .steps ul li a:hover, .modeltoggle a:hover {
+.modeleditor .steps ul li:hover {
   background-color:#365e93;
   color:#ffffff;
 }
 
-.modeleditor .steps ul li a, .modeltoggle a {
+.modeleditor .steps ul li a {
   display: inline-block;
   color: inherit;
   text-decoration: inherit;
   padding: 0.5em;
 }
 
-.modeleditor .steps ul li span {
-/*  color: #aaa;*/
-}
-
 .modeleditor .steps ul li ul li {
   text-align: left;
   border-bottom: none;
   border-top: 1px dashed #ccc;
+  background-color:#ffffff;
 }
 
 .modeleditor .steps ul li.active ul li {
@@ -111,6 +104,7 @@ table td:first-child {
 .modeleditor .steps ul li ul li a {
   text-align: left;
   padding: 0.25em 0.25em 0.25em 2em;
+  color: #333
 }
 
 .modeleditor .forms {
