@@ -19,8 +19,6 @@
     &nbsp;&nbsp;&nbsp;
     <a href="https://github.com/IATI/CSV2IATI" target="_blank">Source code</a>
     &nbsp;&nbsp;&nbsp;
-    <a href="http://csv2iati.readthedocs.org/en/latest/user_guide.html">User Guide</a> 
-    &nbsp;&nbsp;&nbsp;
     <a href="http://myaccount.zendesk.com/account/dropboxes/20239858" onClick="script: Zenbox.show(); return false;">Feedback</a>
 </div>
 <div id="content">
@@ -33,6 +31,7 @@
 	<li><a href="{{url_for('index')}}">Dashboard</a></li>
 	<li><a href="{{url_for('user', id=user_id)}}">Edit your profile</a></li>
 	{% if admin %}<li><a href="{{url_for('user')}}">Edit other users</a></li>{%endif%}
+	<li><a href="{{url_for('docs', docname='user_guide.html')}}">User Guide</a></li>
 	<li><a href="{{url_for('logout')}}">Logout</a></li>
 </ul>
 </div>
