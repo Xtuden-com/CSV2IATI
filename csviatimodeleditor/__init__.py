@@ -601,11 +601,10 @@ def logout():
 import codecs
 @app.route('/docs/<path:docname>')
 def docs(docname=''):
-    user_id = session['user_id']
     if docname.endswith('.html'):
         return render_template('docs.html',
             body=Markup(codecs.open('docs/_build/html/'+docname, encoding="utf-8").read()),
-            username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
+            username=username(), user_id=user_id(), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
     else:
         return open('docs/_build/html/'+docname).read()
 @app.route('/docs/')
