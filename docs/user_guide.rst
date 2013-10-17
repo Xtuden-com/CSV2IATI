@@ -1,6 +1,10 @@
 User Guide
 ==========
 
+.. toctree::
+
+   user_guide
+
 Summary
 -------
 
