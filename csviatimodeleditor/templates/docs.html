@@ -1,4 +1,36 @@
 {% extends "layout.html" %}
+{% block extrahead %}
+<style>
+    #docs {max-width:900px; margin:auto;}
+    a.headerlink {
+        visibility: hidden;
+    }
+
+    h1:hover > a.headerlink,
+    h2:hover > a.headerlink,
+    h3:hover > a.headerlink,
+    h4:hover > a.headerlink,
+    h5:hover > a.headerlink,
+    h6:hover > a.headerlink,
+    dt:hover > a.headerlink {
+        visibility: visible;
+    }
+</style>
+{% endblock %}
+
+
+
 {% block body %}
+{% if not logged_in %}
+<div class="nav">
+<ul>
+    <li>You are not currently logged in.</li>
+    <li><a href="{{url_for('index')}}">Login</a></li>
+</ul>
+</div>
+<div class="clearer">&nbsp;</div>
+{% endif %}
+<div id="docs">
 {{ body }}
+</div>
 {% endblock %}

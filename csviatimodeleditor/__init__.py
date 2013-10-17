@@ -599,6 +599,7 @@ def logout():
     return redirect(url_for('index'))
 
 import codecs
+import mimetypes
 @app.route('/docs/<path:docname>')
 def docs(docname=''):
     if docname.endswith('.html'):
@@ -606,7 +607,10 @@ def docs(docname=''):
             body=Markup(codecs.open('docs/_build/html/'+docname, encoding="utf-8").read()),
             username=username(), user_id=user_id(), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
     else:
-        return open('docs/_build/html/'+docname).read()
+        mimetype, encoding = mimetypes.guess_type(docname)
+        return Response(response=open('docs/_build/html/'+docname).read(),
+                        status=200,
+                        mimetype=mimetype)
 @app.route('/docs/')
 def docs_index():
     return docs('index.html')

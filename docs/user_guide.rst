@@ -1,8 +1,5 @@
-.. figure:: iati_conversion_tool_html_5218c5df.png
-   :alt: 
-
-IATI Conversion Tool
-====================
+User Guide
+==========
 
 Summary
 -------
