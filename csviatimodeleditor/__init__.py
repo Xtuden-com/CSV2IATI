@@ -602,13 +602,14 @@ import codecs
 import mimetypes
 @app.route('/docs/<path:docname>')
 def docs(docname=''):
+    docsdir = os.path.join(os.path.dirname(__file__), '..', 'docs')
     if docname.endswith('.html'):
         return render_template('docs.html',
-            body=Markup(codecs.open('docs/_build/html/'+docname, encoding="utf-8").read()),
+            body=Markup(codecs.open(docsdir+'/_build/html/'+docname, encoding="utf-8").read()),
             username=username(), user_id=user_id(), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
     else:
         mimetype, encoding = mimetypes.guess_type(docname)
-        return Response(response=open('docs/_build/html/'+docname).read(),
+        return Response(response=open(docsdir+'/_build/html/'+docname).read(),
                         status=200,
                         mimetype=mimetype)
 @app.route('/docs/')
