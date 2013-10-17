@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 2.2
+
+The major change in this release is that the documentation has been integrated into the conversion tool itself.
+
+Some small user interface changes have been made to make it more obvious that you can jump to a specific section in the modeleditor, and to move the screen when a new element is added.
+
 ## Version 2.1
 
 From this release, this conversion tool is now known as CSV2IATI, to avoid confusion with tools for converting to csv.
