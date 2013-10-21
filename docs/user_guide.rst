@@ -8,34 +8,32 @@ User Guide
 Summary
 -------
 
-The International Aid Transparency Initiative (IATI) is the emerging
+The International Aid Transparency Initiative (IATI) is the recognised
 common standard for aid data. As increasing numbers of organisations are
-working to publish their aid data to IATI during 2012, the IATI
-Secretariat has been working on a number of tools to help make this
-process easier.
+working to publish their aid data to IATI, the IATI Secretariat has been 
+working on a number of tools to help make this process easier.
 
 The IATI Conversion Tool is aimed at organisations that have too many
 projects to enter manually into a web-entry platform, but not enough
 projects to have in-house technical support that could help with
-implementation. It will make publication less labour-intensive and
+implementation. It aims to make publication less labour-intensive and
 significantly increase capacity to publish more data from more
 organisations.
 
 Map and convert data to IATI
 ----------------------------
 
-The IATI Conversion Tool provides a service to convert a spreadsheet of
+The IATI CSV Conversion Tool provides a service to convert a spreadsheet of
 aid data into the IATI format (technically called “IATI-XML”).
 Spreadsheets will have to satisfy some minimum conditions for the way
 they are formatted, but the Conversion Tool is flexible enough to allow
-a broad range of organisations to convert their data without much work
-required in advance.
+a broad range of organisations to convert their data without too much work.
 
-To use the Conversion Tool, you will need to:
+To use the Conversion Tool you will need to:
 
-#. Extract the data from your internal project management system;
+#. Extract the required data from internal project management systems;
 
-#. Make sure the data is a single spreadsheet, and saved in the CSV
+#. Make sure the data is a single spreadsheet and saved in the CSV
    (“comma-separated values”) format [#]_.
 
 #. Upload the data to the Conversion Tool website;
@@ -46,16 +44,20 @@ To use the Conversion Tool, you will need to:
    http://iatistandard.org/activities-standard/overview
 
 #. Check that you’re happy with the mapping you’ve created (you might
-   want to share it around your organisation);
+   want to share it around your organisation?);
 
-#. Click “Convert” and your will receive your data back as IATI-XML.
+#. Click “Convert” to create an output datafile of IATI-XML;
 
-#. If you’re happy with what you’ve created, you will be able to
+#. Click “Validate” to test that your resultant datafile contains only valid IATI-XML.
+
+#. When you’re happy with what you’ve created, you can 
    register your data with the IATI Registry.
 
 Organisations can use the mapping they’ve created for frequently
 re-publishing updated data, by simply uploading a new CSV file and
-clicking "Convert". The service is available as open-source software, so
+clicking "Convert". 
+
+The service is available as open-source software, so
 organisations could run the service on their own web servers to convert
 directly out of their internal systems.
 
@@ -65,6 +67,9 @@ Accessing the tool
 ------------------
 
 To access the tool, visit http://csv2iati.iatistandard.org
+
+Tool Support
+------------------
 
 If you have any questions about how to use the tool or queries about
 implementation, please contact The IATI support team at
@@ -76,27 +81,27 @@ Technical preconditions for the data
 The tool has certain preconditions for how the data must initially be
 formatted in order to be converted:
 
-a. The spreadsheet must be in the CSV ("comma-separated values") format;
+a. The spreadsheet must be in CSV ("comma-separated values") format;
 
 #. The spreadsheet must be well-structured (e.g. no illegal characters;
-   only values in “value” columns – so no € or $ signs, for example);
+   only values in “value” columns – so no € or $ signs or commas for example);
 
 #. Data must use valid codelists as defined at
    http://iatistandard.org/codelists, and codes must be incorporated as
    a separate column in your data.
 
 #. The data quality is the responsibility of the data provider – the
-   conversion tool will not provide any cleaning or reconciliation
+   conversion tool cannot provide any content cleaning or reconciliation
    services;
 
-#. Multiple rows per activity are accepted, but only of one field. So,
+#. Multiple rows per activity are accepted but only of one field. So,
    you can have multiple transactions rows per activity OR multiple
-   sector rows per activity, but not both;
+   sector rows per activity, but currently not both;
 
 #. Multiplicity of similar columns is accepted (e.g. title in English
    and French);
 
-#. Columns can be named however the data provider wants in the original
+#. Columns can be named however the data publisher wants in the original
    spreadsheet.
 
 Preparing your data
@@ -110,7 +115,7 @@ data, so the exact process you will need to undertake will vary.
 #. All of the data in a single spreadsheet;
 
 #. Multiple rows per activity if possible – for example, if you have
-   multiple transactions for one activity, or multiple sectors for one
+   multiple transactions for one activity or multiple sectors for one
    activity.
 
 #. You can have as many columns in the data as you want, so if you have
@@ -125,7 +130,7 @@ data, so the exact process you will need to undertake will vary.
 **Then, you need to make sure you are using all the necessary
 codelists.**
 
-#. **Countries –**\ If you have one column stating the recipient country
+#. **Countries – **\ If you have one column stating the recipient country
    (it might be \`recipient\_country\`), make sure you have a second
    column stating the recipient country code (maybe
    \`recipient\_country\_code\`). This should be the ISO-2 code found on
@@ -152,76 +157,70 @@ codelists.**
 Upload your data
 ----------------
 
-.. figure:: iati_conversion_tool_html_3a78efda.png
-   :scale: 50
-
 #. Log on to http://csv2iati.iatistandard.org
+
+.. figure:: iati_CSV2IATI_logon.png
+   :scale: 50
 
 #. Register to create an account (it's free, and with the exception of
    administrators, only you will be able to see your own data).
 
 #. Once you're logged in, create a "model", which describes how your
    data relates to the IATI Standard. Just give it a name, and select
-   your data file to upload.
+   your CSV data file to upload.
 
 #. At this point, the service will do some basic checks on your data, to
-   make sure that it is provided in the CSV format, and it will also
-   detect some other things like the character encoding in your data.
+   make sure that it is provided in the CSV format. It will also
+   detect other things like the character encoding in your data.
 
-#. If you upload the wrong file, don't worry – you can upload another
-   one later on.
+#. If you upload the wrong file, don't worry – you can just upload another
+   one.
 
 Provide some basic information about your organisation
 ......................................................
 
-.. figure:: iati_conversion_tool_html_7f330693.png
+.. figure:: IATI-CSV2IATI-Organisation.png
    :scale: 50
 
 #.  Provide the name of your organisation, the unique organisation ID
-    according to the IATI Standard, and the type of your organisation.
+    according to the IATI Standard and the type of your organisation.
     The unique organisation ID, if you are an official donor, is
     available from the IATI Standard website at:
 
     http://iatistandard.org/codelists/organisation
 
-    If you are not an official donor, then your organisation ID takes the
-    following format:
+    If you are not an official donor then your organisation ID is generated
+    as described at:
+    
+    http://iatistandard.org/getting-started/organisation-data/organisation-identifiers/
 
-    [Your country of registration's ISO-2 code]-[National registration body
-    you are registered with (e.g. company or charity register)]-[The
-    national registration body's unique ID for your organisation]
+    However, please contact IATI Support if you are unsure about this.
 
-    For example:
+#. Provide the default currency for your data and the language it's
+   recorded in.
 
-        GB-CHC-202918 (United Kingdom, Charity Commission, Oxfam GB)
-
-        Contact the IATI Secretariat if you are unsure about this.
-
-#. Then provide the default currency for your data and the language it's
-   provided in.
-
-#. Finally, explain the data structure that your uploaded data is
+#. Finally, select the data structure that your uploaded data is
    provided in. Are there multiple transaction-rows per activity, or
    multiple sector-rows? Or, do you just have one row per activity?
 
 Map your data
 -------------
 
-.. figure:: iati_conversion_tool_html_13e89131.png
+.. figure:: IATI-CSV2IATI-Mapping.png
    :scale: 50
 
 #. From the left-hand side navigation, click on "**2. Mapping**\ ".
 
 #. This part looks slightly complicated, but it's actually relatively
-   straightforward. Using the user interface, you can describe how your
+   straightforward. Using the user interface, you describe how your
    data relates to the IATI Standard.
 
-#. The default screen will show you the list of elements that you could
+#. The default screen shows the list of elements that you can
    use in converting your IATI data.
 
 #. For each part of the IATI Standard – each field in each element or
-   dimension – from the drop-down box, select the column that contains
-   the relevant data.
+   dimension – , select the column that contains
+   the relevant data from the drop-down box.
 
    a. For example, if you are looking at the Title element, select the
       column that contains the project title in your uploaded file.
@@ -234,13 +233,14 @@ Map your data
 
    #. In some cases, you will have information that is the same for all
       your activities – for example, the funding organisation. In that
-      case, you can click to change the type of data by clicking "to
-      fixed value" alongside the relevant field. You can switch back
-      again to choose a column by clicking "to column in data".
+      case, you can click to change the "Change Type" field to 'Fixed'.
+      alongside the relevant field and then enter the relevant value into
+      the field box. You can switch back again to choose a column 
+      by clicking and selecting "Column" at any time. 
 
 #. If there are some fields or dimensions that are not relevant to your
    data, you can click the rubbish bin next to the field or the "Delete
-   this dimension" link to delete the entire dimension.
+   this element" link to delete the entire element.
 
 #. You can save your mapping at any time and come back to it later. Just
    click the blue "Save model" button on the right hand side.
@@ -248,7 +248,7 @@ Map your data
 Convert your data
 -----------------
 
-.. figure:: iati_conversion_tool_html_d72c78fe.png
+.. figure:: IATI-CSV2IATI-Conversion.png
    :scale: 50
 
 #. When you're ready to convert your data, first make sure you've saved
@@ -262,18 +262,49 @@ Convert your data
    data, it may take a few minutes for the process to complete. Do not
    reload your browser in this time or click the button again, as it
    will have to start again.
+   
+#. If the conversion was unsuccessful, you will be informed of any
+   errors. If you do not understand them (or what you need to take),
+   please contact IATI Support, providing details about any errors 
+   that may have been provided.
 
-#. If the conversion was successful, you will be able to download your
-   converted IATI-XML data via a public link, or else register that
-   manually with the IATI Registry. Make a note of the address of the
-   data.
+#. If the conversion was successful, you will be able to access your
+   converted IATI-XML data via the URL link displayed. You may want to 
+   make a note of the address of the datafile.
+   
+     
+.. figure:: IATI-CSV2IATI-Converted.png
+   :scale: 50
 
-#. If the conversion was unsuccessful, you should be informed of the
-   errors. If you do not understand them (or what to do about it),
-   please get in touch with the IATI Secretariat, providing details
-   about the page you were on at the time and any errors that may have
-   been provided.
 
+Validate your new datafile
+---------------------------------
+
+#. Once you have converted your model successfully ,click on the 
+   'Validate' link. This will check that your file is 
+   using valid XML. If this check is unsuccessful you will be informed
+   of any errors which you should try to correct. 
+   
+.. figure:: IATI-CSV2IATI-Validate.png
+   :scale: 50
+   
+#. If the validation was successful, you should then click on the 'Test 
+   Validation' link. This will check that your file also conforms to the
+   IATI Standard Schema. If this check is unsuccessful you will be
+   provided with details of any errors which you should try to correct.
+   This may mean that you have to amend the data in your original CSV 
+   file.
+
+Download your new datafile
+---------------------------------
+
+#. Once you have validated your model successfully you can download
+   your IATI-XML file to wherever you host your IATI files (ideally 
+   on your own servers). NB Don't forget to update your IATI Registry  
+   if you have changed the location of your published IATI files.
+   
+   
+   
 Uploading and converting new data
 ---------------------------------
 
@@ -281,19 +312,13 @@ Uploading and converting new data
    might want to publish again once a month. You can do this without
    mapping your data all over again.
 
-#. When you open a model, in the top right hand corner you'll see the
-   following:
-
-   .. figure:: iati_conversion_tool_html_50a4edec.png
-      :alt: 
-
-#. Click on the Change... link and you will see all of the files that
-   you have uploaded so far.
+#. Simply logon to your account and open the model that you have
+   previously created
 
 #. Click "Upload new file", select the file, and click Upload. Your new
    file will be selected by default.
 
-#. If the data is structured in exactly the same way, you can just click
+#. If the data is structured in exactly the same way,  just click
    "3. Convert" from the left hand side navigation and your data will be
    converted.
 
