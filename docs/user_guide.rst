@@ -159,7 +159,7 @@ Upload your data
 
 #. Log on to http://csv2iati.iatistandard.org
 
-.. figure:: iati_CSV2IATI_logon.png
+.. figure:: IATI-CSV2IATI-Logon.png
    :scale: 50
 
 #. Register to create an account (it's free, and with the exception of
@@ -285,7 +285,7 @@ Validate your new datafile
    using valid XML. If this check is unsuccessful you will be informed
    of any errors which you should try to correct. 
    
-.. figure:: IATI-CSV2IATI-Validate.png
+.. figure:: IATI-CSV2IATI-Validator.png
    :scale: 50
    
 #. If the validation was successful, you should then click on the 'Test 
