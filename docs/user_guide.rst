@@ -175,9 +175,10 @@ Upload your data
 
 #. If you upload the wrong file, don't worry – you can just upload another
    one.
+   
 
 Provide some basic information about your organisation
-......................................................
+-------------------------------------------------------
 
 .. figure:: IATI-CSV2IATI-Organisation.png
    :scale: 50
