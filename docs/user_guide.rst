@@ -120,7 +120,7 @@ data, so the exact process you will need to undertake will vary.
 
 #. You can have as many columns in the data as you want, so if you have
    two titles in two different languages, you can export them both (e.g.
-   as columns \`title\_english\` and \`title\_french\`) and include them
+   as columns ``title_english`` and ``title_french``) and include them
    in your IATI data file.
 
 #. Preferably export in "CSV" format. If you can't do this directly,
@@ -130,10 +130,10 @@ data, so the exact process you will need to undertake will vary.
 **Then, you need to make sure you are using all the necessary
 codelists.**
 
-#. **Countries – **\ If you have one column stating the recipient country
-   (it might be \`recipient\_country\`), make sure you have a second
+#. **Countries** – If you have one column stating the recipient country
+   (it might be ``recipient_country``), make sure you have a second
    column stating the recipient country code (maybe
-   \`recipient\_country\_code\`). This should be the ISO-2 code found on
+   ``recipient_country_code``). This should be the ISO-2 code found on
    the IATI Standard website:
 
    http://iatistandard.org/codelists/country
@@ -142,7 +142,7 @@ codelists.**
    transactions for each activity (e.g., one row for commitments and one
    row for disbursements), make sure you have a column the states the
    transaction type (the text – for example, Disbursement) and another
-   column stating the transaction type code (e.g. \`D\`). The
+   column stating the transaction type code (e.g. ``D``). The
    transaction types and codes should be those stated on the IATI
    Standard website:
 
