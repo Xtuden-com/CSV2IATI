@@ -128,7 +128,9 @@ data, so the exact process you will need to undertake will vary.
    "Save as type" drop-down box, select "CSV (comma-separated values).
 
 **Then, you need to make sure you are using all the necessary
-codelists.**
+codelists. It is recommended that for any column that holds a value from
+one of the IATI Standard codeslists, a second column is added that holds
+the relevant codelist value description. For example:**
 
 #. **Countries** – If you have one column stating the recipient country
    (it might be ``recipient_country``), make sure you have a second
@@ -270,8 +272,11 @@ Convert your data
    that may have been provided.
 
 #. If the conversion was successful, you will be able to access your
-   converted IATI-XML data via the URL link displayed. You may want to 
-   make a note of the address of the datafile.
+   converted IATI-XML data via the URL link displayed. 
+   
+#. You can always find the names of the files created during the 
+   conversion process by clicking on the 'View Conversion History'
+   link on the Conversion page.
    
      
 .. figure:: IATI-CSV2IATI-Converted.png
@@ -281,17 +286,17 @@ Convert your data
 Validate your new datafile
 ---------------------------------
 
-#. Once you have converted your model successfully ,click on the 
-   'Validate' link. This will check that your file is 
-   using valid XML. If this check is unsuccessful you will be informed
+#. Once you have converted your model successfully, we recommend that 
+   you click on the 'Validate' link. This will check that your file is 
+   using valid XML syntax. If this check is unsuccessful you will be informed
    of any errors which you should try to correct. 
    
 .. figure:: IATI-CSV2IATI-Validator.png
    :scale: 50
    
-#. If the validation was successful, you should then click on the 'Test 
-   Validation' link. This will check that your file also conforms to the
-   IATI Standard Schema. If this check is unsuccessful you will be
+#. If the validation was successful, we also recommend that you click on 
+   the 'Test Validation' link. This will check that your file also conforms 
+   to the IATI Standard Schema. If this check is unsuccessful you will be
    provided with details of any errors which you should try to correct.
    This may mean that you have to amend the data in your original CSV 
    file.
