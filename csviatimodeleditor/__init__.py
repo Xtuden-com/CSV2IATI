@@ -388,7 +388,7 @@ def model_convert(id=id):
                         #print the_page_json
                         the_page = json.loads(the_page_json)
                         if "error" in the_page:
-                            error = the_page["error"]
+                            error = Markup(the_page["error"])
                         else:
                             xml_url = the_page["result"]
                         # Handle keyerror TODO
