@@ -10,7 +10,7 @@
     <p><a href="{{ url_for('model', id=id) }}">Back to Model</a></p>
     <p>IATI-XML file saved to <a href="{{xml_url}}">{{xml_url}}</a></p>
     <p><a href="http://tools.aidinfolabs.org/showmydata/index.php?url={{ xml_url_encoded }}" target="_blank">Preview</a>
-    <form action="http://tools.aidinfolabs.org/validator/" method="post" target="_blank"><input type="hidden" value="{{xml_url}}" name="url"><a href="" onclick="parentNode.submit();return false;">Validate</a></form></p>
+    <form action="http://validator.iatistandard.org/" method="post" target="_blank"><input type="hidden" value="{{xml_url}}" name="url"><a href="" onclick="parentNode.submit();return false;">Validate</a></form></p>
     <p>&nbsp;</p>
     <p>Use the links above to help check your XML file. Once you are satisfied that the conversion has been completed correctly, please download the XML file and host it on your own site before adding it to <a href="http://iatiregistry.org/">the registry</a>.</p>
   {% endif %}
