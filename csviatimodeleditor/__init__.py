@@ -184,10 +184,11 @@ def login():
             if (getuser.admin == 1):
                 session['admin'] = getuser.admin
             flash('Welcome back.', 'good')
-            return redirect(url_for('index'))
+        elif (getuser):
+            flash("That password is incorrect for that user. Please try again.", 'bad')
         else:
             flash("Could not find that user. Please try again.", 'bad')
-            return redirect(url_for('index'))
+        return redirect(url_for('index'))
     flash("Please log in.", 'bad')
     return redirect(url_for('index'))
     
