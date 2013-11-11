@@ -664,7 +664,10 @@ class ModelEditor extends Delegator
     for k, v of util.flattenObject(@data)
       # FIXME? this may not deal with complex form elements such as radio
       # buttons or <select multiple>.
-      @form.find("[name=\"#{k}\"]").val(v)
+      
+      # Allow data encoding to be populated from the database each time
+      if k != "organisation[data-encoding]"
+        @form.find("[name=\"#{k}\"]").val(v)
 
     # Send updated model copy to each subcomponent, as more complex
     # components may not have been correctly filled out by the above.
