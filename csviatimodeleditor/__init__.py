@@ -363,6 +363,16 @@ def model_change_csv(id=id, csv_id=''):
         flash("Please log in.", 'bad')
         return redirect(url_for('index'))
 
+@app.route('/model/convert/<id>/download')
+def model_convert_download(id):
+    import urllib2
+    xml_url = XMLFile.query.filter_by(iati_model_id=id)[-1].xml_url
+    xml = urllib2.urlopen(xml_url)
+    return Response(xml, headers=[('Content-Type', 'application/octet-stream'),
+        ('Content-Disposition', 'attachment; filename="{0}"'.format(xml_url.split('/')[-1]))])
+    #return Response(headers=[('X-SendFile', '')])
+
+
 @app.route('/model/convert/<id>')
 def model_convert(id=id):
     if ('username' in session):

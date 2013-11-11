@@ -8,7 +8,7 @@
     <p>{{ error }}</p>
   {% else %}
     <p><a href="{{ url_for('model', id=id) }}">Back to Model</a></p>
-    <p>IATI-XML file saved to <a href="{{xml_url}}">{{xml_url}}</a></p>
+    <p>IATI-XML file saved to <a href="{{xml_url}}">{{xml_url}}</a> (<a href="{{ url_for('model_convert_download', id=id) }}">Download</a>)</p>
     <p><a href="http://tools.aidinfolabs.org/showmydata/index.php?url={{ xml_url_encoded }}" target="_blank">Preview</a>
     <form action="http://validator.iatistandard.org/" method="post" target="_blank"><input type="hidden" value="{{xml_url}}" name="url"><a href="" onclick="parentNode.submit();return false;">Validate</a></form></p>
     <p>&nbsp;</p>
