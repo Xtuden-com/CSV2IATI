@@ -305,7 +305,11 @@
                   ${altFieldName},
                   alternative
                 {{/if}}
-                ${fieldName}
+                {{if fieldName == 'text' }}
+                  (main element contents)
+                {{else}}
+                  ${fieldName}
+                {{/if}}
                 <input type='hidden' name='${prefix}[${fieldName}][datatype]' value='column'>
               </td>
               <td>
@@ -467,9 +471,17 @@
                 {{if default_fields}}
                 {{each(n,f) default_fields.fields}}
                   {{if data.fields && n in data.fields }}
-                    <option value="${n}" disabled>${n}</option>
+                    {{if n == 'text'}}
+                      <option value="${n}" disabled>(main element contents)</option>
+                    {{else}}
+                      <option value="${n}" disabled>${n}</option>
+                    {{/if}}
                   {{else}}
-                    <option value="${n}">${n}</option>
+                    {{if n == 'text'}}
+                      <option value="${n}">(main element contents)</option>
+                    {{else}}
+                      <option value="${n}">${n}</option>
+                    {{/if}}
                   {{/if}}
                 {{/each}}
                 {{/if}}
