@@ -659,12 +659,16 @@
       $('.forms').find('form').change()
       $('#model_data').ajaxSubmit({
         success: function() {
+            if ($('ul.flashes').css('position') != 'fixed') {
+                $('ul.flashes').css('position','fixed');
+                $('ul.flashes').css('top','0px');
+                $('ul.flashes').css('left','25px');
+                $('ul.flashes').css('right','25px');
+                $('ul.flashes').css('z-index','10');
+                $('ul.flashes').html('');
+            }
             flash = $('<li class="good">Model saved</li>')
             $('.flashes').append(flash);
-            $('ul.flashes').css('position','fixed');
-            $('ul.flashes').css('top','0px');
-            $('ul.flashes').css('left','25px');
-            $('ul.flashes').css('right','25px');
             flash.fadeIn('slow');
             flash.not('.flashes li.persist').delay(1500).fadeOut('slow');
           },
