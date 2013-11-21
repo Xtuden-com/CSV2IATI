@@ -487,10 +487,12 @@ def model(id='',responsetype=''):
                         getmodel.model_name = request.form['model_name']
                     if 'delete' in request.form:
                         getmodel.model_owner = '-1'
-                    if 'admin' in session and 'model_owner' in request.form:
-                        getmodel.model_owner = request.form['model_owner']
                     if 'copy' in request.form:
                         getmodel = IATIModel(**dict([ (c.name,getattr(getmodel,c.name)) for c in getmodel.__table__.c  if c.name != 'id' ]))
+                    # This must appear after the copy statement to prevent both
+                    # models being moved. #164
+                    if 'admin' in session and 'model_owner' in request.form:
+                        getmodel.model_owner = request.form['model_owner']
                     db.session.add(getmodel)
                     db.session.commit()
                     if 'delete' in request.form:
