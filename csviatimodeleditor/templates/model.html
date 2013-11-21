@@ -189,9 +189,98 @@
               <legend>Advanced controls</legend>
                   <dt><label for='organisation[data-encoding]'>Data Encoding:</label></dt>
                   <dd>
-                  <input type="text" name="organisation[data-encoding]" value="{%endraw%}{{csv_encoding}}{%raw%}" readonly>
+                  Automatically detected: <input type="text" name="organisation[data-encoding]" value="{%endraw%}{{csv_encoding}}{%raw%}" readonly>
+                  <br/>
+                  Override?: <select name="organisation[data-encoding-override]">
+                    <option value="">No (Use automatically detected)</option>
+                    <option value="latin_1">latin_1 (iso8859_1)</option>
+                    <option value="iso8859_15">ISO-8859-15</option>
+                    <option value="cp1140">cp1140</option>
+                    <option value="iso8859_2">ISO-8859-2</option>
+                    <option value="cp1250">cp1250</option>
+                    <option value="iso8859_3">ISO-8859-3</option>
+                    <option value="iso8859_4">ISO-8859-4</option>
+                    <option value="iso8859_5">ISO-8859-5</option>
+                    <option value="iso8859_6">ISO-8859-6</option>
+                    <option value="iso8859_7">ISO-8859-7</option>
+                    <option value="iso8859_8">ISO-8859-8</option>
+                    <option value="iso8859_9">ISO-8859-9</option>
+                    <option value="iso8859_10">ISO-8859-10</option>
+                    <option value="iso8859_13">ISO-8859-13</option>
+                    <option value="iso8859_14">ISO-8859-14</option>
+                    <option value="cp1251">cp1251</option>
+                    <option value="cp1252">cp1252</option>
+                    <option value="cp1253">cp1253</option>
+                    <option value="cp1254">cp1254</option>
+                    <option value="cp1255">cp1255</option>
+                    <option value="cp1256">cp1256</option>
+                    <option value="cp1257">cp1257</option>
+                    <option value="cp1258">cp1258</option>
+                    <option value="ascii">ascii</option>
+                    <option value="big5">big5</option>
+                    <option value="big5hkscs">big5hkscs</option>
+                    <option value="cp037">cp037</option>
+                    <option value="cp424">cp424</option>
+                    <option value="cp437">cp437</option>
+                    <option value="cp500">cp500</option>
+                    <option value="cp737">cp737</option>
+                    <option value="cp775">cp775</option>
+                    <option value="cp850">cp850</option>
+                    <option value="cp852">cp852</option>
+                    <option value="cp855">cp855</option>
+                    <option value="cp856">cp856</option>
+                    <option value="cp857">cp857</option>
+                    <option value="cp860">cp860</option>
+                    <option value="cp861">cp861</option>
+                    <option value="cp862">cp862</option>
+                    <option value="cp863">cp863</option>
+                    <option value="cp864">cp864</option>
+                    <option value="cp865">cp865</option>
+                    <option value="cp866">cp866</option>
+                    <option value="cp869">cp869</option>
+                    <option value="cp874">cp874</option>
+                    <option value="cp875">cp875</option>
+                    <option value="cp932">cp932</option>
+                    <option value="cp949">cp949</option>
+                    <option value="cp950">cp950</option>
+                    <option value="cp1006">cp1006</option>
+                    <option value="cp1026">cp1026</option>
+                    <option value="euc_jp">euc_jp</option>
+                    <option value="euc_jis_2004">euc_jis_2004</option>
+                    <option value="euc_jisx0213">euc_jisx0213</option>
+                    <option value="euc_kr">euc_kr</option>
+                    <option value="gb2312">gb2312</option>
+                    <option value="gbk">gbk</option>
+                    <option value="gb18030">gb18030</option>
+                    <option value="hz">hz</option>
+                    <option value="iso2022_jp">iso2022_jp</option>
+                    <option value="iso2022_jp_1">iso2022_jp_1</option>
+                    <option value="iso2022_jp_2">iso2022_jp_2</option>
+                    <option value="iso2022_jp_2004">iso2022_jp_2004</option>
+                    <option value="iso2022_jp_3">iso2022_jp_3</option>
+                    <option value="iso2022_jp_ext">iso2022_jp_ext</option>
+                    <option value="iso2022_kr">iso2022_kr</option>
+                    <option value="johab">johab</option>
+                    <option value="koi8_r">koi8_r</option>
+                    <option value="koi8_u">koi8_u</option>
+                    <option value="mac_cyrillic">mac_cyrillic</option>
+                    <option value="mac_greek">mac_greek</option>
+                    <option value="mac_iceland">mac_iceland</option>
+                    <option value="mac_latin2">mac_latin2</option>
+                    <option value="mac_roman">mac_roman</option>
+                    <option value="mac_turkish">mac_turkish</option>
+                    <option value="ptcp154">ptcp154</option>
+                    <option value="shift_jis">shift_jis</option>
+                    <option value="shift_jis_2004">shift_jis_2004</option>
+                    <option value="shift_jisx0213">shift_jisx0213</option>
+                    <option value="utf_16">utf_16</option>
+                    <option value="utf_16_be">utf_16_be</option>
+                    <option value="utf_16_le">utf_16_le</option>
+                    <option value="utf_7">utf_7</option>
+                    <option value="utf_8">utf_8</option>
+                  </select>
                   <dd class='hints'>
-                    <p>The encoding of your data. This was automatically detected on import and can not be modified.</p>
+                    <p>The encoding of your data.</p>
                   </dd>
                   <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
                   <dd>
