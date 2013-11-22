@@ -9,6 +9,7 @@
 <fieldset>
 <legend>Update details</legend>
 <form action="{{url_for('user',id=user.id)}}" method="post">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}" />
 <input type="hidden" id="id" name="id" value="{{user.id}}" />
 <dl>
 <dt>

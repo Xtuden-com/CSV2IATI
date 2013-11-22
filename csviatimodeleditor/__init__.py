@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response
+from flask import Flask, render_template, flash, request, Markup, session, redirect, url_for, escape, Response, abort
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, UnicodeText, Date, DateTime, Float, Boolean
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,13 +7,11 @@ import ConfigParser
 import csv
 import time
 import os
+import base64
 import chardet
 import json
 from werkzeug import secure_filename
 import re
-
-from functools import partial
-render_template = partial(render_template, version='2.3-beta')
 
 # Get configuration details
 Config = ConfigParser.RawConfigParser()
@@ -36,6 +34,20 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 db.create_all()
+
+@app.before_request
+def csrf_protect():
+    if request.method == "POST":
+        token = session.pop('_csrf_token', None)
+        if not token or token != request.form.get('_csrf_token'):
+            abort(403)
+def generate_csrf_token():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = base64.b64encode(os.urandom(16))
+    return session['_csrf_token']
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
+
+app.jinja_env.globals['version'] = '2.3-beta'
 
 
 class IATIModel(db.Model):

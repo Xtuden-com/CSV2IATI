@@ -33,6 +33,7 @@
 <legend>Login</legend>
 <p><span style="color:red">NB: This is version 2 of the CSV conversion tool.</span> Users and models have <strong>not</strong> been migrated from the old version, so please sign up for a new account. Please contact <a href="mailto:support@iatistandard.org">support@iatistandard.org</a> if you need support with transferring models.</p>
 <form method="post" action="{{url_for('login')}}">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}" />
 <dl>
 <dt><label for="login[username]">Username</label></dt>
 <dd><input type="text" name="username" id="login[username]" /></dd>
@@ -46,6 +47,7 @@
 <fieldset name="register">
 <legend>Register</legend>
 <form method="post" action="{{url_for('register')}}">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}" />
 <dl>
 <dt><label for="username">Username</label></dt>
 <dd><input type="text" name="username" id="username"/></dd>

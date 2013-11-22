@@ -42,6 +42,7 @@
 <p>In order to convert your data to the IATI Standard, you need to create a "model" which explains how your data relates to the Standard.</p>
 <p>To get started, give your model a name and upload a spreadsheet of data.</p>
 <form action="{{url_for('create_model')}}" enctype="multipart/form-data" method="post" id="create_model_form">
+<input name="_csrf_token" type="hidden" value="{{ csrf_token() }}" />
 <dl>
 <dt>
 <label for="model_name">Model name:</label>
