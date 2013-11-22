@@ -627,6 +627,7 @@ def docs(docname=''):
     if docname.endswith('.html'):
         return render_template('docs.html',
             body=Markup(codecs.open(docsdir+'/_build/html/'+docname, encoding="utf-8").read()),
+            docname=docname[:-5],
             username=username(), user_id=user_id(), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
     else:
         mimetype, encoding = mimetypes.guess_type(docname)

@@ -2,9 +2,13 @@
 
 This repository shows the CSV2IATI Model Editor, which will help you to create a model to map your spreadsheet of aid data to the IATI format.
 
+## Use CSV2IATI
+
+A public instance of CSV2IATI can be found at http://csv2iati.iatistandard.org/
+
 ## User Guide
 
-http://csv2iati.readthedocs.org/en/latest/user_guide.html
+http://csv2iati.iatistandard.org/docs/user_guide.html
 
 ## Installation
 
@@ -42,7 +46,7 @@ Then run the application. In a local instance you can just do:
 
 ## License
 
-The CSV2IATI model editor code is released under the MIT license, a copy 
+The CSV2IATI model editor code and docs are released under the MIT license, a copy
 of which can be found in `LICENSE`.
 
 Forked from http://github.com/nickstenning/openspending.modeleditor with thanks :)

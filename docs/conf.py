@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'CSV2IATI'
-copyright = u'2013, Development Initiatives'
+copyright = u'2012-2013, Development Initiatives'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
