@@ -1854,7 +1854,6 @@ DimensionWidget = (function(_super) {
     }
     this.element.html($.tmpl('tpl_dimension', this));
     this.element.trigger('fillColumnsRequest', [this.element.find('select.column')]);
-    this.element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')]);
     formObj = {
       'mapping': {}
     };
@@ -2181,7 +2180,7 @@ DimensionsWidget = (function(_super) {
   };
 
   DimensionsWidget.prototype.deserialize = function(data) {
-    var dims, name, obj, toRemove, widget, _i, _j, _len, _len1, _ref3, _results;
+    var dims, name, obj, toRemove, widget, _i, _j, _len, _len1, _ref3;
     if (this.ignoreParent) {
       return;
     }
@@ -2201,12 +2200,11 @@ DimensionsWidget = (function(_super) {
       name = toRemove[_j];
       this.removeDimension(name);
     }
-    _results = [];
     for (name in dims) {
       obj = dims[name];
-      _results.push(this.addDimension(name).deserialize(data));
+      this.addDimension(name).deserialize(data);
     }
-    return _results;
+    return this.element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')]);
   };
 
   DimensionsWidget.prototype.createName = function(name) {

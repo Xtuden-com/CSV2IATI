@@ -211,7 +211,6 @@ class DimensionWidget extends Widget
 
     @element.html($.tmpl('tpl_dimension', this))
     @element.trigger('fillColumnsRequest', [@element.find('select.column')])
-    @element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')])
 
     formObj = {'mapping': {}}
     formObj['mapping'][@name] = @data
@@ -477,6 +476,8 @@ class DimensionsWidget extends Delegator
     # Any keys left in dims need to be added
     for name, obj of dims
       this.addDimension(name).deserialize(data)
+    
+    @element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')])
 
 
   createName: (name) ->
