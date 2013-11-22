@@ -1,9 +1,7 @@
 User Guide
 ==========
 
-.. toctree::
-
-   user_guide
+.. contents:: 
 
 Summary
 -------
@@ -19,6 +17,18 @@ projects to have in-house technical support that could help with
 implementation. It aims to make publication less labour-intensive and
 significantly increase capacity to publish more data from more
 organisations.
+
+Accessing the tool
+------------------
+
+To access the tool, visit http://csv2iati.iatistandard.org
+
+Tool Support
+------------------
+
+If you have any questions about how to use the tool or queries about
+implementation, please contact the IATI support team at
+support@iatistandard.org
 
 Map and convert data to IATI
 ----------------------------
@@ -62,18 +72,6 @@ organisations could run the service on their own web servers to convert
 directly out of their internal systems.
 
 .. [#] There are other preconditions required for your CSV data: see below.
-
-Accessing the tool
-------------------
-
-To access the tool, visit http://csv2iati.iatistandard.org
-
-Tool Support
-------------------
-
-If you have any questions about how to use the tool or queries about
-implementation, please contact the IATI support team at
-support@iatistandard.org
 
 Technical preconditions for the data
 ------------------------------------
