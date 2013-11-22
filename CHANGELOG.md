@@ -1,5 +1,17 @@
 # Changelog
 
+## Verison 2.3
+
+* Update model encoding when a new file is uploaded
+* New download link, to make it easier for firewalled users to get the XML file
+* Add encoding override
+
+UI Changes
+* Vertical space before convert button
+* Improve login error messages
+* Backend error messages look better
+* Text 'attribute' renamed
+
 ## Version 2.2
 
 The major change in this release is that the documentation has been integrated into the conversion tool itself.
