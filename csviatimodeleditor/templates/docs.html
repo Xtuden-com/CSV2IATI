@@ -27,10 +27,12 @@
     <li>You are not currently logged in.</li>
     <li><a href="{{url_for('index')}}">Login</a></li>
 </ul>
+{% include 'docnav.html' %}
 </div>
 <div class="clearer">&nbsp;</div>
 {% endif %}
 <div id="docs">
 {{ body }}
 </div>
+<div class="clearer">&nbsp;</div>
 {% endblock %}

@@ -12,6 +12,9 @@ import json
 from werkzeug import secure_filename
 import re
 
+from functools import partial
+render_template = partial(render_template, version='2.3-beta')
+
 # Get configuration details
 Config = ConfigParser.RawConfigParser()
 #try:
