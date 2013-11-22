@@ -187,6 +187,8 @@
               </fieldset>
               <fieldset id="advanced-org">
               <legend>Advanced controls</legend>
+                  <input type='hidden' name='organisation[csv2iati-version]' value='{%endraw%}{{version}}{%raw%}'>
+
                   <dt><label for='organisation[data-encoding]'>Data Encoding:</label></dt>
                   <dd>
                   Automatically detected: <input type="text" name="organisation[data-encoding]" value="{%endraw%}{{csv_encoding}}{%raw%}" readonly>
