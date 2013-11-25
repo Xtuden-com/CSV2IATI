@@ -562,7 +562,7 @@ class ModelEditor extends Delegator
     
     
     $('#multiple_rows_selector').html(
-      "<option value=''>One row per activity</option>" + ("<option value='#{x}'>Multiple #{x} rows per activity</option>" for x in @options.iatifields when x isnt '').join('\n')
+      ("<input type='checkbox' name='organisation[data-structure][multiple][]' value='#{x}'/> Multiple #{x} rows per activity<br/>" for x in @options.iatifields when x isnt '').join('\n')
     )
     
     if (@options.model_data)
