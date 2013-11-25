@@ -92,8 +92,8 @@ h1 {
     color:#365e93;
 }
 h1.title {
-	color:#000000;
-	font-size:28px;
+	color:#333;
+        font-weight: 200;
 	margin-bottom:0px;
 	background-image: url("images/iati.png");
 	background-repeat: no-repeat;
@@ -108,9 +108,9 @@ h1.title span {
     display:block;
     width:600px;
     padding-top:40px;
-    margin: 0px auto 0 auto;
+    padding-left: 280px;
+    /*margin: 0px auto 0 auto;*/
     vertical-align: baseline;
-    text-align:center;
 }
 hr.title {
 	background-color:#365e93;
