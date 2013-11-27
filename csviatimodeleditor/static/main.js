@@ -85,6 +85,67 @@ Delegator = (function() {
 
 })();
 
+$.plugin = function(name, object) {
+  return jQuery.fn[name] = function(options) {
+    var args;
+    args = Array.prototype.slice.call(arguments, 1);
+    return this.each(function() {
+      var instance;
+      instance = $.data(this, name);
+      if (instance) {
+        return options && instance[options].apply(instance, args);
+      } else {
+        instance = new object(this, options);
+        return $.data(this, name, instance);
+      }
+    });
+  };
+};
+
+$.a2o = function(ary) {
+  var obj, walk;
+  obj = {};
+  walk = function(o, path, value) {
+    var key;
+    key = path[0];
+    if (path.length === 2 && path[1] === '') {
+      if ($.type(o[key]) !== 'array') {
+        o[key] = [];
+      }
+      return o[key].push(value);
+    } else if (path.length === 1) {
+      return o[key] = value;
+    } else {
+      if ($.type(o[key]) !== 'object') {
+        o[key] = {};
+      }
+      return walk(o[key], path.slice(1), value);
+    }
+  };
+  $.each(ary, function() {
+    var p, path;
+    path = this.name.split('[');
+    path = [path[0]].concat(__slice.call((function() {
+        var _i, _len, _ref, _results;
+        _ref = path.slice(1);
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          p = _ref[_i];
+          _results.push(p.slice(0, -1));
+        }
+        return _results;
+      })()));
+    return walk(obj, path, this.value);
+  });
+  return obj;
+};
+
+$.fn.serializeObject = function() {
+  var ary;
+  ary = this.serializeArray();
+  return $.a2o(ary);
+};
+
 DEFAULT_FIELD_SETUP = {
   'iati-identifier': {
     datatype: 'compound',
@@ -1505,67 +1566,6 @@ DIMENSION_META = {
   }
 };
 
-$.plugin = function(name, object) {
-  return jQuery.fn[name] = function(options) {
-    var args;
-    args = Array.prototype.slice.call(arguments, 1);
-    return this.each(function() {
-      var instance;
-      instance = $.data(this, name);
-      if (instance) {
-        return options && instance[options].apply(instance, args);
-      } else {
-        instance = new object(this, options);
-        return $.data(this, name, instance);
-      }
-    });
-  };
-};
-
-$.a2o = function(ary) {
-  var obj, walk;
-  obj = {};
-  walk = function(o, path, value) {
-    var key;
-    key = path[0];
-    if (path.length === 2 && path[1] === '') {
-      if ($.type(o[key]) !== 'array') {
-        o[key] = [];
-      }
-      return o[key].push(value);
-    } else if (path.length === 1) {
-      return o[key] = value;
-    } else {
-      if ($.type(o[key]) !== 'object') {
-        o[key] = {};
-      }
-      return walk(o[key], path.slice(1), value);
-    }
-  };
-  $.each(ary, function() {
-    var p, path;
-    path = this.name.split('[');
-    path = [path[0]].concat(__slice.call((function() {
-        var _i, _len, _ref, _results;
-        _ref = path.slice(1);
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          p = _ref[_i];
-          _results.push(p.slice(0, -1));
-        }
-        return _results;
-      })()));
-    return walk(obj, path, this.value);
-  });
-  return obj;
-};
-
-$.fn.serializeObject = function() {
-  var ary;
-  ary = this.serializeArray();
-  return $.a2o(ary);
-};
-
 SAMPLE_DATA = {
   "Project ID": "AGNA64",
   "Title Project": "WE CAN end violence against women in Afghanistan",
@@ -2330,20 +2330,42 @@ ModelEditor = (function(_super) {
   };
 
   function ModelEditor(element, options) {
-    var ctor, e, model_data, selector, x, _i, _len, _ref3, _ref4;
+    var common_multiples, ctor, e, model_data, other_multiples, selector, x, _i, _len, _ref3, _ref4;
     ModelEditor.__super__.constructor.apply(this, arguments);
-    $('#multiple_rows_selector').html(((function() {
+    console.log(this.options.iatifields);
+    common_multiples = ['transaction', 'sector', 'recipient-country', 'recipient-region'];
+    other_multiples = (function() {
       var _i, _len, _ref3, _results;
       _ref3 = this.options.iatifields;
       _results = [];
       for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
         x = _ref3[_i];
+        if (!(__indexOf.call(common_multiples, x) >= 0)) {
+          _results.push(x);
+        }
+      }
+      return _results;
+    }).call(this);
+    console.log(other_multiples);
+    $('#multiple_rows_selector').html('Common choices:<br/>' + ((function() {
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = common_multiples.length; _i < _len; _i++) {
+        x = common_multiples[_i];
+        _results.push("<input type='checkbox' name='organisation[data-structure][multiple][]' value='" + x + "'/> Multiple " + x + " rows per activity<br/>");
+      }
+      return _results;
+    })()).join('\n') + 'Other:<br/>' + ((function() {
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = other_multiples.length; _i < _len; _i++) {
+        x = other_multiples[_i];
         if (x !== '') {
           _results.push("<input type='checkbox' name='organisation[data-structure][multiple][]' value='" + x + "'/> Multiple " + x + " rows per activity<br/>");
         }
       }
       return _results;
-    }).call(this)).join('\n'));
+    })()).join('\n'));
     if (this.options.model_data) {
       model_data = JSON.parse(this.options.model_data);
     } else {

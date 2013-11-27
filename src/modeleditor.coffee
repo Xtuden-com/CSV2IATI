@@ -560,9 +560,16 @@ class ModelEditor extends Delegator
   constructor: (element, options) ->
     super
     
+    console.log(@options.iatifields)
+    common_multiples = [ 'transaction', 'sector', 'recipient-country', 'recipient-region' ]
+    other_multiples = (x for x in @options.iatifields when not (x in common_multiples))
+    console.log(other_multiples)
     
     $('#multiple_rows_selector').html(
-      ("<input type='checkbox' name='organisation[data-structure][multiple][]' value='#{x}'/> Multiple #{x} rows per activity<br/>" for x in @options.iatifields when x isnt '').join('\n')
+      'Common choices:<br/>'+
+      ("<input type='checkbox' name='organisation[data-structure][multiple][]' value='#{x}'/> Multiple #{x} rows per activity<br/>" for x in common_multiples).join('\n')+
+      'Other:<br/>'+
+      ("<input type='checkbox' name='organisation[data-structure][multiple][]' value='#{x}'/> Multiple #{x} rows per activity<br/>" for x in other_multiples when x isnt '').join('\n')
     )
     
     if (@options.model_data)

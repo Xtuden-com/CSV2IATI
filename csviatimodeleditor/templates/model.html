@@ -290,19 +290,18 @@
                     <p>The encoding of your data.</p>
                   </dd>
                   <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
-                  <dd>
-                  <span id="multiple_rows_selector"></span>
-                  <option value="">One row per activity</option>
-                  </select>
                   <dd class='hints'>
                     <p>How is your data structured? You can have one row per activity, or multiple rows per activity. 
-                    If you select 'multiple rows', the converter will use the field you specify as the <code>iati-identifier</code> 
+                    If you have multiple rows per actvitiy, the converter will use the field you specify as the <code>iati-identifier</code> 
                     (presumably your project ID) to group your projects together.</p>
                     <p>Most of the activity information will be taken from one row in your CSV file. Additional rows will 
-                    be used to construct multiple instances of the field you select above.</p>
-                    <p>For example, if you select <code>Multiple sector rows per activity</code>, then each row with the same 
+                    be used to construct multiple instances of the fields you select below.</p>
+                    <p>For example, if you tick <code>Multiple sector rows per activity</code>, then each row with the same 
                     <code>iati-identifier</code> will create a new <code>sector</code>, which will be defined by whatever 
                     you state as the sector in your mapping.</p>
+                  </dd>
+                  <dd>
+                  <span id="multiple_rows_selector"></span>
                   </dd>
                   <!--
                   <dt><label>Processing order:</label></dt>
