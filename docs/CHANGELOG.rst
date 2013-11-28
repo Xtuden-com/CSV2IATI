@@ -10,6 +10,7 @@ Version 2.3
 -  Add encoding override
 -  Support for more than one element having multiple rows per activity
 -  Contact information is populated correctly in the XML
+-  Basic support for the 'hierarchy' field on iati-activity (currently in 'Advanced controls' in the organisation information tab)
 
 UI Changes
 
