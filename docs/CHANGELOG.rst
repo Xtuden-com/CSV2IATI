@@ -8,13 +8,16 @@ Version 2.3
 -  New download link, to make it easier for firewalled users to get the
    XML file
 -  Add encoding override
+-  Support for more than one element having multiple rows per activity
 
 UI Changes
 
--  Vertical space before convert button
 -  Improve login error messages
 -  Backend error messages look better
 -  Text 'attribute' renamed
+-  Minor cosmetic changes to CSV2IATI's interface
+
+And several bugfixes.
 
 Version 2.2
 -----------
