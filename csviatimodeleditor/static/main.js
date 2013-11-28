@@ -2202,7 +2202,9 @@ DimensionsWidget = (function(_super) {
     }
     for (name in dims) {
       obj = dims[name];
-      this.addDimension(name).deserialize(data);
+      if (obj['datatype'] !== 'column') {
+        this.addDimension(name).deserialize(data);
+      }
     }
     return this.element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')]);
   };
@@ -2332,7 +2334,6 @@ ModelEditor = (function(_super) {
   function ModelEditor(element, options) {
     var common_multiples, ctor, e, model_data, other_multiples, selector, x, _i, _len, _ref3, _ref4;
     ModelEditor.__super__.constructor.apply(this, arguments);
-    console.log(this.options.iatifields);
     common_multiples = ['transaction', 'sector', 'recipient-country', 'recipient-region'];
     other_multiples = (function() {
       var _i, _len, _ref3, _results;
@@ -2346,7 +2347,6 @@ ModelEditor = (function(_super) {
       }
       return _results;
     }).call(this);
-    console.log(other_multiples);
     $('#multiple_rows_selector').html('Common choices:<br/>' + ((function() {
       var _i, _len, _results;
       _results = [];
@@ -2485,6 +2485,7 @@ ModelEditor = (function(_super) {
 
   ModelEditor.prototype.onModelChange = function() {
     var dimNames, k, n, v, w, _i, _len, _ref3, _ref4;
+    this.onFillColumnsRequest($('#hierarchy_select'));
     _ref3 = util.flattenObject(this.data);
     for (k in _ref3) {
       v = _ref3[k];

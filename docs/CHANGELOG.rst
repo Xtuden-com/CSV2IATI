@@ -9,6 +9,7 @@ Version 2.3
    XML file
 -  Add encoding override
 -  Support for more than one element having multiple rows per activity
+-  Contact information is populated correctly in the XML
 
 UI Changes
 

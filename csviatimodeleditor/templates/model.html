@@ -289,6 +289,17 @@
                   <dd class='hints'>
                     <p>The encoding of your data.</p>
                   </dd>
+
+                  <dt>
+                    Hierarchies (optional)
+                  </dt>
+                  <dd>
+                    <input type="hidden" name="mapping[hierarchy][iati-field]" value="hierarchy" />
+                    <input type="hidden" name="mapping[hierarchy][datatype]" value="column" />
+                    <select name="mapping[hierarchy][column]" id="hierarchy_select">
+                    <option value=""></option></select>
+                  </dd>
+
                   <dt><label for='organisation[data-structure]'>Data structure:</label></dt>
                   <dd class='hints'>
                     <p>How is your data structured? You can have one row per activity, or multiple rows per activity. 
@@ -352,7 +363,6 @@
             <div class='dimensions'>
             </div>
             </dl>
-            <p>
             <!-- show all IATI fields -->
               <select id="iati_field_add" class="iati_field_add">
               </select>

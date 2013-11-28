@@ -440,6 +440,7 @@ class DimensionsWidget extends Delegator
 
     @element.trigger('doFieldSelectors', 'iatifield')
     @element.trigger('doFieldSelectors', 'column')
+
   addDimension: (name) ->
     w = new DimensionWidget(name, @dimsEl)
     @widgets.push(w)
@@ -475,7 +476,8 @@ class DimensionsWidget extends Delegator
 
     # Any keys left in dims need to be added
     for name, obj of dims
-      this.addDimension(name).deserialize(data)
+      if obj['datatype'] != 'column'
+        this.addDimension(name).deserialize(data)
     
     @element.trigger('fillIATIfieldsRequest', [$(document).find('select.iati_field_add')])
 
@@ -560,10 +562,8 @@ class ModelEditor extends Delegator
   constructor: (element, options) ->
     super
     
-    console.log(@options.iatifields)
     common_multiples = [ 'transaction', 'sector', 'recipient-country', 'recipient-region' ]
     other_multiples = (x for x in @options.iatifields when not (x in common_multiples))
-    console.log(other_multiples)
     
     $('#multiple_rows_selector').html(
       'Common choices:<br/>'+
@@ -668,6 +668,9 @@ class ModelEditor extends Delegator
     return false;
 
   onModelChange: () ->
+    #FIXME
+    @onFillColumnsRequest($('#hierarchy_select'))
+
     # Populate straightforward bits
     for k, v of util.flattenObject(@data)
       # FIXME? this may not deal with complex form elements such as radio

@@ -47,7 +47,7 @@ def generate_csrf_token():
     return session['_csrf_token']
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
-app.jinja_env.globals['version'] = '2.3-beta'
+app.jinja_env.globals['version'] = '2.3'
 
 
 class IATIModel(db.Model):
