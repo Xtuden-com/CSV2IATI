@@ -586,13 +586,13 @@
                 {{each(n,f) default_fields.fields}}
                   {{if data.fields && n in data.fields }}
                     {{if n == 'text'}}
-                      <option value="${n}" disabled>(main element contents)</option>
+                      <option value="${n}" disabled>(text)</option>
                     {{else}}
                       <option value="${n}" disabled>${n}</option>
                     {{/if}}
                   {{else}}
                     {{if n == 'text'}}
-                      <option value="${n}">(main element contents)</option>
+                      <option value="${n}">(text)</option>
                     {{else}}
                       <option value="${n}">${n}</option>
                     {{/if}}
