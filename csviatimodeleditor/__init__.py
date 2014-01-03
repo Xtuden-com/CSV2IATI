@@ -381,6 +381,7 @@ def model_change_csv(id=id, csv_id=''):
 @app.route('/model/convert/<id>/download')
 def model_convert_download(id):
     if ('username' in session):
+        getmodel = IATIModel.query.filter_by(id=id).first_or_404()
         if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
             import urllib2
             xml_url = XMLFile.query.filter_by(iati_model_id=id)[-1].xml_url
