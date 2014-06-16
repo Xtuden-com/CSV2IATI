@@ -154,6 +154,16 @@ the relevant codelist value description. For example:**
    you can state in the mapping user interface that all your activities
    use the same classification.
 
+Example Input CSV Files
+-----------------------
+
+The Excel (.xls) and CSV (.csv) spreadsheets provide samples of templates that can be used. These are not meant to be prescriptive, but aim to give an idea of how data should be structured. The templates demonstrate how to use a single row per activity being reported (spreadsheets  containing '1') and how to have multiple rows per activity (containing '2'). There are two versions of each spreadsheet in order to demonstrate the formatting differences between Excel (IATI data template example) and CSV (IATI data for converting) files, as the latter is required by the conversion tool.
+
+* :download:`IATI data for converting 1 - single activity rows.csv`
+* :download:`IATI data for converting 2 - multiple transaction rows.csv`
+* :download:`IATI data template example 1 - single activity rows.xls`
+* :download:`IATI data template example 2 - multiple transaction rows.xls`
+
 Upload your data
 ----------------
 
