@@ -51,7 +51,7 @@ To use the Conversion Tool you will need to:
 #. Map the columns in your CSV file to the IATI Standard fields (you
    don’t need to be too familiar with the Standard, but you should
    consult the IATI Activity Standard if you are unsure):
-   http://iatistandard.org/activities-standard/overview
+   http://iatistandard.org/activity-standard/
 
 #. Check that you’re happy with the mapping you’ve created (you might
    want to share it around your organisation?);
@@ -85,7 +85,7 @@ a. The data must be in CSV ("comma-separated values") file format;
    only values in “value” columns – so no € or $ signs or commas for example);
 
 #. Data must use valid codelists as defined at
-   http://iatistandard.org/codelists, and codes must be incorporated as
+   http://iatistandard.org/codelists/, and codes must be incorporated as
    a separate column in your data.
 
 #. Data quality is the responsibility of the data provider – the
@@ -136,7 +136,7 @@ the relevant codelist value description. For example:**
    ``recipient_country_code``). This should be the ISO-2 code found on
    the IATI Standard website:
 
-   http://iatistandard.org/codelists/country
+   http://iatistandard.org/codelists/Country/
 
 #. **Transactions** – If you have many rows with different types of
    transactions for each activity (e.g., one row for commitments and one
@@ -146,7 +146,7 @@ the relevant codelist value description. For example:**
    transaction types and codes should be those stated on the IATI
    Standard website:
 
-   http://iatistandard.org/codelists/transaction_type
+   http://iatistandard.org/codelists/TransactionType
 
 #. For other elements in the IATI Standard, if all of your activities
    use the same classification (e.g., all of the same aid type, or
@@ -198,12 +198,12 @@ Provide some basic information about your organisation
     The unique organisation ID, if you are an official donor, is
     available from the IATI Standard website at:
 
-    http://iatistandard.org/codelists/organisation
+    http://iatistandard.org/codelists/OrganisationIdentifier/
 
     If you are not an official donor then your organisation ID is generated
     as described at:
     
-    http://iatistandard.org/getting-started/organisation-data/organisation-identifiers/
+    http://iatistandard.org/organisation-identifiers/
 
     However, please contact IATI Support if you are unsure about this.
 
