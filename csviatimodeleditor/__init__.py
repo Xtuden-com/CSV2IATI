@@ -400,50 +400,53 @@ def model_convert(id=id):
         if (id):        
             getmodel = IATIModel.query.filter_by(id=id).first_or_404()
             if getmodel is not None:
-                getcsvfile = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
-                if getmodel.model_content is not None:
-                    import urllib
-                    import urllib2
-                    url = CONVERSION_API_SERVER + 'json'
-                    values = {'csv_url' : url_for('csv_file',id=getmodel.id,filename=getcsvfile.csv_file,_external=True),
-                              'model_url' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
+                if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
+                    getcsvfile = CSVFile.query.filter_by(id=getmodel.csv_id).first_or_404()
+                    if getmodel.model_content is not None:
+                        import urllib
+                        import urllib2
+                        url = CONVERSION_API_SERVER + 'json'
+                        values = {'csv_url' : url_for('csv_file',id=getmodel.id,filename=getcsvfile.csv_file,_external=True),
+                                  'model_url' : url_for('model',id=getmodel.id,responsetype='json',_external=True)}
 
-                    data = urllib.urlencode(values)
-                    req = urllib2.Request(url, data)
-                    xml_url = ''
-                    error = ''
-                    try:
-                        print url
-                        response = urllib2.urlopen(req)
-                        the_page_json = response.read()
-                        #print the_page_json
-                        the_page = json.loads(the_page_json)
-                        if "error" in the_page:
-                            error = Markup(the_page["error"])
-                        else:
-                            xml_url = the_page["result"]
-                        # Handle keyerror TODO
-                    except urllib2.HTTPError, e:
-                        if (e.code == 400):
-                            flash("Error 400. Could not convert your data. There was a fundamental error in the application. Please report this error.", "bad persist")
-                            flash("The data file provided was: " + values["csv_file"], "notice persist")
-                            flash("The mapping file provided was: " + values["model_file"], "notice persist")
-                            return redirect(url_for('index'))
+                        data = urllib.urlencode(values)
+                        req = urllib2.Request(url, data)
+                        xml_url = ''
+                        error = ''
+                        try:
+                            print url
+                            response = urllib2.urlopen(req)
+                            the_page_json = response.read()
+                            #print the_page_json
+                            the_page = json.loads(the_page_json)
+                            if "error" in the_page:
+                                error = Markup(the_page["error"])
+                            else:
+                                xml_url = the_page["result"]
+                            # Handle keyerror TODO
+                        except urllib2.HTTPError, e:
+                            if (e.code == 400):
+                                flash("Error 400. Could not convert your data. There was a fundamental error in the application. Please report this error.", "bad persist")
+                                flash("The data file provided was: " + values["csv_file"], "notice persist")
+                                flash("The mapping file provided was: " + values["model_file"], "notice persist")
+                                return redirect(url_for('index'))
 
-                    xml_file = XMLFile(iati_model_id=id, xml_url=xml_url)
-                    db.session.add(xml_file)
-                    db.session.commit()
+                        xml_file = XMLFile(iati_model_id=id, xml_url=xml_url)
+                        db.session.add(xml_file)
+                        db.session.commit()
 
 
-                    return render_template('model-convert.html', id=id, model_name=getmodel.model_name,
-                            error=error, xml_url=xml_url, xml_url_encoded=urllib.quote_plus(xml_url),
-                            #model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,
-                            csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),
-                            #all_csv_files=getallcsv,
-                            username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
-                
+                        return render_template('model-convert.html', id=id, model_name=getmodel.model_name,
+                                error=error, xml_url=xml_url, xml_url_encoded=urllib.quote_plus(xml_url),
+                                #model_content=Markup(model_content_real),csv_headers=newsd,csv_encoding=getcsv.csv_encoding,csv_file=getcsv.csv_file,
+                                csv_id=int(getmodel.csv_id),model_created=str(getmodel.model_created),
+                                #all_csv_files=getallcsv,
+                                username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
+                    else:
+                        flash("That model has not yet been defined.", 'bad')
+                        return redirect(url_for('index'))
                 else:
-                    flash("That model has not yet been defined.", 'bad')
+                    flash("You don't have permission to edit that model.", 'bad')
                     return redirect(url_for('index'))
             else:
                 flash("Could not find that model.", 'bad')
@@ -529,10 +532,19 @@ def model(id='',responsetype=''):
 
 @app.route('/model/history/<id>', methods=['GET'])
 def model_history(id=''):
-    return render_template('model-history.html',
-        xml_files=XMLFile.query.filter_by(iati_model_id=id),
-        model_history=IATIModelHistory.query.filter_by(iati_model_id=id),
-        username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
+    if ('username' in session):
+        getmodel = IATIModel.query.filter_by(id=id).first_or_404()
+        if (('admin' in session) or ((session['user_id'])==int(getmodel.model_owner))):
+            return render_template('model-history.html',
+                xml_files=XMLFile.query.filter_by(iati_model_id=id),
+                model_history=IATIModelHistory.query.filter_by(iati_model_id=id),
+                username=username(), user_id=escape(session['user_id']), user_name=user_name(), admin=is_admin(), logged_in=is_logged_in())
+        else:
+            flash("You don't have permission to edit that model.", 'bad')
+            return redirect(url_for('index'))
+    else:
+        flash('Please log in.', 'bad')
+        return redirect(url_for('index'))
 
 @app.route('/user/')
 @app.route('/user/<id>', methods=['GET', 'POST'])
