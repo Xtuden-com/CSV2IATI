@@ -29,16 +29,15 @@ Install dependencies:
 
     $ pip install -r requirements.txt
 
-Copy the configuration templates (must be installed in ``/usr/sites``):
+Copy the configuration template:
 
-    $ cp csviatimodeleditor/icconfig.ini.tmpl /usr/sites/icconfig.ini
+    $ cp csviatimodeleditor/icconfig.ini.tmpl csviatimodeleditor/icconfig.ini
 
-Edit the configuration files and make sure that you have set a valid database URL. In production mode, remember to set the absolute path to the database.
+Edit the configuration file and make sure that you have set a valid database URL. In production mode, remember to set the absolute path to the database.
 
 Then run the application. In a local instance you can just do:
 
-    $ cd csviatimodeleditor
-    $ python __init__.py
+    $ python csviatimodeleditor/__init__.py
 
 ## Troubleshooting:
 
