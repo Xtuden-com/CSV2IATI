@@ -31,7 +31,7 @@ def get_element(element_name, indent='', top=False, doc=False):
         print "  '{0}':".format(element_name)
         print "    fixedDataType:true"
         print "    helpText: '''"
-        print htmlize(element.find(".//xsd:documentation", namespaces=namespaces).text)
+        print htmlize(element.find(".//xsd:documentation", namespaces=namespaces).text).encode('utf-8')
         print "              '''"
 
     if not doc or top:
@@ -44,6 +44,12 @@ def print_column_info(name, indent='', required=False):
     if required: print indent+"  required: true"
     else: print indent+"  required: false"
 
+def print_element_info(name, indent=''):
+    print indent+"'{0}':".format(name)
+    print indent+"  datatype: 'compound'"
+    print indent+"  label: '{0}'".format(string.capwords(name.replace('-', ' ')))
+    print indent+"  fields:"
+
 def element_loop(element, indent='', doc=False, top=False):
     if not doc:
         if not top:
@@ -55,25 +61,19 @@ def element_loop(element, indent='', doc=False, top=False):
                 print_column_info('text', indent)
             else: raise Exception, ext.attrib['base']
 
-    def print_info(name):
-        print indent+"'{0}':".format(name)
-        print indent+"  datatype: 'compound'"
-        print indent+"  label: '{0}'".format(string.capwords(name.replace('-', ' ')))
-        print indent+"  fields:"
-    children = ( element.findall('xsd:complexType/xsd:choice/xsd:element', namespaces=namespaces)
-        + element.findall("xsd:complexType/xsd:all/xsd:element", namespaces=namespaces) )
+    children = element.findall('xsd:complexType/xsd:sequence/xsd:element', namespaces=namespaces)
     if top:
-        children = sorted(children, key=lambda x: order.key(x.attrib['ref']))
+        children = sorted(children, key=lambda x: order.key(x.attrib.get('ref', x.attrib.get('name'))))
     for child in children:
         a = child.attrib
         if 'name' in a:
             if not doc:
-                print_info(a['name'])
+                print_element_info(a['name'], indent)
             element_loop(child, indent+'    ',doc=doc)
         else:
             if not a['ref'] in blacklisted_elements:
                 if not doc:
-                    print_info(a['ref'])
+                    print_element_info(a['ref'], indent)
                 get_element(a['ref'], indent+'    ',doc=doc)
 
 def attribute_loop(element, indent=''):
@@ -82,7 +82,10 @@ def attribute_loop(element, indent=''):
         
     a = element.attrib
     if 'type' in a:
-        if a['type'] in ['plainType','textType','codeType','codeReqType','currencyType','dateType','xsd:anyURI','xsd:decimal']:
+        if a['type'] in ['textType','textRequiredType']:
+            print_element_info('narrative', indent+'  ')
+            print_column_info('text', indent+'      ')
+        elif a['type'] in ['currencyType','xsd:anyURI','xsd:decimal','xsd:string']:
             print_column_info('text', indent+'  ')
             if a['type'] == 'codeReqType':
                 print_column_info('code', indent+'  ', True)
